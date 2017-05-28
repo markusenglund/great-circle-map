@@ -4,7 +4,6 @@ const favicon = require("serve-favicon")
 const cookieParser = require("cookie-parser")
 const bodyParser = require("body-parser")
 const session = require("express-session")
-require("dotenv").config()
 
 const apiRoute = require("./routes/api")
 
