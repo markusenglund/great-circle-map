@@ -5,7 +5,9 @@ import { Provider } from "react-redux"
 import ReduxThunk from "redux-thunk"
 import logger from "redux-logger"
 
-import "./styles.css"
+import "./stylesheets/styles.css"
+import "./stylesheets/map.css"
+import "./stylesheets/route-list.css"
 
 import reducer from "./reducers"
 // import { fetchProtected } from "./actionCreators"

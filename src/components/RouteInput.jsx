@@ -1,14 +1,16 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 import PropTypes from "prop-types"
-import { handleRoutes } from "../actionCreators"
 import ErrorMessage from "./ErrorMessage"
 
-
 class RouteInput extends Component {
-  constructor() {
-    super()
-    this.state = { value: "" }
+  constructor(props) {
+    super(props)
+    this.state = { value: props.urlParam }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ value: nextProps.urlParam })
   }
 
   handleChange(event) {
@@ -17,8 +19,9 @@ class RouteInput extends Component {
 
   handleSubmit(event) {
     event.preventDefault()
-    const { dispatch } = this.props
-    dispatch(handleRoutes(this.state.value))
+    const { history } = this.props
+    const newUrlParam = encodeURIComponent(this.state.value)
+    history.push(`/${newUrlParam}`)
   }
 
   handleKeyPress(event) {
@@ -27,22 +30,23 @@ class RouteInput extends Component {
     }
   }
 
-  // FIXME: Textarea doesn't submit on enter, and has erratic behaviour
   render() {
     const { error } = this.props
     return (
       <form className="input-form" onSubmit={e => this.handleSubmit(e)}>
-        <textarea
-          value={this.state.value}
-          onChange={e => this.handleChange(e)}
-          onKeyPress={e => this.handleKeyPress(e)}
-          placeholder="JFK-LHR/OSL, AMS-MAD-EZE"
-          type="text"
-          className="input-textarea"
-          required
-        />
+        <div id="textarea-wrapper">
+          <textarea
+            value={this.state.value}
+            onChange={e => this.handleChange(e)}
+            onKeyPress={e => this.handleKeyPress(e)}
+            placeholder="JFK-LHR/OSL, AMS-MAD-EZE, etc."
+            type="text"
+            id="textarea"
+            spellCheck={false}
+          />
+        </div>
         <div className="submit-button-wrapper">
-          <button className="btn" type="submit">Map</button>
+          <button className="btn" type="submit">Go</button>
           {error ? <ErrorMessage error={error} /> : null}
         </div>
       </form>
@@ -51,12 +55,15 @@ class RouteInput extends Component {
 }
 
 RouteInput.propTypes = {
-  dispatch: PropTypes.func.isRequired,
   error: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.bool
-  ]).isRequired
+  ]).isRequired,
+  urlParam: PropTypes.string,
+  history: PropTypes.shape({ push: PropTypes.function }).isRequired
 }
+RouteInput.defaultProps = { urlParam: "" }
+
 
 function mapStateToProps(state) {
   return {

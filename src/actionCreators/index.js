@@ -5,16 +5,27 @@ export function receiveAirportData(data) {
   return { type: "RECEIVE_AIRPORT_DATA", data }
 }
 
-export function getAirportData() {
-  return (dispatch) => {
-    Papa.parse("/airports.csv", {
-      download: true,
-      header: true,
-      complete: (results) => {
-        dispatch(receiveAirportData(results.data))
-      }
-    })
+export function getAirportData(urlParam) {
+  return (dispatch, getState) => {
+    const { airportData } = getState()
+    console.log("If you see this, then getairportdata was called")
+    if (airportData.length === 0) {
+      Papa.parse("/airports.csv", {
+        download: true,
+        header: true,
+        complete: (results) => {
+          dispatch(receiveAirportData(results.data))
+          if (urlParam) {
+            dispatch(handleRoutes(urlParam))
+          }
+        }
+      })
+    }
   }
+}
+
+export function completeMapLoad() {
+  return { type: "COMPLETE_MAP_LOAD"}
 }
 
 export function submitRoutes(routes) {
@@ -77,6 +88,10 @@ function codes2coords(routeArr, airportData) {
 // Dispatches either an error (if input is invalid) or the paths of the routes
 export function handleRoutes(routeStr) {
   return (dispatch, getState) => {
+    if (routeStr === "") {
+      return dispatch(submitRoutes([]))
+    }
+
     // Make string all uppercase and remove spaces
     const routeStrAllCaps = routeStr.toUpperCase()
     const routeStrWithoutSpaces = routeStrAllCaps.replace(/ /g, "")

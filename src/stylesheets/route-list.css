@@ -1,0 +1,63 @@
+#route-list {
+  /*background-color: #F2F2F2;*/
+  background-color: white;
+  flex: 0 1 auto;
+  overflow: auto;
+}
+
+.route-element {
+  font-family: 'Verdana', 'Helvetica', sans-serif;
+  color: #446;
+}
+
+.collapsible-distance, .collapsible-airport, .sector-element, .total-distance, .non-stop-distance {
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.sector-elements {
+  cursor: pointer;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.airport-code {
+  font-weight: bold;
+}
+
+.distance-number {
+  float: right;
+  font-weight: bold;
+}
+
+.total-distance {
+  font-size: 12px;
+  background-color: #eee;
+}
+
+.collapsible {
+  font-size: 12px;
+}
+
+.collapsible-airport {
+  background-color: #ffd0d0;
+  font-weight: bold;
+  padding: 6px;
+}
+
+.collapsible-name {
+  font-style: italic;
+}
+
+.collapsible-distance {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #eee;
+}
+
+.fa-arrow-down {
+  font-size: 20px;
+}

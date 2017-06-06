@@ -1,0 +1,13 @@
+#map-container, #map {
+  height: 100%;
+  width: 100%;
+}
+
+.map-label {
+  color: #F04040;
+  text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
+}

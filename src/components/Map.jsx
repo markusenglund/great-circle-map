@@ -3,15 +3,15 @@ import PropTypes from "prop-types"
 import { connect } from "react-redux"
 import { withGoogleMap, GoogleMap, Polyline, Marker, OverlayView } from "react-google-maps"
 import withScriptjs from "react-google-maps/lib/async/withScriptjs"
+import uniqueId from "lodash.uniqueid"
 
-import { getAirportData } from "../actionCreators"
+import { getAirportData, completeMapLoad } from "../actionCreators"
 
 function getPixelPositionOffset(width, height) {
   return { x: 0, y: -(height / 5) }
 }
 
 const AsyncGoogleMap = withScriptjs(withGoogleMap(({ routes, onMapMounted }) => {
-  let id = 0
   // Extract all airports that are currently being rendered and filter airports already rendered
   const airports = routes.reduce((acc, val) => {
     return acc.concat(val.filter((airport) => {
@@ -36,11 +36,11 @@ const AsyncGoogleMap = withScriptjs(withGoogleMap(({ routes, onMapMounted }) => 
             strokeColor: "#B03030",
             strokeWeight: 2
           }}
-          key={(id += 1)}
+          key={uniqueId()}
         />
       ))}
       {airports.map(airport => (
-        <div key={(id += 1)}>
+        <div key={uniqueId()}>
           <Marker
             position={{ lat: Number(airport.lat), lng: Number(airport.lng) }}
             icon={{
@@ -55,7 +55,7 @@ const AsyncGoogleMap = withScriptjs(withGoogleMap(({ routes, onMapMounted }) => 
             mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
             getPixelPositionOffset={getPixelPositionOffset}
           >
-            <div className="overlay-view">
+            <div className="map-label">
               <h4>{airport.iata}</h4>
             </div>
           </OverlayView>
@@ -66,59 +66,66 @@ const AsyncGoogleMap = withScriptjs(withGoogleMap(({ routes, onMapMounted }) => 
 }))
 
 class Map extends Component {
-  // Room for improvement: This should start to load AFTER all the google maps stuff.
-  componentDidMount() {
-    const { dispatch } = this.props
-    dispatch(getAirportData())
-  }
-
   componentDidUpdate() {
     // Change the viewport to fit the airports that have been rendered to the map.
     const { routes } = this.props
-    const { LatLngBounds, LatLng } = google.maps
-    const newBounds = new LatLngBounds()
-    routes.forEach((route) => {
-      route.forEach((airport) => {
-        newBounds.extend(new LatLng(Number(airport.lat), Number(airport.lng)))
+    if (routes.length) {
+      const { LatLngBounds, LatLng } = google.maps
+      const newBounds = new LatLngBounds()
+      routes.forEach((route) => {
+        route.forEach((airport) => {
+          newBounds.extend(new LatLng(Number(airport.lat), Number(airport.lng)))
+        })
       })
-    })
-    this.map.fitBounds(newBounds)
+      console.log("bounding function: ", newBounds)
+      this.map.fitBounds(newBounds)
+    }
   }
 
   handleMapMounted(map) {
     this.map = map
+
+    // Get airportdata if we don't alraedy have it
+    const { dispatch, urlParam } = this.props
+    const { isMapLoaded } = this.props
+    if (!isMapLoaded) {
+      dispatch(completeMapLoad())
+      dispatch(getAirportData(urlParam))
+    }
   }
 
   render() {
     const { routes } = this.props
     return (
-      <div className="map-wrapper">
-        <AsyncGoogleMap
-          googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyBISa-Ul-NOnD-H5lweC_w4evLmV_0fuSU"
-          loadingElement={
-            <div style={{ height: "300px" }} />
-          }
-          containerElement={
-            <div style={{ height: "100%" }} />
-          }
-          mapElement={
-            <div className="map-element" />
-          }
-          routes={routes}
-          onMapMounted={map => this.handleMapMounted(map)}
-        />
-      </div>
+      <AsyncGoogleMap
+        googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyBISa-Ul-NOnD-H5lweC_w4evLmV_0fuSU"
+        loadingElement={
+          <div style={{ height: "100%" }} />
+        }
+        containerElement={
+          <div id="map-container" />
+        }
+        mapElement={
+          <div id="map" />
+        }
+        routes={routes}
+        onMapMounted={map => this.handleMapMounted(map)}
+      />
     )
   }
 }
 Map.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  routes: PropTypes.arrayOf(PropTypes.array).isRequired
+  routes: PropTypes.arrayOf(PropTypes.array).isRequired,
+  urlParam: PropTypes.string,
+  isMapLoaded: PropTypes.bool.isRequired
 }
+Map.defaultProps = { urlParam: null }
 
 function mapStateToProps(state) {
   return {
-    routes: state.routes
+    routes: state.routes,
+    isMapLoaded: state.map.isLoaded
   }
 }
 

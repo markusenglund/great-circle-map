@@ -1,15 +1,20 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
+import uniqueId from "lodash.uniqueid"
 import RouteElement from "./RouteElement"
 
 function RouteList({ routes }) {
-  let id = 0
-  return (
-    <div id="route-list">
-      {routes.map(route => <RouteElement key={(id += 1)} route={route} />)}
-    </div>
-  )
+  if (routes.length) {
+    return (
+      <div id="route-list">
+        {routes.map((route, i) => {
+          return route.length > 1 ? <RouteElement key={uniqueId()} route={route} index={i} /> : null
+        })}
+      </div>
+    )
+  }
+  return null
 }
 
 
