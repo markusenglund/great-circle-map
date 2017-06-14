@@ -49,6 +49,7 @@ html, body {
   display: flex;
   align-items: top;
   height: 60px;
+  justify-content: space-between;
 }
 
 
@@ -77,6 +78,40 @@ html, body {
   padding: 5px;
   margin-left: 5px;
   font-size: 13px;
+}
+
+.toggle-btn-group label {
+  display: inline-block;
+  float: left;
+  text-align: center;
+  cursor: pointer;
+  padding: 5px;
+  background-color: #aaa;
+  color: #fff;
+}
+
+.toggle-btn-group label:first-of-type {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+.toggle-btn-group label:last-of-type {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.toggle-btn-group input[type="radio"]:checked+label {
+  background: #102296;
+  cursor: default;
+}
+
+.toggle-btn-group label:hover,
+.toggle-btn-group label:focus {
+  background-color: #999;
+}
+
+.toggle-btn-group input {
+  position: absolute;
+  clip: rect(0px 0px 0px 0px);
 }
 
 .big-font {

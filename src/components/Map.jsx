@@ -56,7 +56,7 @@ const AsyncGoogleMap = withScriptjs(withGoogleMap(({ routes, onMapMounted }) => 
             getPixelPositionOffset={getPixelPositionOffset}
           >
             <div className="map-label">
-              <h4>{airport.iata}</h4>
+              <h4>{airport.userEnteredCode}</h4>
             </div>
           </OverlayView>
         </div>

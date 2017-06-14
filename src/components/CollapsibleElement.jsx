@@ -4,7 +4,7 @@ import uniqueId from "lodash.uniqueid"
 
 
 function CollapsibleElement({
-  route, distancesInKmRounded, distances, sectors, distanceToTimeString, nonStopDistance, totalDistance, differenceParsed
+  route, distancesInKmRounded, distances, distanceToTimeString, nonStopDistance, totalDistance, differenceParsed
 }) {
   return (
     <div className="collapsible">
@@ -12,7 +12,7 @@ function CollapsibleElement({
         {route.map((airport, i) => (
           <div key={uniqueId()}>
             <div className="collapsible-airport">
-              <div>{airport.city} ({airport.iata})</div>
+              <div>{airport.city} ({airport.userEnteredCode})</div>
               <div className="collapsible-name">{airport.name}</div>
             </div>
             {distancesInKmRounded[i] ? (
@@ -31,14 +31,14 @@ function CollapsibleElement({
           </div>
         ))}
       </div>
-      {sectors.length > 1 && route[0].iata !== route[route.length - 1].iata ? (
+      {route.length > 2 && route[0].iata !== route[route.length - 1].iata ? (
         <div className="total-distance">
           <div className="padding-4px">
             <div className="grey">Non-stop distance ({route[0].iata} - {route[route.length - 1].iata})</div>
             <div className="bold">{Math.round(nonStopDistance / 1000)} km</div>
           </div>
           <div className="padding-4px">
-            <div className="grey">Distance added by stop-over{sectors.length > 2 ? <span>s</span> : null}</div>
+            <div className="grey">Distance added by stop-over{route.length > 3 ? <span>s</span> : null}</div>
             <div className="bold">{Math.round((totalDistance - nonStopDistance) / 1000)} km (+{differenceParsed})</div>
           </div>
         </div>

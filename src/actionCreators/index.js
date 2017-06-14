@@ -1,6 +1,10 @@
 import Papa from "papaparse"
 // TODO: Split this up into multiple action creators?
 
+export function changeInputMode(mode) {
+  return { type: "CHANGE_INPUT_MODE", mode }
+}
+
 export function receiveAirportData(data) {
   return { type: "RECEIVE_AIRPORT_DATA", data }
 }
@@ -8,9 +12,9 @@ export function receiveAirportData(data) {
 export function getAirportData(urlParam) {
   return (dispatch, getState) => {
     const { airportData } = getState()
-    console.log("If you see this, then getairportdata was called")
+
     if (airportData.length === 0) {
-      Papa.parse("/airports.csv", {
+      Papa.parse("/airports-min.csv", {
         download: true,
         header: true,
         complete: (results) => {
@@ -25,7 +29,7 @@ export function getAirportData(urlParam) {
 }
 
 export function completeMapLoad() {
-  return { type: "COMPLETE_MAP_LOAD"}
+  return { type: "COMPLETE_MAP_LOAD" }
 }
 
 export function submitRoutes(routes) {
@@ -43,7 +47,7 @@ export function hideError() {
 /**  Logic transforming input-string to route coordinates  **/
 
 function hasForbiddenCharacter(inputString) {
-  const invalidSymbolsRegex = /[^A-Za-z,;&/-\s]/
+  const invalidSymbolsRegex = /[^A-Za-z,;&/-\s\d]/
   const invalidSymbol = invalidSymbolsRegex.exec(inputString)
   // returns undefined if no invalid symbol is found
   return invalidSymbol
@@ -58,7 +62,7 @@ function parseStringWithSlashes(str) { // ex str = ["LHR/DUB-JFK"]
   return routeArray
 }
 
-// Takes an array of arrays of airportcodes, returns an array of arrays of coordinates
+// Takes array of arrays of airportcodes, returns array of arrays of airports w coordinates, name...
 // If any of the airportcodes does not exist in db, an error message is returned instead
 function codes2coords(routeArr, airportData) {
   try {
@@ -75,7 +79,7 @@ function codes2coords(routeArr, airportData) {
         if (!myAirport) {
           throw new Error(`'${airportCode}' does not exist in our database`)
         }
-        return myAirport
+        return { ...myAirport, userEnteredCode: airportCode }
       })
     })
     return { routes }
@@ -96,14 +100,17 @@ export function handleRoutes(routeStr) {
     const routeStrAllCaps = routeStr.toUpperCase()
     const routeStrWithoutSpaces = routeStrAllCaps.replace(/ /g, "")
 
+    // Remove dangling comma, semi-colon or slash
+    const routeStrNoDangle = routeStrWithoutSpaces.replace(/[,;/\n]$/, "")
+
     // Check for forbidden characters in input
-    const forbiddenCharacter = hasForbiddenCharacter(routeStrWithoutSpaces)
+    const forbiddenCharacter = hasForbiddenCharacter(routeStrNoDangle)
     if (forbiddenCharacter) {
       return dispatch(showError(`'${forbiddenCharacter}' is not a valid character`))
     }
 
     // Split route-string by commas into an array
-    const routeArr = routeStrWithoutSpaces.split(/[,;&\n]+/g)
+    const routeArr = routeStrNoDangle.split(/[,;&\n]+/g)
     // Separate routes slashes so they create new routes
     const routeArrWithParsedSlashes = routeArr.reduce((acc, val) => {
       if ((/\//).test(val)) {
@@ -114,11 +121,10 @@ export function handleRoutes(routeStr) {
 
     // This is an array of routes, which in turn are arrays of airport-codes
     const routesSplitIntoAirportCodes = routeArrWithParsedSlashes.map(route => route.split("-"))
-
     // Check if any route contains an airport code that isn't the right length, dispatch error
     for (let i = 0; i < routesSplitIntoAirportCodes.length; i += 1) {
       const codeWithWrongLength = routesSplitIntoAirportCodes[i].find((airportCode) => {
-        return airportCode.length !== (3 || 4)
+        return airportCode.length !== 3 && airportCode.length !== 4
       })
       if (codeWithWrongLength === "") {
         return dispatch(showError("Unable to parse input"))
