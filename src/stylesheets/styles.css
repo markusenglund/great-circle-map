@@ -80,6 +80,11 @@ html, body {
   font-size: 13px;
 }
 
+.toggle-btn-group {
+  margin: 10px;
+  margin-bottom: 40px;
+}
+
 .toggle-btn-group label {
   display: inline-block;
   float: left;
