@@ -12690,6 +12690,7 @@ function getAirportData(urlParam) {
       _papaparse2.default.parse("/airports-min.csv", {
         download: true,
         header: true,
+        dynamicTyping: true,
         complete: function complete(results) {
           dispatch(receiveAirportData(results.data));
           if (urlParam) {
@@ -53005,11 +53006,11 @@ function CollapsibleElement(_ref) {
               airport.name
             )
           ),
-          distancesInKmRounded[i] ? _react2.default.createElement(
+          distancesInKmRounded[i] !== undefined ? _react2.default.createElement(
             "div",
             { className: "collapsible-distance" },
             _react2.default.createElement("i", { className: "fa fa-arrow-down", "aria-hidden": "true" }),
-            _react2.default.createElement(
+            distancesInKmRounded[i] ? _react2.default.createElement(
               "div",
               null,
               _react2.default.createElement(
@@ -53023,8 +53024,8 @@ function CollapsibleElement(_ref) {
                 distancesInKmRounded[i],
                 " km"
               )
-            ),
-            _react2.default.createElement(
+            ) : null,
+            distancesInKmRounded[i] ? _react2.default.createElement(
               "div",
               { className: "duration" },
               _react2.default.createElement(
@@ -53037,7 +53038,7 @@ function CollapsibleElement(_ref) {
                 { className: "bold" },
                 distanceToTimeString(distances[i])
               )
-            )
+            ) : null
           ) : null
         );
       })
@@ -53344,6 +53345,8 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
@@ -53376,14 +53379,20 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-// FIXME: THIS IS CALLED WHENEVER A PERSON MOVES THE MAP. FIX!!!!!
-function _getPixelPositionOffset(width, height, currentAirport, airports) {
-  var airportLocation = new _geodesy.LatLonSpherical(Number(currentAirport.lat), Number(currentAirport.lng));
-  var airportsClone = JSON.parse(JSON.stringify(airports)); // USe min to avoid this possibly expensive op
-  airportsClone.sort(function (a, b) {
-    // This is computationally inefficient use min instead
-    var locationA = new _geodesy.LatLonSpherical(Number(a.lat), Number(a.lng));
-    var locationB = new _geodesy.LatLonSpherical(Number(b.lat), Number(b.lng));
+// TODO: Add a condition for like within 2000 km or something
+function getPixelPositionOffset(currentAirport, airports) {
+  var airportLocation = new _geodesy.LatLonSpherical(currentAirport.lat, currentAirport.lng);
+
+  // FIXME: Could this be done in a more efficient way like Math.min?
+  // TODO: Filter airports that are within 2000 km
+  // const airportsClone = JSON.parse(JSON.stringify(airports))
+  var airportsClone = airports.filter(function (airport) {
+    var location = new _geodesy.LatLonSpherical(airport.lat, airport.lng);
+    var distance = airportLocation.distanceTo(location);
+    return distance < 1500000; // 1500 km
+  }).sort(function (a, b) {
+    var locationA = new _geodesy.LatLonSpherical(a.lat, a.lng);
+    var locationB = new _geodesy.LatLonSpherical(b.lat, b.lng);
     var distanceA = airportLocation.distanceTo(locationA);
     var distanceB = airportLocation.distanceTo(locationB);
     return distanceA - distanceB;
@@ -53391,54 +53400,79 @@ function _getPixelPositionOffset(width, height, currentAirport, airports) {
 
   var directionsTaken = [];
   for (var i = 1; i < Math.min(airportsClone.length, 4); i += 1) {
-    var direction = [Number(airportsClone[i].lat) - Number(currentAirport.lat) > 0, Number(airportsClone[i].lng) - Number(currentAirport.lng) > 0];
+    var direction = [airportsClone[i].lat - currentAirport.lat > 0, airportsClone[i].lng - currentAirport.lng > 0];
     directionsTaken.push(direction);
   }
 
-  var y = void 0;
-  var x = void 0;
+  // If no nearby airports, render label to the southeast of the circle
+  if (directionsTaken.length < 1) {
+    return function (width, height) {
+      return {
+        y: -(height / 5),
+        x: 0
+      };
+    };
+  }
 
-  if (!directionsTaken.find(function (direction) {
-    return direction[0] !== directionsTaken[0][0] && direction[1] !== directionsTaken[0][1];
+  // If there is no nearby airport in the opposite direction of the closest neighbor:
+  // Choose that direction for the label
+  if (!directionsTaken.find(function (dir) {
+    return dir[0] !== directionsTaken[0][0] && dir[1] !== directionsTaken[0][1];
   })) {
-    y = directionsTaken[0][0] ? -(height / 5) : -3 * height / 4;
-    x = directionsTaken[0][1] ? -width : 0;
-  } else if (!directionsTaken.find(function (dir) {
+    return function (width, height) {
+      return {
+        y: directionsTaken[0][0] ? -(height / 5) : -3 * height / 4,
+        x: directionsTaken[0][1] ? -width : 0
+      };
+    };
+  }
+  if (!directionsTaken.find(function (dir) {
     return !dir[0] && dir[1];
   })) {
     // South east
-    y = -(height / 5);
-    x = 0;
-  } else if (!directionsTaken.find(function (dir) {
+    return function (width, height) {
+      return {
+        y: -(height / 5),
+        x: 0
+      };
+    };
+  }
+  if (!directionsTaken.find(function (dir) {
     return !dir[0] && !dir[1];
   })) {
     // South west
-    y = -(height / 5);
-    x = -width;
-  } else if (!directionsTaken.find(function (dir) {
+    return function (width, height) {
+      return {
+        y: -(height / 5),
+        x: -width
+      };
+    };
+  }
+  if (!directionsTaken.find(function (dir) {
     return dir[0] && !dir[1];
   })) {
     // North west
-    y = -3 * height / 4;
-    x = -width;
-  } else {
-    // North east
-    y = -3 * height / 4;
-    x = 0;
+    return function (width, height) {
+      return {
+        y: -3 * height / 4,
+        x: -width
+      };
+    };
   }
-
-  // const y = Number(airportsClone[1].lat) - Number(currentAirport.lat) > 0 ?
-  //   -(height / 5) : (-3 * height) / 4
-  // const x = Number(airportsClone[1].lng) - Number(currentAirport.lng) > 0 ?
-  //   -width : 0
-  return { x: x, y: y };
+  return function (width, height) {
+    // Has to be northeast, since all other options have returned
+    return {
+      y: -3 * height / 4,
+      x: 0
+    };
+  };
 }
 
 var AsyncGoogleMap = (0, _withScriptjs2.default)((0, _reactGoogleMaps.withGoogleMap)(function (_ref) {
   var routes = _ref.routes,
       onMapMounted = _ref.onMapMounted;
 
-  // Extract all airports in routes and filter duplicate airports
+  // Extract all airports in routes and filter away duplicate airports
   var airports = [];
   routes.forEach(function (route) {
     route.forEach(function (airport) {
@@ -53448,6 +53482,9 @@ var AsyncGoogleMap = (0, _withScriptjs2.default)((0, _reactGoogleMaps.withGoogle
         airports.push(airport);
       }
     });
+  });
+  var airportsWithPixelOffset = airports.map(function (airport) {
+    return _extends({}, airport, { getPixelPositionOffset: getPixelPositionOffset(airport, airports) });
   });
 
   return _react2.default.createElement(
@@ -53461,7 +53498,7 @@ var AsyncGoogleMap = (0, _withScriptjs2.default)((0, _reactGoogleMaps.withGoogle
     routes.map(function (route) {
       return _react2.default.createElement(_reactGoogleMaps.Polyline, {
         path: route.map(function (airport) {
-          return { lat: Number(airport.lat), lng: Number(airport.lng) };
+          return { lat: airport.lat, lng: airport.lng };
         }),
         options: {
           geodesic: true,
@@ -53471,12 +53508,12 @@ var AsyncGoogleMap = (0, _withScriptjs2.default)((0, _reactGoogleMaps.withGoogle
         key: (0, _lodash2.default)()
       });
     }),
-    airports.map(function (airport) {
+    airportsWithPixelOffset.map(function (airport) {
       return _react2.default.createElement(
         "div",
         { key: (0, _lodash2.default)() },
         _react2.default.createElement(_reactGoogleMaps.Marker, {
-          position: { lat: Number(airport.lat), lng: Number(airport.lng) },
+          position: { lat: airport.lat, lng: airport.lng },
           icon: {
             path: google.maps.SymbolPath.CIRCLE,
             scale: 2,
@@ -53487,11 +53524,9 @@ var AsyncGoogleMap = (0, _withScriptjs2.default)((0, _reactGoogleMaps.withGoogle
         _react2.default.createElement(
           _reactGoogleMaps.OverlayView,
           {
-            position: { lat: Number(airport.lat), lng: Number(airport.lng) },
+            position: { lat: airport.lat, lng: airport.lng },
             mapPaneName: _reactGoogleMaps.OverlayView.OVERLAY_MOUSE_TARGET,
-            getPixelPositionOffset: function getPixelPositionOffset(w, h) {
-              return _getPixelPositionOffset(w, h, airport, airports);
-            }
+            getPixelPositionOffset: airport.getPixelPositionOffset
           },
           _react2.default.createElement(
             "div",
@@ -53531,7 +53566,7 @@ var Map = function (_Component) {
         var newBounds = new LatLngBounds();
         routes.forEach(function (route) {
           route.forEach(function (airport) {
-            newBounds.extend(new LatLng(Number(airport.lat), Number(airport.lng)));
+            newBounds.extend(new LatLng(airport.lat, airport.lng));
           });
         });
         this.map.fitBounds(newBounds);
@@ -53678,9 +53713,9 @@ var RouteElement = function (_Component) {
         sectors.push([route[i - 1], route[i]]);
       }
       var distances = sectors.map(function (sector) {
-        var p1 = new _geodesy.LatLonEllipsoidal(Number(sector[0].lat), Number(sector[0].lng));
-        var p2 = new _geodesy.LatLonEllipsoidal(Number(sector[1].lat), Number(sector[1].lng));
-        return p1.distanceTo(p2);
+        var p1 = new _geodesy.LatLonEllipsoidal(sector[0].lat, sector[0].lng);
+        var p2 = new _geodesy.LatLonEllipsoidal(sector[1].lat, sector[1].lng);
+        return p1.distanceTo(p2) || 0;
       });
       var distancesInKmRounded = distances.map(function (distance) {
         return Math.round(distance / 1000);
@@ -53690,8 +53725,8 @@ var RouteElement = function (_Component) {
         return acc + val;
       });
 
-      var p1 = new _geodesy.LatLonEllipsoidal(Number(route[0].lat), Number(route[0].lng));
-      var p2 = new _geodesy.LatLonEllipsoidal(Number(route[route.length - 1].lat), Number(route[route.length - 1].lng));
+      var p1 = new _geodesy.LatLonEllipsoidal(route[0].lat, route[0].lng);
+      var p2 = new _geodesy.LatLonEllipsoidal(route[route.length - 1].lat, route[route.length - 1].lng);
       var nonStopDistance = p1.distanceTo(p2);
 
       var difference = (totalDistance - nonStopDistance) * 100 / nonStopDistance;
@@ -53817,33 +53852,6 @@ var RouteInput = function (_Component) {
 
   _createClass(RouteInput, [{
     key: "render",
-
-    // constructor(props) {
-    //   super(props)
-    //   this.state = { value: props.urlParam }
-    // }
-
-    // componentWillReceiveProps(nextProps) {
-    //   this.setState({ value: nextProps.urlParam })
-    // }
-    //
-    // handleChange(event) {
-    //   this.setState({ value: event.target.value })
-    // }
-    //
-    // handleSubmit(event) {
-    //   event.preventDefault()
-    //   const { history } = this.props
-    //   const newUrlParam = encodeURIComponent(this.state.value)
-    //   history.push(`/${newUrlParam}`)
-    // }
-    //
-    // handleKeyPress(event) {
-    //   if (event.which === 13 && !event.shiftKey) {
-    //     this.handleSubmit(event)
-    //   }
-    // }
-
     value: function render() {
       var _props = this.props,
           error = _props.error,

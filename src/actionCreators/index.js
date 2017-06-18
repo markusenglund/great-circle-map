@@ -17,6 +17,7 @@ export function getAirportData(urlParam) {
       Papa.parse("/airports-min.csv", {
         download: true,
         header: true,
+        dynamicTyping: true,
         complete: (results) => {
           dispatch(receiveAirportData(results.data))
           if (urlParam) {

@@ -8,60 +8,94 @@ import { LatLonSpherical } from "geodesy"
 
 import { getAirportData, completeMapLoad } from "../actionCreators"
 
-// FIXME: THIS IS CALLED WHENEVER A PERSON MOVES THE MAP. FIX!!!!!
-function getPixelPositionOffset(width, height, currentAirport, airports) {
+// TODO: Add a condition for like within 2000 km or something
+function getPixelPositionOffset(currentAirport, airports) {
   const airportLocation = new LatLonSpherical(
-    Number(currentAirport.lat), Number(currentAirport.lng)
+    currentAirport.lat, currentAirport.lng
   )
-  const airportsClone = JSON.parse(JSON.stringify(airports)) // USe min to avoid this possibly expensive op
-  airportsClone.sort((a, b) => { // This is computationally inefficient use min instead
-    const locationA = new LatLonSpherical(Number(a.lat), Number(a.lng))
-    const locationB = new LatLonSpherical(Number(b.lat), Number(b.lng))
-    const distanceA = airportLocation.distanceTo(locationA)
-    const distanceB = airportLocation.distanceTo(locationB)
-    return distanceA - distanceB
-  })
+
+  // FIXME: Could this be done in a more efficient way like Math.min?
+  // TODO: Filter airports that are within 2000 km
+  // const airportsClone = JSON.parse(JSON.stringify(airports))
+  const airportsClone = airports
+    .filter((airport) => {
+      const location = new LatLonSpherical(airport.lat, airport.lng)
+      const distance = airportLocation.distanceTo(location)
+      return distance < 1500000 // 1500 km
+    })
+    .sort((a, b) => {
+      const locationA = new LatLonSpherical(a.lat, a.lng)
+      const locationB = new LatLonSpherical(b.lat, b.lng)
+      const distanceA = airportLocation.distanceTo(locationA)
+      const distanceB = airportLocation.distanceTo(locationB)
+      return distanceA - distanceB
+    })
 
   const directionsTaken = []
   for (let i = 1; i < Math.min(airportsClone.length, 4); i += 1) {
     const direction = [
-      Number(airportsClone[i].lat) - Number(currentAirport.lat) > 0,
-      Number(airportsClone[i].lng) - Number(currentAirport.lng) > 0
+      airportsClone[i].lat - currentAirport.lat > 0,
+      airportsClone[i].lng - currentAirport.lng > 0
     ]
     directionsTaken.push(direction)
   }
 
-  let y
-  let x
-
-  if (!directionsTaken.find(direction =>
-    direction[0] !== directionsTaken[0][0] && direction[1] !== directionsTaken[0][1]
-  )) {
-    y = directionsTaken[0][0] ? -(height / 5) : (-3 * height) / 4
-    x = directionsTaken[0][1] ? -width : 0
-  } else if (!directionsTaken.find(dir => !dir[0] && dir[1])) { // South east
-    y = -(height / 5)
-    x = 0
-  } else if (!directionsTaken.find(dir => !dir[0] && !dir[1])) { // South west
-    y = -(height / 5)
-    x = -width
-  } else if (!directionsTaken.find(dir => dir[0] && !dir[1])) { // North west
-    y = (-3 * height) / 4
-    x = -width
-  } else { // North east
-    y = (-3 * height) / 4
-    x = 0
+  // If no nearby airports, render label to the southeast of the circle
+  if (directionsTaken.length < 1) {
+    return (width, height) => {
+      return {
+        y: -(height / 5),
+        x: 0
+      }
+    }
   }
 
-  // const y = Number(airportsClone[1].lat) - Number(currentAirport.lat) > 0 ?
-  //   -(height / 5) : (-3 * height) / 4
-  // const x = Number(airportsClone[1].lng) - Number(currentAirport.lng) > 0 ?
-  //   -width : 0
-  return { x, y }
+  // If there is no nearby airport in the opposite direction of the closest neighbor:
+  // Choose that direction for the label
+  if (!directionsTaken.find(dir =>
+    dir[0] !== directionsTaken[0][0] && dir[1] !== directionsTaken[0][1]
+  )) {
+    return (width, height) => {
+      return {
+        y: directionsTaken[0][0] ? -(height / 5) : (-3 * height) / 4,
+        x: directionsTaken[0][1] ? -width : 0
+      }
+    }
+  }
+  if (!directionsTaken.find(dir => !dir[0] && dir[1])) { // South east
+    return (width, height) => {
+      return {
+        y: -(height / 5),
+        x: 0
+      }
+    }
+  }
+  if (!directionsTaken.find(dir => !dir[0] && !dir[1])) { // South west
+    return (width, height) => {
+      return {
+        y: -(height / 5),
+        x: -width
+      }
+    }
+  }
+  if (!directionsTaken.find(dir => dir[0] && !dir[1])) { // North west
+    return (width, height) => {
+      return {
+        y: (-3 * height) / 4,
+        x: -width
+      }
+    }
+  }
+  return (width, height) => { // Has to be northeast, since all other options have returned
+    return {
+      y: (-3 * height) / 4,
+      x: 0
+    }
+  }
 }
 
 const AsyncGoogleMap = withScriptjs(withGoogleMap(({ routes, onMapMounted }) => {
-  // Extract all airports in routes and filter duplicate airports
+  // Extract all airports in routes and filter away duplicate airports
   const airports = []
   routes.forEach((route) => {
     route.forEach((airport) => {
@@ -69,6 +103,9 @@ const AsyncGoogleMap = withScriptjs(withGoogleMap(({ routes, onMapMounted }) => 
         airports.push(airport)
       }
     })
+  })
+  const airportsWithPixelOffset = airports.map((airport) => {
+    return { ...airport, getPixelPositionOffset: getPixelPositionOffset(airport, airports) }
   })
 
   return (
@@ -81,7 +118,7 @@ const AsyncGoogleMap = withScriptjs(withGoogleMap(({ routes, onMapMounted }) => 
       {routes.map(route => (
         <Polyline
           path={route.map((airport) => {
-            return { lat: Number(airport.lat), lng: Number(airport.lng) }
+            return { lat: airport.lat, lng: airport.lng }
           })}
           options={{
             geodesic: true,
@@ -91,10 +128,10 @@ const AsyncGoogleMap = withScriptjs(withGoogleMap(({ routes, onMapMounted }) => 
           key={uniqueId()}
         />
       ))}
-      {airports.map(airport => (
+      {airportsWithPixelOffset.map(airport => (
         <div key={uniqueId()}>
           <Marker
-            position={{ lat: Number(airport.lat), lng: Number(airport.lng) }}
+            position={{ lat: airport.lat, lng: airport.lng }}
             icon={{
               path: google.maps.SymbolPath.CIRCLE,
               scale: 2,
@@ -103,9 +140,9 @@ const AsyncGoogleMap = withScriptjs(withGoogleMap(({ routes, onMapMounted }) => 
             }}
           />
           <OverlayView
-            position={{ lat: Number(airport.lat), lng: Number(airport.lng) }}
+            position={{ lat: airport.lat, lng: airport.lng }}
             mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
-            getPixelPositionOffset={(w, h) => getPixelPositionOffset(w, h, airport, airports)}
+            getPixelPositionOffset={airport.getPixelPositionOffset}
           >
             <div className="map-label">
               <h4>{airport.userEnteredCode}</h4>
@@ -126,7 +163,7 @@ class Map extends Component {
       const newBounds = new LatLngBounds()
       routes.forEach((route) => {
         route.forEach((airport) => {
-          newBounds.extend(new LatLng(Number(airport.lat), Number(airport.lng)))
+          newBounds.extend(new LatLng(airport.lat, airport.lng))
         })
       })
       this.map.fitBounds(newBounds)

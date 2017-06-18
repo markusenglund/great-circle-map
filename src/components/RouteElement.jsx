@@ -32,19 +32,16 @@ class RouteElement extends Component {
       sectors.push([route[i - 1], route[i]])
     }
     const distances = sectors.map((sector) => {
-      const p1 = new LatLonEllipsoidal(Number(sector[0].lat), Number(sector[0].lng))
-      const p2 = new LatLonEllipsoidal(Number(sector[1].lat), Number(sector[1].lng))
-      return p1.distanceTo(p2)
+      const p1 = new LatLonEllipsoidal(sector[0].lat, sector[0].lng)
+      const p2 = new LatLonEllipsoidal(sector[1].lat, sector[1].lng)
+      return p1.distanceTo(p2) || 0
     })
     const distancesInKmRounded = distances.map(distance => Math.round(distance / 1000))
 
     const totalDistance = distances.reduce((acc, val) => acc + val)
 
-    const p1 = new LatLonEllipsoidal(Number(route[0].lat), Number(route[0].lng))
-    const p2 = new LatLonEllipsoidal(
-      Number(route[route.length - 1].lat),
-      Number(route[route.length - 1].lng)
-    )
+    const p1 = new LatLonEllipsoidal(route[0].lat, route[0].lng)
+    const p2 = new LatLonEllipsoidal(route[route.length - 1].lat, route[route.length - 1].lng)
     const nonStopDistance = p1.distanceTo(p2)
 
     const difference = ((totalDistance - nonStopDistance) * 100) / nonStopDistance
@@ -84,50 +81,6 @@ class RouteElement extends Component {
             totalDistance={totalDistance}
             differenceParsed={differenceParsed}
           />
-          {/* <div className="collapsible">
-            <div>
-              {route.map((airport, i) => (
-                <div key={uniqueId()}>
-                  <div className="collapsible-airport">
-                    <div>{airport.city} ({airport.iata})</div>
-                    <div className="collapsible-name">{airport.name}</div>
-                  </div>
-                  {distancesInKmRounded[i] ? (
-                    <div className="collapsible-distance">
-                      <i className="fa fa-arrow-down" aria-hidden="true" />
-                      <div>
-                        <div>Distance</div>
-                        <div>{distancesInKmRounded[i]} km</div>
-                      </div>
-                      <div className="duration">
-                        <div>Duration (est)</div>
-                        <div>{distanceToTimeString(distances[i])}</div>
-                      </div>
-                    </div>
-                  ) : null}
-                </div>
-              ))}
-            </div>
-          </div>
-          {sectors.length > 1 ? (
-            <div className="total-distance">
-              {route[0].iata !== route[route.length - 1].iata ?
-                <div>
-                  Non-stop {route[0].iata} - {route[route.length - 1].iata}: {Math.round(nonStopDistance / 1000)} km
-                </div> :
-                null
-              }
-              <div>
-                <span>
-                  Total distance: {Math.round(totalDistance / 1000)} km
-                  {route[0].iata !== route[route.length - 1].iata ?
-                    <span>(+{differenceParsed})</span> :
-                    null
-                  }
-                </span>
-              </div>
-            </div>
-          ) : null} */}
         </Collapse>
       </div>
     )

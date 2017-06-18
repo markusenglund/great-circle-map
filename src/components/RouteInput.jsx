@@ -8,32 +8,6 @@ import SearchInput from "./SearchInput"
 
 
 class RouteInput extends Component {
-  // constructor(props) {
-  //   super(props)
-  //   this.state = { value: props.urlParam }
-  // }
-
-  // componentWillReceiveProps(nextProps) {
-  //   this.setState({ value: nextProps.urlParam })
-  // }
-  //
-  // handleChange(event) {
-  //   this.setState({ value: event.target.value })
-  // }
-  //
-  // handleSubmit(event) {
-  //   event.preventDefault()
-  //   const { history } = this.props
-  //   const newUrlParam = encodeURIComponent(this.state.value)
-  //   history.push(`/${newUrlParam}`)
-  // }
-  //
-  // handleKeyPress(event) {
-  //   if (event.which === 13 && !event.shiftKey) {
-  //     this.handleSubmit(event)
-  //   }
-  // }
-
   render() {
     const { error, inputMode, history, urlParam, airportData } = this.props
     return (

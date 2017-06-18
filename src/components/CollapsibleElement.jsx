@@ -15,17 +15,23 @@ function CollapsibleElement({
               <div>{airport.city} ({airport.userEnteredCode})</div>
               <div className="collapsible-name">{airport.name}</div>
             </div>
-            {distancesInKmRounded[i] ? (
+            {distancesInKmRounded[i] !== undefined ? (
               <div className="collapsible-distance">
                 <i className="fa fa-arrow-down" aria-hidden="true" />
-                <div>
-                  <div className="grey">Distance</div>
-                  <div className="bold">{distancesInKmRounded[i]} km</div>
-                </div>
-                <div className="duration">
-                  <div className="grey">Duration</div>
-                  <div className="bold">{distanceToTimeString(distances[i])}</div>
-                </div>
+                {distancesInKmRounded[i] ? (
+                  <div>
+                    <div className="grey">Distance</div>
+                    <div className="bold">{distancesInKmRounded[i]} km</div>
+                  </div>
+                  ) : null
+                }
+                {distancesInKmRounded[i] ? (
+                  <div className="duration">
+                    <div className="grey">Duration</div>
+                    <div className="bold">{distanceToTimeString(distances[i])}</div>
+                  </div>
+                  ) : null
+                }
               </div>
             ) : null}
           </div>
