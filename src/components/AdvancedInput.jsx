@@ -18,8 +18,9 @@ class AdvancedInput extends Component {
 
   handleSubmit(event) {
     event.preventDefault()
-    const { history } = this.props
+    const { history, dispatch } = this.props
     const newUrlParam = encodeURIComponent(this.state.value)
+    dispatch({ type: "ENABLE_MAP_REBOUND" })
     history.push(`/${newUrlParam}`)
   }
 
@@ -55,7 +56,8 @@ class AdvancedInput extends Component {
 
 AdvancedInput.propTypes = {
   urlParam: PropTypes.string,
-  history: PropTypes.shape({ push: PropTypes.function }).isRequired
+  history: PropTypes.shape({ push: PropTypes.function }).isRequired,
+  dispatch: PropTypes.func.isRequired
 }
 AdvancedInput.defaultProps = { urlParam: "" }
 

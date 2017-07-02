@@ -2,9 +2,21 @@ import React from "react"
 import PropTypes from "prop-types"
 import uniqueId from "lodash.uniqueid"
 
+function distanceToTimeString(distance) {
+  const seconds = (distance / 257.25) + (15 * 60) // 257.25 = Mach 0.75 expressed in meters / second
+  const hours = Math.floor(seconds / 3600)
+  const minutes = Math.floor((seconds % 3600) / 60)
+  return `${hours}h ${minutes}m`
+}
 
 function CollapsibleElement({
-  route, distancesInKmRounded, distances, distanceToTimeString, nonStopDistance, totalDistance, differenceParsed
+  route,
+  label,
+  distances,
+  readableSectorDistances,
+  readableDistanceDifference,
+  readableDifferencePercentage,
+  readableNonStopDistance
 }) {
   return (
     <div className="collapsible">
@@ -12,20 +24,24 @@ function CollapsibleElement({
         {route.map((airport, i) => (
           <div key={uniqueId()}>
             <div className="collapsible-airport">
-              <div>{airport.city} ({airport.userEnteredCode})</div>
+              <div>
+                {airport.city} ({label === "icao" ?
+                  airport.icao || airport.iata :
+                  airport.iata || airport.icao
+                })</div>
               <div className="collapsible-name">{airport.name}</div>
             </div>
-            {distancesInKmRounded[i] !== undefined ? (
+            {readableSectorDistances[i] !== undefined ? (
               <div className="collapsible-distance">
                 <i className="fa fa-arrow-down" aria-hidden="true" />
-                {distancesInKmRounded[i] ? (
+                {readableSectorDistances[i] ? (
                   <div>
                     <div className="grey">Distance</div>
-                    <div className="bold">{distancesInKmRounded[i]} km</div>
+                    <div className="bold">{readableSectorDistances[i]}</div>
                   </div>
                   ) : null
                 }
-                {distancesInKmRounded[i] ? (
+                {readableSectorDistances[i] ? (
                   <div className="duration">
                     <div className="grey">Duration</div>
                     <div className="bold">{distanceToTimeString(distances[i])}</div>
@@ -37,20 +53,40 @@ function CollapsibleElement({
           </div>
         ))}
       </div>
-      {route.length > 2 && route[0].iata !== route[route.length - 1].iata ? (
+      {route.length > 2 && route[0].id !== route[route.length - 1].id ? (
         <div className="total-distance">
           <div className="padding-4px">
-            <div className="grey">Non-stop distance ({route[0].iata} - {route[route.length - 1].iata})</div>
-            <div className="bold">{Math.round(nonStopDistance / 1000)} km</div>
+            <div className="grey">
+              Non-stop distance
+              {label === "icao" ?
+                ` (${route[0].icao || route[0].iata} - ${route[route.length - 1].icao || route[route.length - 1].iata})` :
+                ` (${route[0].iata || route[0].icao} - ${route[route.length - 1].iata || route[route.length - 1].icao})`
+              }
+            </div>
+            <div className="bold">{readableNonStopDistance}</div>
           </div>
           <div className="padding-4px">
-            <div className="grey">Distance added by stop-over{route.length > 3 ? <span>s</span> : null}</div>
-            <div className="bold">{Math.round((totalDistance - nonStopDistance) / 1000)} km (+{differenceParsed})</div>
+            <div className="grey">
+              Distance added by stop-over{route.length > 3 ? <span>s</span> : null}
+            </div>
+            <div className="bold">
+              {readableDistanceDifference} (+{readableDifferencePercentage})
+            </div>
           </div>
         </div>
       ) : null}
     </div>
   )
+}
+
+CollapsibleElement.propTypes = {
+  route: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
+  label: PropTypes.string.isRequired,
+  distances: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
+  readableSectorDistances: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+  readableDistanceDifference: PropTypes.string.isRequired,
+  readableDifferencePercentage: PropTypes.string.isRequired,
+  readableNonStopDistance: PropTypes.string.isRequired
 }
 
 export default CollapsibleElement

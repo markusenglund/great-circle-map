@@ -15,7 +15,7 @@ function getPixelPositionOffset(currentAirport, airports) {
   )
 
   // FIXME: Could this be done in a more efficient way like Math.min?
-  // TODO: Filter airports that are within 2000 km
+  // TODO:
   // const airportsClone = JSON.parse(JSON.stringify(airports))
   const airportsClone = airports
     .filter((airport) => {
@@ -94,12 +94,15 @@ function getPixelPositionOffset(currentAirport, airports) {
   }
 }
 
-const AsyncGoogleMap = withScriptjs(withGoogleMap(({ routes, onMapMounted }) => {
+// TODO: Split up into its own file
+const AsyncGoogleMap = withScriptjs(withGoogleMap((
+  { routes, onMapMounted, mapType, label, zoom }
+) => {
   // Extract all airports in routes and filter away duplicate airports
   const airports = []
   routes.forEach((route) => {
     route.forEach((airport) => {
-      if (airports.every(prevAirport => prevAirport.iata !== airport.iata)) {
+      if (airports.every(prevAirport => prevAirport.id !== airport.id)) {
         airports.push(airport)
       }
     })
@@ -111,9 +114,15 @@ const AsyncGoogleMap = withScriptjs(withGoogleMap(({ routes, onMapMounted }) => 
   return (
     <GoogleMap
       ref={onMapMounted}
-      defaultZoom={2}
+      zoom={zoom}
       defaultCenter={{ lat: 20, lng: 0 }}
-      mapTypeId="satellite"
+      mapTypeId={mapType}
+      options={{
+        mapTypeControl: false,
+        streetViewControl: false,
+        zoomControl: false,
+        scaleControl: true
+      }}
     >
       {routes.map(route => (
         <Polyline
@@ -128,28 +137,33 @@ const AsyncGoogleMap = withScriptjs(withGoogleMap(({ routes, onMapMounted }) => 
           key={uniqueId()}
         />
       ))}
-      {airportsWithPixelOffset.map(airport => (
-        <div key={uniqueId()}>
-          <Marker
-            position={{ lat: airport.lat, lng: airport.lng }}
-            icon={{
-              path: google.maps.SymbolPath.CIRCLE,
-              scale: 2,
-              strokeColor: "#D03030",
-              strokeWeight: 3
-            }}
-          />
-          <OverlayView
-            position={{ lat: airport.lat, lng: airport.lng }}
-            mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
-            getPixelPositionOffset={airport.getPixelPositionOffset}
-          >
-            <div className="map-label">
-              <h4>{airport.userEnteredCode}</h4>
-            </div>
-          </OverlayView>
-        </div>
-      ))}
+      {airportsWithPixelOffset.map((airport) => {
+        return (
+          <div key={airport.id}>
+            <Marker
+              position={{ lat: airport.lat, lng: airport.lng }}
+              icon={{
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 2,
+                strokeColor: "#D03030",
+                strokeWeight: 3
+              }}
+            />
+            {label !== "none" ? (
+              <OverlayView
+                position={{ lat: airport.lat, lng: airport.lng }}
+                mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+                getPixelPositionOffset={airport.getPixelPositionOffset}
+              >
+                <div className="map-label">
+                  <p>{airport[label] || airport.iata || airport.icao}</p>
+                </div>
+              </OverlayView>
+              ) : null
+            }
+          </div>
+        )
+      })}
     </GoogleMap>
   )
 }))
@@ -157,8 +171,8 @@ const AsyncGoogleMap = withScriptjs(withGoogleMap(({ routes, onMapMounted }) => 
 class Map extends Component {
   componentDidUpdate() {
     // Change the viewport to fit the airports that have been rendered to the map.
-    const { routes } = this.props
-    if (routes.length) {
+    const { routes, shouldMapRebound, map } = this.props
+    if (routes.length && shouldMapRebound) {
       const { LatLngBounds, LatLng } = google.maps
       const newBounds = new LatLngBounds()
       routes.forEach((route) => {
@@ -166,24 +180,20 @@ class Map extends Component {
           newBounds.extend(new LatLng(airport.lat, airport.lng))
         })
       })
-      this.map.fitBounds(newBounds)
+      map.fitBounds(newBounds)
     }
   }
 
   handleMapMounted(map) {
-    this.map = map
-
-    // Get airportdata if we don't alraedy have it
-    const { dispatch, urlParam } = this.props
-    const { isMapLoaded } = this.props
-    if (!isMapLoaded) {
-      dispatch(completeMapLoad())
+    const { dispatch, urlParam, isMapLoaded } = this.props
+    if (map && !isMapLoaded) {
+      dispatch(completeMapLoad(map))
       dispatch(getAirportData(urlParam))
     }
   }
 
   render() {
-    const { routes } = this.props
+    const { routes, mapType, label, zoom } = this.props
     return (
       <AsyncGoogleMap
         googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyBISa-Ul-NOnD-H5lweC_w4evLmV_0fuSU"
@@ -198,6 +208,9 @@ class Map extends Component {
         }
         routes={routes}
         onMapMounted={map => this.handleMapMounted(map)}
+        mapType={mapType}
+        label={label}
+        zoom={zoom}
       />
     )
   }
@@ -206,14 +219,24 @@ Map.propTypes = {
   dispatch: PropTypes.func.isRequired,
   routes: PropTypes.arrayOf(PropTypes.array).isRequired,
   urlParam: PropTypes.string,
-  isMapLoaded: PropTypes.bool.isRequired
+  isMapLoaded: PropTypes.bool.isRequired,
+  map: PropTypes.shape({ fitBounds: PropTypes.func }),
+  shouldMapRebound: PropTypes.bool.isRequired,
+  mapType: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  zoom: PropTypes.number.isRequired
 }
-Map.defaultProps = { urlParam: null }
+Map.defaultProps = { urlParam: null, map: null }
 
 function mapStateToProps(state) {
   return {
     routes: state.routes,
-    isMapLoaded: state.map.isLoaded
+    isMapLoaded: state.map.isLoaded,
+    mapType: state.settings.mapType.type,
+    label: state.settings.label.value,
+    shouldMapRebound: state.map.shouldMapRebound,
+    map: state.map.map,
+    zoom: state.map.zoom
   }
 }
 

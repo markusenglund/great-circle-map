@@ -4,12 +4,17 @@ html, body {
   padding: 0;
 }
 
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
 #app {
   height: 100%;
 }
 
 #main {
-  display: flex;
   height: 100%;
 }
 
@@ -18,7 +23,7 @@ html, body {
   width: 300px;
   display: flex;
   flex-direction: column;
-  background-color: #eee;
+  background: rgb(44, 44, 44);
 }
 
 .input-form {
@@ -60,7 +65,8 @@ html, body {
   font-family: Arial;
   color: #ffffff;
   font-size: 15px;
-  background: #102296;
+  /*background: #102296;*/
+  background: #05153a;
   padding: 10px 20px 10px 20px;
   border: solid #1f628d 0px;
   text-decoration: none;
@@ -68,7 +74,8 @@ html, body {
 }
 
 .btn:hover {
-  background: #000c7a;
+  /*background: #000c7a;*/
+  background: #05102a;
   cursor: pointer;
   text-decoration: none;
 }

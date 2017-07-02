@@ -1,14 +1,7 @@
-// TODO: Complete the optionRenderer, make sure search works correctly, maybe use highlighter
-
-// Problems:
-// Routes will be added one at a time. Change existing routes? How about removing?
-
 import React, { Component } from "react"
 import { connect } from "react-redux"
 import PropTypes from "prop-types"
 import Select from "react-select"
-
-import "react-select/dist/react-select.css"
 
 function getSortValue(airport, inputEntireStringRegex, inputStartOfStringRegex, inputUpperCase) {
   let sortValue
@@ -38,6 +31,7 @@ class SearchInput extends Component {
   getOptions(input) {
     const { airportData } = this.props
 
+    // TODO: Add more symbols that search should ignore: / ) ( etc
     const inputParts = input.split(/[.-\s]+/)
     const inputRegexString = inputParts.reduce((acc, val) => `${acc}[.-\\s]+${val}`)
 
@@ -50,6 +44,7 @@ class SearchInput extends Component {
       return Promise.resolve({ options: [] })
     }
 
+    // TODO: Make value dependent on label-state
     if (input.length === 3) {
       const matches = airportData
         .filter(airport =>
@@ -69,7 +64,7 @@ class SearchInput extends Component {
             inputStartOfWordRegex.test(airport.city) ||
             inputStartOfWordRegex.test(airport.name)
         )
-        .map((airport) => {
+        .map((airport, i) => {
           const value = airport.icao === inputUpperCase ?
             airport.icao :
             airport.iata || airport.icao
@@ -79,9 +74,15 @@ class SearchInput extends Component {
             inputStartOfStringRegex,
             inputUpperCase
           )
-          return { ...airport, label: `${airport.city} (${value}) ${airport.name}`, value, sortValue }
+          return { ...airport, label: `${airport.city} (${value}) ${airport.name}`, value, sortValue, index: i }
         })
-        .sort((a, b) => a.sortValue - b.sortValue)
+        .sort((a, b) => {
+          if (a.sortValue - b.sortValue === 0) {
+            return a.index - b.index
+          }
+          return a.sortValue - b.sortValue
+        })
+        .slice(0, 10)
       return Promise.resolve({ options: matches })
     }
 
@@ -89,7 +90,7 @@ class SearchInput extends Component {
       .filter(airport => (
         inputStartOfWordRegex.test(airport.city) || inputStartOfWordRegex.test(airport.name)
       ))
-      .map((airport) => {
+      .map((airport, i) => {
         const value = airport.iata || airport.icao
         const sortValue = getSortValue(
           airport,
@@ -97,9 +98,15 @@ class SearchInput extends Component {
           inputStartOfStringRegex,
           inputUpperCase
         )
-        return { ...airport, label: `${airport.city} (${value}) ${airport.name}`, value, sortValue }
+        return { ...airport, label: `${airport.city} (${value}) ${airport.name}`, value, sortValue, index: i }
       })
-      .sort((a, b) => a.sortValue - b.sortValue)
+      .sort((a, b) => {
+        if (a.sortValue - b.sortValue === 0) {
+          return a.index - b.index
+        }
+        return a.sortValue - b.sortValue
+      })
+      .slice(0, 10)
 
     return Promise.resolve({ options: cityMatches })
   }
@@ -110,8 +117,8 @@ class SearchInput extends Component {
 
   handleSubmit(event) {
     event.preventDefault()
-    const { history, urlParam } = this.props
-    const { value } = this.state // Yes, value has a value attribute, deal with it
+    const { history, urlParam, dispatch } = this.props
+    const { value } = this.state
 
     // Transform this.state.value to inputstring-format. Use urlParam to combine with old routes
     const valueString = value.reduce((acc, val, i) => {
@@ -122,6 +129,7 @@ class SearchInput extends Component {
       encodeURIComponent(`${valueString}, ${urlParam}`) :
       encodeURIComponent(valueString)
 
+    dispatch({ type: "ENABLE_MAP_REBOUND" })
     history.push(newUrlParam)
     this.setState({ value: null })
   }
@@ -158,14 +166,18 @@ class SearchInput extends Component {
             multi
             value={this.state.value}
             onChange={input => this.handleChange(input)}
-            loadOptions={input => this.getOptions(input)}
+            loadOptions={input => {
+              return this.getOptions(input)
+            }}
             onInputKeyDown={e => this.handleInputKeyDown(e)}
             valueRenderer={option => this.renderValue(option)}
             optionRenderer={option => this.renderOption(option)}
+            arrowRenderer={() => undefined}
             ignoreCase={false}
             filterOptions={options => options}
             menuRenderer={this.state.menuRenderer}
             searchPromptText={null}
+            placeholder="Name of city or airport-code"
           />
         </div>
         <div className="submit-button-wrapper">
@@ -179,7 +191,8 @@ class SearchInput extends Component {
 SearchInput.propTypes = {
   urlParam: PropTypes.string,
   history: PropTypes.shape({ push: PropTypes.function }).isRequired,
-  airportData: PropTypes.arrayOf(PropTypes.object).isRequired
+  airportData: PropTypes.arrayOf(PropTypes.object).isRequired,
+  dispatch: PropTypes.func.isRequired
 }
 SearchInput.defaultProps = { urlParam: "" }
 

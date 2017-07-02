@@ -9,10 +9,9 @@ import SearchInput from "./SearchInput"
 
 class RouteInput extends Component {
   render() {
-    const { error, inputMode, history, urlParam, airportData } = this.props
+    const { error, inputMode, history, urlParam } = this.props
     return (
       <div>
-        <div>Route input</div>
         <InputModeToggle inputMode={inputMode} />
         { inputMode === "search" ?
           <SearchInput history={history} urlParam={urlParam} /> :
@@ -39,8 +38,7 @@ RouteInput.defaultProps = { urlParam: "" }
 function mapStateToProps(state) {
   return {
     error: state.error,
-    inputMode: state.inputMode,
-    airportData: state.airportData
+    inputMode: state.inputMode
   }
 }
 

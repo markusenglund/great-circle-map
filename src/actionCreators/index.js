@@ -14,7 +14,7 @@ export function getAirportData(urlParam) {
     const { airportData } = getState()
 
     if (airportData.length === 0) {
-      Papa.parse("/airports-min.csv", {
+      Papa.parse("/airports.csv", {
         download: true,
         header: true,
         dynamicTyping: true,
@@ -29,8 +29,8 @@ export function getAirportData(urlParam) {
   }
 }
 
-export function completeMapLoad() {
-  return { type: "COMPLETE_MAP_LOAD" }
+export function completeMapLoad(map) {
+  return { type: "COMPLETE_MAP_LOAD", map }
 }
 
 export function submitRoutes(routes) {
@@ -48,14 +48,14 @@ export function hideError() {
 /**  Logic transforming input-string to route coordinates  **/
 
 function hasForbiddenCharacter(inputString) {
-  const invalidSymbolsRegex = /[^A-Za-z,;&/-\s\d]/
+  const invalidSymbolsRegex = /[^A-Za-z,;/-\s\d]/
   const invalidSymbol = invalidSymbolsRegex.exec(inputString)
   // returns undefined if no invalid symbol is found
   return invalidSymbol
 }
 
 // Helper function for splitting routes with slashes into separate routes
-function parseStringWithSlashes(str) { // ex str = ["LHR/DUB-JFK"]
+export function parseStringWithSlashes(str) { // ex str = ["LHR/DUB-JFK"]
   const wordWithSlashes = /[\w/]*\/[\w/]*/
   const slashString = str.match(wordWithSlashes)[0] // ex ["LHR/DUB"]
   const slashArray = slashString.split(/\//g) // ex ["LHR", "DUB"]
@@ -111,7 +111,7 @@ export function handleRoutes(routeStr) {
     }
 
     // Split route-string by commas into an array
-    const routeArr = routeStrNoDangle.split(/[,;&\n]+/g)
+    const routeArr = routeStrNoDangle.split(/[,;\n]+/g)
     // Separate routes slashes so they create new routes
     const routeArrWithParsedSlashes = routeArr.reduce((acc, val) => {
       if ((/\//).test(val)) {
@@ -140,6 +140,7 @@ export function handleRoutes(routeStr) {
     if (error) {
       dispatch(showError(error.message))
     } else {
+      // dispatch({ type: "ENABLE_MAP_REBOUND" })
       dispatch(submitRoutes(routes))
       dispatch(hideError())
     }

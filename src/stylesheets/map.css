@@ -1,13 +1,171 @@
-#map-container, #map {
+/* navy: #05102a;; dark grey: rgb(22, 22, 22),
+grey: rgb(44, 44, 44) , grey-text: #bbd;*/
+
+#map-wrapper, #map-container, #map {
   height: 100%;
   width: 100%;
 }
 
 .map-label {
-  color: #F04040;
+  color: #D03030;
+  font-size: 12px;
+  font-weight: bold;
   text-shadow:
     -1px -1px 0 #000,
     1px -1px 0 #000,
     -1px 1px 0 #000,
     1px 1px 0 #000;
+}
+
+#button-group {
+  position: absolute;
+  z-index: 2;
+  margin: 5px;
+}
+
+.map-button {
+  margin: 2px;
+  -webkit-border-radius: 5;
+  -moz-border-radius: 5;
+  border-radius: 5px;
+  font-family: Arial;
+  color: #fff;
+  font-size: 20px;
+  background: rgba(44, 44, 44, 0.8);
+  padding: 5px 8px 5px 8px;
+  text-decoration: none;
+  border: solid #111 0px;
+}
+
+.invisible {
+  opacity: 0;
+}
+
+.map-button:hover, .invisible:hover {
+  background: rgba(44, 44, 44, 1);
+  cursor: pointer;
+  text-decoration: none;
+  opacity: 1;
+}
+
+#zoom-buttons {
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  bottom: 12px;
+  margin: 5px;
+}
+
+#dropdown {
+  margin-top: 5px;
+  background: rgba(44, 44, 44, 0.8);
+  color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  width: 200px;
+}
+
+#dropdown .menu-button-group {
+  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 5px;
+}
+
+#dropdown .toggle {
+  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+
+}
+
+/* A lot of the following styles is copy-pasted from documentation of react-aria-menubutton */
+
+.menu-button {
+  color: #222;
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+
+.menu-button-trigger {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-color: #EEE;
+  border: 1px solid #D5D5D5;
+  border-radius: 1px;
+  font-weight: bold;
+  padding: 6px;
+  width: 110px;
+}
+
+.menu-button-trigger::after {
+  content: "";
+  position: relative;
+  top: 3px;
+  border-color: currentColor transparent transparent;
+  border-width: 5px 5px;
+  border-style: solid;
+}
+
+.menu-button-trigger:hover,
+.menu-button-trigger:focus,
+.menu-button-trigger.is-open {
+  background-color: #DDD;
+  background-image: linear-gradient(#EEE, #DDD);
+  border-color: #CCC;
+}
+
+.menu-button-trigger:active,
+.menu-button-trigger.is-open {
+  background-color: #DCDCDC;
+  background-image: none;
+  border-color: #B5B5B5;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.menu-button-menu {
+  width: 122px;
+  background: #fff;
+  border: 1px solid rgba(200, 200, 200, 0.4);
+  list-style-type: none;
+  position: absolute;
+  z-index: 99;
+  padding-left: 0;
+  margin: 0;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+}
+
+.menu-item {
+  cursor: pointer;
+  padding: 8px;
+  border-bottom: 1px solid #EEE;
+}
+
+.menu-item-wrapper:first-of-type .menu-item {
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
+}
+
+.menu-item-wrapper:last-of-type .menu-item {
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+.menu-item:hover,
+.menu-item:focus {
+  background-color: #ddd;
+}
+
+.menu-item.is-selected {
+  cursor: default;
+  font-weight: bold;
 }

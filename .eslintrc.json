@@ -19,6 +19,7 @@
     "semi": ["error", "never"],
     "linebreak-style": "off",
     "comma-dangle": ["warn", "never"],
-    "arrow-body-style": "off"
+    "arrow-body-style": "off",
+    "no-underscore-dangle": "off"
   }
 }
