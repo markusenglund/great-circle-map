@@ -38,6 +38,7 @@ class Settings extends Component {
 
   handleMapTypeSelection(value) {
     const { dispatch } = this.props
+    dispatch({ type: "DISABLE_MAP_REBOUND" })
     dispatch({ type: "CHANGE_MAP_TYPE", mapType: value })
   }
 
@@ -48,6 +49,7 @@ class Settings extends Component {
 
   handleLabelSelection(value) {
     const { dispatch } = this.props
+    dispatch({ type: "DISABLE_MAP_REBOUND" })
     dispatch({ type: "CHANGE_LABEL", label: value })
   }
 

@@ -17,7 +17,7 @@ class RouteInput extends Component {
           <SearchInput history={history} urlParam={urlParam} /> :
           <AdvancedInput history={history} urlParam={urlParam} />
         }
-        {error ? <ErrorMessage error={error} /> : null}
+        {/* {error ? <ErrorMessage error={error} /> : null} */}
       </div>
     )
   }

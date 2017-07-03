@@ -2,6 +2,7 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
+  font-family: 'Verdana', sans-serif;
 }
 
 ul {
@@ -26,12 +27,37 @@ ul {
   background: rgb(44, 44, 44);
 }
 
+#header {
+  position: relative;
+  padding: 7px;
+  background-color: rgb(22, 22, 22);
+}
+
+#header h1 {
+  font-size: 26px;
+  display: inline-block;
+  margin-left: 7px;
+  position: absolute;
+  bottom: 7px;
+  color: white;
+  font-weight:normal;
+}
+
+#header img {
+}
+/*#header div {
+  height: 60px;
+}*/
+
 .input-form {
   flex: 0 0 auto;
 }
 
 #textarea-wrapper {
-  margin: 10px;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 5px;
 }
 
 #textarea {
@@ -42,7 +68,7 @@ ul {
           box-sizing: border-box;
   max-width: 100%;
   height: 60px;
-  font-family: 'Verdana', 'Helvetica', sans-serif;
+  /*font-family: 'Verdana', 'Helvetica', sans-serif;*/
   border: 2px solid #a0a2e6;
   border-radius: 4px;
 }
@@ -51,6 +77,7 @@ ul {
   margin-left: 10px;
   margin-right: 10px;
   margin-bottom: 5px;
+  margin-top: 5px;
   display: flex;
   align-items: top;
   height: 60px;
@@ -62,7 +89,7 @@ ul {
   -webkit-border-radius: 5;
   -moz-border-radius: 5;
   border-radius: 5px;
-  font-family: Arial;
+  /*font-family: Arial;*/
   color: #ffffff;
   font-size: 15px;
   /*background: #102296;*/
@@ -81,10 +108,10 @@ ul {
 }
 
 .error-message {
-  background-color: rgba(255, 100, 100, 0.5);
-  padding: 5px;
-  margin-left: 5px;
+  margin-left: 10px;
   font-size: 13px;
+  color: red;
+  font-weight: bold;
 }
 
 .toggle-btn-group {

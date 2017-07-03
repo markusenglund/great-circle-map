@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 import { connect } from "react-redux"
 import Sidebar from "react-sidebar"
 import { handleRoutes } from "../actionCreators"
+import Header from "./Header"
 import Map from "./Map"
 import RouteInput from "./RouteInput"
 import RouteList from "./RouteList"
@@ -43,6 +44,7 @@ class Main extends Component {
 
     const sidebarContent = (
       <div className="left-column">
+        <Header />
         <RouteInput urlParam={decodedUrlParam} history={history} />
         <RouteList urlParam={decodedUrlParam} history={history} />
       </div>

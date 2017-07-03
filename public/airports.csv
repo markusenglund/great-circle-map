@@ -303,6 +303,7 @@ id,name,city,iata,icao,lat,lng
 2902,Piarco International Airport,Port of Spain (Trinidad),POS,TTPP,10.595,-61.337
 2268,Taichung Ching Chuang Kang Airport,Taichung,RMQ,RCMQ,24.265,120.621
 3069,Shah Amanat International Airport,Chittagong,CGP,VGEG,22.25,91.813
+3582,Long Beach Daugherty Field Airport,Long Beach,LGB,KLGB,33.818,-118.152
 2954,Minsk National Airport,Minsk,MSQ,UMMS,53.882,28.031
 1685,Adana Airport,Adana,ADA,LTAF,36.982,35.28
 3322,Cairns International Airport,Cairns,CNS,YBCS,-16.886,145.755
@@ -6699,7 +6700,6 @@ id,name,city,iata,icao,lat,lng
 8410,London-Corbin Airport/Magee Field,London,LOZ,KLOZ,37.082,-84.085
 10169,Madison County Airport,London,UYF,KUYF,39.933,-83.462
 8493,Tri-County Regional Airport,Lone Rock,LNR,KLNR,43.212,-90.182
-3582,Long Beach /Daugherty Field/ Airport,Long Beach,LGB,KLGB,33.818,-118.152
 3465,East Texas Regional Airport,Longview,GGG,KGGG,32.384,-94.712
 8931,Longview Ranch Airport,Longview,,OG39,44.662,-119.652
 6136,Lopez Island Airport,Lopez,LPS,S31,48.484,-122.938

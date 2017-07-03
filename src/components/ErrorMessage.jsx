@@ -1,5 +1,6 @@
 import React from "react"
 import PropTypes from "prop-types"
+import { connect } from "react-redux"
 
 function ErrorMessage({ error }) {
   return (
@@ -8,7 +9,14 @@ function ErrorMessage({ error }) {
 }
 
 ErrorMessage.propTypes = {
-  error: PropTypes.string.isRequired
+  error: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.bool
+  ]).isRequired,
 }
 
-export default ErrorMessage
+function mapStateToProps(state) {
+  return { error: state.error }
+}
+
+export default connect(mapStateToProps)(ErrorMessage)
