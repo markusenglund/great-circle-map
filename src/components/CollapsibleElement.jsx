@@ -36,14 +36,14 @@ function CollapsibleElement({
                 <i className="fa fa-arrow-down" aria-hidden="true" />
                 {readableSectorDistances[i] ? (
                   <div>
-                    <div className="grey">Distance</div>
+                    <div className="distance-label">Distance</div>
                     <div className="bold">{readableSectorDistances[i]}</div>
                   </div>
                   ) : null
                 }
                 {readableSectorDistances[i] ? (
                   <div className="duration">
-                    <div className="grey">Duration</div>
+                    <div className="distance-label">Time (est.)</div>
                     <div className="bold">{distanceToTimeString(distances[i])}</div>
                   </div>
                   ) : null
@@ -56,7 +56,7 @@ function CollapsibleElement({
       {route.length > 2 && route[0].id !== route[route.length - 1].id ? (
         <div className="total-distance">
           <div className="padding-4px">
-            <div className="grey">
+            <div className="distance-label">
               Non-stop distance
               {label === "icao" ?
                 ` (${route[0].icao || route[0].iata} - ${route[route.length - 1].icao || route[route.length - 1].iata})` :
@@ -66,7 +66,7 @@ function CollapsibleElement({
             <div className="bold">{readableNonStopDistance}</div>
           </div>
           <div className="padding-4px">
-            <div className="grey">
+            <div className="distance-label">
               Distance added by stop-over{route.length > 3 ? <span>s</span> : null}
             </div>
             <div className="bold">

@@ -57,12 +57,14 @@ grey: rgb(44, 44, 44) , grey-text: #bbd;*/
 }
 
 #dropdown {
-  margin-top: 5px;
+  /*margin-top: 5px;*/
+  margin: 2px;
   background: rgba(44, 44, 44, 0.8);
   color: #fff;
   padding: 5px;
   border-radius: 5px;
-  width: 200px;
+  width: 220px;
+  font-size: 13px;
 }
 
 #dropdown .menu-button-group {
@@ -104,7 +106,7 @@ grey: rgb(44, 44, 44) , grey-text: #bbd;*/
   border-radius: 1px;
   font-weight: bold;
   padding: 6px;
-  width: 110px;
+  width: 120px;
 }
 
 .menu-button-trigger::after {
@@ -133,7 +135,7 @@ grey: rgb(44, 44, 44) , grey-text: #bbd;*/
 }
 
 .menu-button-menu {
-  width: 122px;
+  width: 132px;
   background: #fff;
   border: 1px solid rgba(200, 200, 200, 0.4);
   list-style-type: none;

@@ -36,11 +36,12 @@ class AdvancedInput extends Component {
       <div>
         <form className="input-form" onSubmit={e => this.handleSubmit(e)}>
           <div id="textarea-wrapper">
+            <p>Manually type in IATA or ICAO airport codes separated by dashes and commas to display routes.</p>
             <textarea
               value={this.state.value}
               onChange={e => this.handleChange(e)}
               onKeyPress={e => this.handleKeyPress(e)}
-              placeholder="JFK-LHR/OSL, AMS-MAD-EZE, etc."
+              placeholder="JFK-LHR/OSL, MAD-DXB-HKG, etc."
               type="text"
               id="textarea"
               spellCheck={false}

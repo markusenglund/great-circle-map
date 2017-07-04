@@ -6,8 +6,8 @@
 }
 
 .route-element {
-  font-family: 'Verdana', 'Helvetica', sans-serif;
-  color: #bbd;
+  /*font-family: 'Verdana', 'Helvetica', sans-serif;*/
+  color: #ddd;
   border-bottom: 1px rgb(44,44,44) solid;
 }
 
@@ -28,7 +28,7 @@
 }
 
 .delete-button:hover {
-  color: #bbd;
+  color: #ddd;
 }
 
 .collapsible-distance, .collapsible-airport, .sector-element, .total-distance, .non-stop-distance {
@@ -83,6 +83,10 @@
   justify-content: space-around;
   align-items: center;
   background-color: rgb(66,66,66);
+}
+
+.distance-label {
+  color: #bbb;
 }
 
 .fa-arrow-down {

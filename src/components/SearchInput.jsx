@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import { connect } from "react-redux"
 import PropTypes from "prop-types"
 import Select from "react-select"
+import ErrorMessage from "./ErrorMessage"
 
 function getSortValue(airport, inputEntireStringRegex, inputStartOfStringRegex, inputUpperCase) {
   let sortValue
@@ -48,13 +49,30 @@ class SearchInput extends Component {
     if (input.length === 3) {
       const matches = airportData
         .filter(airport =>
-          airport.iata === inputUpperCase || inputEntireStringRegex.test(airport.city)
+          // airport.iata === inputUpperCase || inputEntireStringRegex.test(airport.city)
+          airport.iata === inputUpperCase ||
+            inputStartOfWordRegex.test(airport.city) ||
+            inputStartOfWordRegex.test(airport.name)
         )
-        .map((airport) => {
+        .map((airport, i) => {
           const value = airport.iata || airport.icao
-          return { ...airport, label: `${airport.city} (${value}) ${airport.name}`, value }
+          const sortValue = getSortValue(
+            airport,
+            inputEntireStringRegex,
+            inputStartOfStringRegex,
+            inputUpperCase
+          )
+          return { ...airport, label: `${airport.city} (${value}) ${airport.name}`, value, sortValue, index: i }
         })
+        .sort((a, b) => {
+          if (a.sortValue - b.sortValue === 0) {
+            return a.index - b.index
+          }
+          return a.sortValue - b.sortValue
+        })
+        .slice(0, 10)
       return Promise.resolve({ options: matches })
+      // return Promise.resolve({ options: matches })
     }
 
     if (input.length === 4) {
@@ -162,6 +180,7 @@ class SearchInput extends Component {
     return (
       <form className="input-form" onSubmit={e => this.handleSubmit(e)}>
         <div id="textarea-wrapper">
+          <p>Enter two or more airports to draw a route between them on the map and calculate the distance.</p>
           <SelectAsync
             multi
             value={this.state.value}
@@ -180,6 +199,7 @@ class SearchInput extends Component {
             placeholder="Name of city or airport-code"
           />
         </div>
+        <ErrorMessage />
         <div className="submit-button-wrapper">
           <button className="btn" type="submit">Go</button>
         </div>

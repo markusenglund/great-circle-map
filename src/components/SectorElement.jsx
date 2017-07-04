@@ -6,8 +6,12 @@ function SectorElement({ sector, distance, label }) {
     <div className="sector-element">
       <span className="airport-code">
         {label === "icao" ?
-          `${sector[0].icao || sector[0].iata} - ${sector[1].icao || sector[1].iata}` :
-          `${sector[0].iata || sector[0].icao} - ${sector[1].iata || sector[1].icao}`
+          <span>
+            {sector[0].icao || sector[0].iata} &#8702; {sector[1].icao || sector[1].iata}
+          </span> :
+          <span>
+            {sector[0].iata || sector[0].icao} &#8702; {sector[1].iata || sector[1].icao}
+          </span>
         }
       </span>
       <span className="distance-number">{distance}</span>
