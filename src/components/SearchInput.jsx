@@ -151,6 +151,7 @@ class SearchInput extends Component {
 
     const { value } = this.state
 
+    if (!value) return
     // Transform this.state.value to inputstring-format. Use urlParam to combine with old routes
     const valueString = value.reduce((acc, val, i) => {
       return i ? `${acc}-${val.value}` : val.value

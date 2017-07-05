@@ -97,7 +97,7 @@ class Main extends Component {
               history={history}
               buttonsVisible={buttonsVisible}
             />
-            {!isMobile ? <ZoomButtons map={map} buttonsVisible={buttonsVisible} /> : null}
+            {/* {!isMobile ? <ZoomButtons map={map} buttonsVisible={buttonsVisible} /> : null} */}
             <Map urlParam={decodedUrlParam} />
           </div>
         </div>
