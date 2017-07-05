@@ -5,5 +5,6 @@ import error from "./error"
 import map from "./map"
 import inputMode from "./inputMode"
 import settings from "./settings"
+import mobile from "./mobile"
 
-export default combineReducers({ routes, airportData, error, map, inputMode, settings })
+export default combineReducers({ routes, airportData, error, map, inputMode, settings, mobile })

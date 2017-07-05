@@ -27,6 +27,8 @@ class SearchInput extends Component {
   constructor(props) {
     super(props)
     this.state = { value: null }
+
+    this.handleSelectMounted = this.handleSelectMounted.bind(this)
   }
 
   getOptions(input) {
@@ -129,13 +131,24 @@ class SearchInput extends Component {
     return Promise.resolve({ options: cityMatches })
   }
 
+  handleSelectMounted(selectWrapper) {
+    if (selectWrapper) {
+      this.select = selectWrapper.select
+    }
+  }
+
   handleChange(input) {
     this.setState({ value: input, menuRenderer: () => <div /> })
   }
 
   handleSubmit(event) {
     event.preventDefault()
-    const { history, urlParam, dispatch } = this.props
+    const { history, urlParam, dispatch, isMobile } = this.props
+
+    if (isMobile) {
+      this.select.blurInput()
+    }
+
     const { value } = this.state
 
     // Transform this.state.value to inputstring-format. Use urlParam to combine with old routes
@@ -180,7 +193,10 @@ class SearchInput extends Component {
     return (
       <form className="input-form" onSubmit={e => this.handleSubmit(e)}>
         <div id="textarea-wrapper">
-          <p>Enter two or more airports to draw a route between them on the map and calculate the distance.</p>
+          <p>
+            Enter two or more airports to draw a route between
+            them on the map and calculate the distance.
+          </p>
           <SelectAsync
             multi
             value={this.state.value}
@@ -197,6 +213,7 @@ class SearchInput extends Component {
             menuRenderer={this.state.menuRenderer}
             searchPromptText={null}
             placeholder="Name of city or airport-code"
+            ref={this.handleSelectMounted}
           />
         </div>
         <ErrorMessage />
@@ -212,12 +229,13 @@ SearchInput.propTypes = {
   urlParam: PropTypes.string,
   history: PropTypes.shape({ push: PropTypes.function }).isRequired,
   airportData: PropTypes.arrayOf(PropTypes.object).isRequired,
-  dispatch: PropTypes.func.isRequired
+  dispatch: PropTypes.func.isRequired,
+  isMobile: PropTypes.bool.isRequired
 }
 SearchInput.defaultProps = { urlParam: "" }
 
 function mapStateToProps(state) {
-  return { airportData: state.airportData }
+  return { airportData: state.airportData, isMobile: state.mobile }
 }
 
 export default connect(mapStateToProps)(SearchInput)

@@ -121,7 +121,8 @@ const AsyncGoogleMap = withScriptjs(withGoogleMap((
         mapTypeControl: false,
         streetViewControl: false,
         zoomControl: false,
-        scaleControl: true
+        scaleControl: true,
+        fullscreenControl: false
       }}
     >
       {routes.map(route => (

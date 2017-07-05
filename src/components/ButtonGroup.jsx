@@ -2,16 +2,28 @@ import React from "react"
 import PropTypes from "prop-types"
 import Settings from "./Settings"
 
-function ButtonGroup({ isSidebarDocked, toggleSidebarDock, history, buttonsVisible }) {
+function ButtonGroup({
+  isSidebarDocked,
+  toggleSidebarDock,
+  history,
+  buttonsVisible,
+  handleSetSidebarOpen,
+  isMobile
+}) {
   const buttonClass = buttonsVisible ? "map-button" : "map-button invisible"
   return (
     <div id="button-group">
-      <div><button className={buttonClass} onClick={toggleSidebarDock}>
-        {isSidebarDocked ?
-          <i className="fa fa-arrows-alt" aria-hidden /> :
-          <i className="fa fa-bars" aria-hidden />
-        }
-      </button></div>
+      <div>
+        <button
+          className={buttonClass}
+          onClick={!isMobile ? toggleSidebarDock : () => handleSetSidebarOpen(true)}
+        >
+          {!isSidebarDocked || isMobile ?
+            <i className="fa fa-bars" aria-hidden /> :
+            <i className="fa fa-arrows-alt" aria-hidden />
+          }
+        </button>
+      </div>
       <div id="purge"><button className={buttonClass} onClick={() => history.push("/")}>
         <i className="fa fa-trash-o" aria-hidden />
       </button></div>

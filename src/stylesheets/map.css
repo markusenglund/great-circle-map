@@ -140,7 +140,7 @@ grey: rgb(44, 44, 44) , grey-text: #bbd;*/
   border: 1px solid rgba(200, 200, 200, 0.4);
   list-style-type: none;
   position: absolute;
-  z-index: 99;
+  z-index: 98;
   padding-left: 0;
   margin: 0;
   box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);

@@ -7,10 +7,18 @@ class AdvancedInput extends Component {
   constructor(props) {
     super(props)
     this.state = { value: props.urlParam }
+
+    this.handleTextareaMounted = this.handleTextareaMounted.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({ value: nextProps.urlParam })
+  }
+
+  handleTextareaMounted(textarea) {
+    if (textarea) {
+      this.textarea = textarea
+    }
   }
 
   handleChange(event) {
@@ -19,7 +27,12 @@ class AdvancedInput extends Component {
 
   handleSubmit(event) {
     event.preventDefault()
-    const { history, dispatch } = this.props
+    const { history, dispatch, isMobile } = this.props
+
+    if (isMobile) {
+      this.textarea.blur()
+    }
+
     const newUrlParam = encodeURIComponent(this.state.value)
     dispatch({ type: "ENABLE_MAP_REBOUND" })
     history.push(`/${newUrlParam}`)
@@ -36,7 +49,10 @@ class AdvancedInput extends Component {
       <div>
         <form className="input-form" onSubmit={e => this.handleSubmit(e)}>
           <div id="textarea-wrapper">
-            <p>Manually type in IATA or ICAO airport codes separated by dashes and commas to display routes.</p>
+            <p>
+              Manually type in IATA or ICAO airport codes separated
+              by dashes and commas to display routes.
+            </p>
             <textarea
               value={this.state.value}
               onChange={e => this.handleChange(e)}
@@ -45,6 +61,7 @@ class AdvancedInput extends Component {
               type="text"
               id="textarea"
               spellCheck={false}
+              ref={this.handleTextareaMounted}
             />
           </div>
           <ErrorMessage />
@@ -60,8 +77,13 @@ class AdvancedInput extends Component {
 AdvancedInput.propTypes = {
   urlParam: PropTypes.string,
   history: PropTypes.shape({ push: PropTypes.function }).isRequired,
-  dispatch: PropTypes.func.isRequired
+  dispatch: PropTypes.func.isRequired,
+  isMobile: PropTypes.bool.isRequired
 }
 AdvancedInput.defaultProps = { urlParam: "" }
 
-export default connect()(AdvancedInput)
+function mapStateToProps(state) {
+  return { isMobile: state.mobile }
+}
+
+export default connect(mapStateToProps)(AdvancedInput)
