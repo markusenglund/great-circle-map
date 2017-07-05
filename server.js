@@ -6,8 +6,6 @@ const bodyParser = require("body-parser")
 const session = require("express-session")
 const compression = require("compression")
 
-const apiRoute = require("./routes/api")
-
 const port = process.env.PORT || "3000"
 const app = express()
 
@@ -23,8 +21,6 @@ app.use(session({ // REMOVE IF NOT NEEDED
 }))
 
 app.use(express.static(path.join(__dirname, "public")))
-
-app.use("/api", apiRoute)
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"))

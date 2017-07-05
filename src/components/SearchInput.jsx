@@ -157,7 +157,7 @@ class SearchInput extends Component {
     }, "")
 
     const newUrlParam = urlParam ?
-      encodeURIComponent(`${valueString}, ${urlParam}`) :
+      encodeURIComponent(`${urlParam}, ${valueString}`) :
       encodeURIComponent(valueString)
 
     dispatch({ type: "ENABLE_MAP_REBOUND" })

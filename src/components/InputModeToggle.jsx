@@ -25,7 +25,8 @@ class InputModeToggle extends Component {
 
     return (
       <div className="toggle-group">
-        <label htmlFor="input-mode">Raw input</label>
+        {/* <label htmlFor="input-mode">Raw input</label> */}
+        <div className="toggle-group-label">Raw input</div>
         <Toggle
           checked={inputMode === "advanced"}
           icons={false}

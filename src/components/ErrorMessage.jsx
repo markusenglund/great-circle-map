@@ -12,7 +12,7 @@ ErrorMessage.propTypes = {
   error: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.bool
-  ]).isRequired,
+  ]).isRequired
 }
 
 function mapStateToProps(state) {

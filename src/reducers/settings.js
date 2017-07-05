@@ -1,7 +1,7 @@
 const settings = (state = {
   mapType: { type: "satellite", readable: "Satellite" },
   distanceUnit: { abbr: "km", readable: "Kilometers" },
-  label: { value: "iata", readable: "IATA code" },
+  label: { value: "city", readable: "City name" },
   buttonsVisible: true
 }, action) => {
   switch (action.type) {

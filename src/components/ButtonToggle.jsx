@@ -20,7 +20,7 @@ class ButtonToggle extends Component {
 
     return (
       <div className="toggle">
-        <label htmlFor="button-toggle">Show buttons</label>
+        <div>Show buttons</div>
         <Toggle
           checked={buttonsVisible}
           icons={false}
