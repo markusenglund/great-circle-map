@@ -3,6 +3,7 @@ import { connect } from "react-redux"
 import PropTypes from "prop-types"
 import CloseOnEscape from "react-close-on-escape"
 import onClickOutside from "react-onclickoutside"
+import FaCog from "react-icons/fa/cog"
 import MenuButton from "./MenuButton"
 import ButtonToggle from "./ButtonToggle"
 
@@ -79,7 +80,7 @@ class Settings extends Component {
           className={buttonClass}
           onClick={() => this.setState({ isVisible: !this.state.isVisible })}
         >
-          <i className="fa fa-cog" aria-hidden="true" />
+          <FaCog />{/* <i className="fa fa-cog" aria-hidden="true" /> */}
         </button>
         {this.state.isVisible ? (
           <CloseOnEscape onEscape={this.handleEscape}>

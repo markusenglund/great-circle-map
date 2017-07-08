@@ -85,10 +85,14 @@
   background-color: rgb(66,66,66);
 }
 
+.collapsible-distance svg {
+  font-size: 20px;
+}
+
 .distance-label {
   color: #bbb;
 }
 
-.fa-arrow-down {
+/*.fa-arrow-down {
   font-size: 20px;
-}
+}*/

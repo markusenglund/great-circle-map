@@ -1,6 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import uniqueId from "lodash.uniqueid"
+import FaArrowDown from "react-icons/fa/arrow-down"
 
 function distanceToTimeString(distance) {
   const seconds = (distance / 257.25) + (15 * 60) // 257.25 = Mach 0.75 expressed in meters / second
@@ -33,7 +34,7 @@ function CollapsibleElement({
             </div>
             {readableSectorDistances[i] !== undefined ? (
               <div className="collapsible-distance">
-                <i className="fa fa-arrow-down" aria-hidden="true" />
+                <FaArrowDown />{/* <i className="fa fa-arrow-down" aria-hidden="true" /> */}
                 {readableSectorDistances[i] ? (
                   <div>
                     <div className="distance-label">Distance</div>
