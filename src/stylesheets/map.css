@@ -8,13 +8,19 @@ grey: rgb(44, 44, 44) , grey-text: #bbd;*/
 
 .map-label {
   color: #D03030;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: bold;
   text-shadow:
     -1px -1px 0 #000,
     1px -1px 0 #000,
     -1px 1px 0 #000,
     1px 1px 0 #000;
+}
+
+@media (orientation: portrait) and (min-width: 900px), (orientation: landscape) and (min-height: 900px) {
+  .map-label {
+    font-size: 15px;
+  }
 }
 
 #button-group {

@@ -64,7 +64,7 @@ ul {
 
 #textarea-wrapper p {
   color: #ddd;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 #textarea {
@@ -84,7 +84,7 @@ ul {
 .submit-button-wrapper {
   margin-left: 10px;
   margin-right: 10px;
-  margin-bottom: 5px;
+  margin-bottom: 0;
   margin-top: 10px;
   display: flex;
   align-items: top;
@@ -117,7 +117,7 @@ ul {
 
 .error-message {
   margin-left: 10px;
-  font-size: 13px;
+  font-size: 14px;
   color: red;
   font-weight: bold;
 }
@@ -160,14 +160,14 @@ ul {
   position: absolute;
   clip: rect(0px 0px 0px 0px);
 }
-
+/*
 .big-font {
   font-size: 15px;
 }
 
 .small-font {
   font-size: 12px;
-}
+}*/
 
 .bold {
   font-weight: bold;

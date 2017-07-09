@@ -16,14 +16,14 @@
   right: 0;
   top: 0;
   top: 50%;
-  width: 24px;
-  height: 24px;
-  margin-top: -12px;
+  width: 32px;
+  height: 32px;
+  margin-top: -16px;
   padding: 0;
   border: 0px;
   background-color: inherit;
   color: rgb(66, 66, 66);
-  font-size: 17px;
+  font-size: 24px;
   cursor: pointer;
 }
 
@@ -46,7 +46,7 @@
   cursor: pointer;
   padding-top: 10px;
   padding-bottom: 10px;
-  padding-right: 24px;
+  padding-right: 28px;
   padding-left: 10px;
 }
 
@@ -60,15 +60,16 @@
 }
 
 .total-distance {
-  font-size: 12px;
+  font-size: 13px;
   background-color: rgb(66,66,66);
 }
 
 .collapsible {
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .collapsible-airport {
+  font-size: 14px;
   background-color: rgb(44,44,44);
   font-weight: bold;
   padding: 6px;

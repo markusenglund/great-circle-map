@@ -28,8 +28,9 @@ class InputModeToggle extends Component {
         {/* <label htmlFor="input-mode">Raw input</label> */}
         <div className="toggle-group-label">Raw input</div>
         <Toggle
-          checked={inputMode === "advanced"}
-          icons={false}
+          // checked={inputMode === "advanced"}
+          defaultChecked={inputMode === "advanced"}
+          // icons={false}
           onChange={() => this.handleModeChange()}
           id="input-mode"
           onKeyDown={e => this.handleKeyDown(e)}

@@ -4444,11 +4444,11 @@ id,name,city,iata,icao,lat,lng
 4443,Enrique Malek International Airport,David,DAV,MPDA,8.391,-82.435
 4444,EL Real Airport,El Real,ELE,,8.133,-77.7
 4445,Garachine Airport,Garachine,GHE,,8.06,-78.36
-4446,Panama Pacific International Airport,Howard,BLB,MPHO,8.915,-79.6
+4446,Panama Pacifico International Airport,Panama City,BLB,MPHO,8.915,-79.6
 4447,Jaqué Airport,Jaqué,JQE,MPJE,7.518,-78.157
 4448,Captain Ramon Xatruch Airport,La Palma,PLP,MPLP,8.407,-78.142
 4449,Mulatupo Airport,Mulatupo,MPP,,8.95,-77.75
-4450,Marcos A. Gelabert International Airport,Panama,PAC,MPMG,8.973,-79.556
+4450,Marcos A. Gelabert International Airport,Panama City,PAC,MPMG,8.973,-79.556
 4451,Puerto Obaldia Airport,Puerto Obaldia,PUE,MPOA,8.667,-77.418
 4452,Scarlett Martinez International Airport,Rio Hato,,MPRH,8.376,-80.128
 4453,Ruben Cantu Airport,Santiago,,MPSA,8.086,-80.945
@@ -5327,8 +5327,8 @@ id,name,city,iata,icao,lat,lng
 5326,Ny-Ålesund Airport (Hamnerabben),Ny-Alesund,,ENAS,78.927,11.874
 5327,Svea Airport,Sveagruva,,ENSA,77.897,16.725
 5328,Matsapha Airport,Manzini,MTS,FDMS,-26.529,31.308
-5329,Ängelholm-Helsingborg Airport,Ängelholm,AGH,ESTA,56.296,12.847
-5330,Åre Östersund Airport,Östersund,OSD,ESNZ,63.194,14.5
+5329,Ängelholm-Helsingborg Airport,Angelholm,AGH,ESTA,56.296,12.847
+5330,Åre Östersund Airport,Ostersund,OSD,ESNZ,63.194,14.5
 5331,Anderstorp Airport,Anderstorp,,ESMP,57.264,13.599
 5332,Arboga Airport,Arboga,,ESQO,59.387,15.924
 5333,Arvidsjaur Airport,Arvidsjaur,AJR,ESNX,65.59,19.282
@@ -5350,10 +5350,10 @@ id,name,city,iata,icao,lat,lng
 5349,Hemavan Airport,Hemavan,HMV,ESUT,65.806,15.083
 5350,Hudiksvall Airport,Hudiksvall,HUV,ESNH,61.768,17.081
 5351,Hultsfred Airport,Hultsfred,HLF,ESSF,57.526,15.823
-5352,Jönköping Airport,Joenkoeping,JKG,ESGJ,57.758,14.069
+5352,Jönköping Airport,Jonkoping,JKG,ESGJ,57.758,14.069
 5353,Jokkmokk Airport,Jokkmokk,,ESNJ,66.496,20.147
 5354,Kalixfors Airport,Kalixfors,,ESUK,67.765,20.257
-5355,Kalmar Airport,Kalkmar,KLR,ESMQ,56.686,16.288
+5355,Kalmar Airport,Kalmar,KLR,ESMQ,56.686,16.288
 5356,Karlsborg Air Base,Karlsborg,,ESIA,58.514,14.507
 5357,Karlskoga Airport,Karlskoga,KSK,ESKK,59.346,14.496
 5358,Karlstad Airport,Karlstad,KSD,ESOK,59.445,13.337
@@ -5362,17 +5362,17 @@ id,name,city,iata,icao,lat,lng
 5361,Kristianstad Airport,Kristianstad,KID,ESMK,55.922,14.085
 5362,Landskrona Airport,Landskrona,JLD,ESML,55.946,12.87
 5363,Lidköping-Hovby Airport,Lidkoping,LDK,ESGL,58.465,13.174
-5364,Malmen Air Base,Linkoeping,,ESCF,58.402,15.526
-5365,Linköping City Airport,Linkoeping,LPI,ESSL,58.406,15.681
+5364,Malmen Air Base,Linkoping,,ESCF,58.402,15.526
+5365,Linköping City Airport,Linkoping,LPI,ESSL,58.406,15.681
 5366,Feringe Airport,Ljungby,,ESMG,56.95,13.922
 5367,Ljungbyhed Airport,Ljungbyhed,,ESTL,56.083,13.212
 5368,Luleå Airport,Lulea,LLA,ESPA,65.544,22.122
 5369,Lycksele Airport,Lycksele,LYC,ESNL,64.548,18.716
-5370,Malmö Sturup Airport,Malmoe,MMX,ESMS,55.536,13.376
+5370,Malmö Sturup Airport,Malmo,MMX,ESMS,55.536,13.376
 5371,Storuman Airport,Mohed,SQO,ESUD,64.961,17.697
 5372,Mora Airport,Mora,MXX,ESKM,60.958,14.511
-5373,Norrköping Airport,Norrkoeping,NRK,ESSP,58.586,16.251
-5374,Bråvalla Air Base,Norrkoeping,,ESCK,58.611,16.104
+5373,Norrköping Airport,Norrkoping,NRK,ESSP,58.586,16.251
+5374,Bråvalla Air Base,Norrkoping,,ESCK,58.611,16.104
 5375,Optand Airport,Optand,,ESNM,63.129,14.803
 5376,Örebro Airport,Orebro,ORB,ESOE,59.224,15.038
 5377,Örnsköldsvik Airport,Ornskoldsvik,OER,ESNO,63.408,18.99
@@ -5642,7 +5642,7 @@ id,name,city,iata,icao,lat,lng
 5641,South Caicos Airport,South Caicos,XSC,MBSC,21.516,-71.529
 5642,Funafuti International Airport,Funafuti,FUN,NGFU,-8.525,179.196
 5643,Arua Airport,Arua,RUA,HUAR,3.05,30.917
-5644,Entebbe International Airport,Entebbe (Kampala),EBB,HUEN,0.042,32.444
+5644,Entebbe International Airport,Kampala,EBB,HUEN,0.042,32.444
 5645,Gulu Airport,Gulu,ULU,HUGU,2.806,32.272
 5646,Kabale Airport,Kabale,,HUKB,-1.226,29.96
 5647,Kajjansi Airfield,Kampala,,HUKJ,0.197,32.553
@@ -8110,7 +8110,7 @@ id,name,city,iata,icao,lat,lng
 8109,Irkutsk-2,Irkutsk,,UIIR,52.368,104.183
 8110,Tyopliy Klyuch,Khandyga,KDY,UEMH,62.471,136.505
 8111,Mar-Kuel,Mar-Kuel,,UHHK,57.271,132.314
-8112,MOW,Moscow,MOW,,55.756,37.618
+8112,All Airports,Moscow,MOW,,55.756,37.618
 8113,Magas,Nazran,%u0,%u04,43.324,45.018
 8114,Nezhitino,Nezhitino,NEZ,,57.479,43.298
 8115,Nikolayevka,Nikolayevka,,УУЬН,53.042,158.31

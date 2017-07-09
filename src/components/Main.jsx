@@ -8,7 +8,7 @@ import Map from "./Map"
 import RouteInput from "./RouteInput"
 import RouteList from "./RouteList"
 import ButtonGroup from "./ButtonGroup"
-import ZoomButtons from "./ZoomButtons"
+// import ZoomButtons from "./ZoomButtons"
 
 class Main extends Component {
   constructor() {
@@ -24,7 +24,7 @@ class Main extends Component {
     if (navigator.userAgent.match(/Android/i)
       || navigator.userAgent.match(/webOS/i)
       || navigator.userAgent.match(/iPhone/i)
-      || navigator.userAgent.match(/iPad/i)
+      // || navigator.userAgent.match(/iPad/i)
       || navigator.userAgent.match(/iPod/i)
       || navigator.userAgent.match(/BlackBerry/i)
       || navigator.userAgent.match(/Windows Phone/i)

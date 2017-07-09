@@ -4,6 +4,7 @@ import { connect } from "react-redux"
 import { LatLonEllipsoidal } from "geodesy"
 import { Collapse } from "react-collapse"
 import uniqueId from "lodash.uniqueid"
+import MdClose from "react-icons/lib/md/close"
 
 import { parseStringWithSlashes } from "../actionCreators"
 import SectorElement from "./SectorElement"
@@ -131,7 +132,8 @@ class RouteElement extends Component {
             }
           </div>
           <button onClick={this.handleDeleteRoute} className="delete-button">
-            <i className="fa fa-times" aria-hidden />
+            <MdClose />
+            {/* <i className="fa fa-times" aria-hidden /> */}
           </button>
         </div>
         <Collapse isOpened={this.state.isOpened}>
