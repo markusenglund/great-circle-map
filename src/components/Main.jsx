@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
+import axios from "axios"
 import Sidebar from "react-sidebar"
 import { handleRoutes } from "../actionCreators"
 import Header from "./Header"
@@ -31,6 +32,13 @@ class Main extends Component {
     ) {
       dispatch({ type: "IS_MOBILE" })
     }
+
+    // Check if user is in China and set state
+  //   axios.get("https://freegeoip.net/json/")
+  //     .then((res) => {
+  //       console.log("should be location", res)
+  //       dispatch({ type: "GET_LOCATION", location: res.data.country_code })
+  //     })
   }
 
   // componentDidMount() {

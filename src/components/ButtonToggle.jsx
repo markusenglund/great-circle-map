@@ -23,7 +23,6 @@ class ButtonToggle extends Component {
         <div>Show buttons</div>
         <Toggle
           checked={buttonsVisible}
-          icons={false}
           onChange={e => this.handleModeChange(e.target.checked)}
           id="button-toggle"
           onKeyDown={e => this.handleKeyDown(e)}
