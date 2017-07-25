@@ -27,7 +27,7 @@ class InputModeToggle extends Component {
       <div className="toggle-group">
         <div className="toggle-group-label">Raw input</div>
         <Toggle
-          defaultChecked={inputMode === "advanced"}
+          checked={inputMode === "advanced"}
           icons={{
             unchecked: null
           }}
