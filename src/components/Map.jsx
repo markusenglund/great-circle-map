@@ -8,90 +8,116 @@ import { LatLonSpherical } from "geodesy"
 
 import { getAirportData, completeMapLoad } from "../actionCreators"
 
-// TODO: Add a condition for like within 2000 km or something
-function getPixelPositionOffset(currentAirport, airports) {
-  const airportLocation = new LatLonSpherical(
-    currentAirport.lat, currentAirport.lng
+function getPixelPositionOffset(curAirport, airports) {
+  const curLocation = new LatLonSpherical(
+    curAirport.lat, curAirport.lng
   )
+
+  const vectorProjections = airports
+    .filter(airport => airport.id !== curAirport.id)
+    .map((airport) => {
+      const location = new LatLonSpherical(airport.lat, airport.lng)
+      const distance = curLocation.distanceTo(location)
+      const vectorLength = distance > 50000 ? 1000000 / (distance ** 2) : 1000000 / (50000 ** 2)
+      const vectorDirection = (90 - location.rhumbBearingTo(curLocation)) * (Math.PI / 180)
+      // const northEastProj = vectorLength * Math.cos(vectorDirection - (Math.PI / 4))
+      // const northWestProj = vectorLength * Math.cos(vectorDirection - ((3 * Math.PI) / 4))
+      const xProj = vectorLength * Math.cos(vectorDirection)
+      const yProj = vectorLength * Math.sin(vectorDirection)
+      return { xProj, yProj }
+    })
+  const xSum = vectorProjections.reduce((acc, val) => acc + val.xProj, 0)
+  const ySum = vectorProjections.reduce((acc, val) => acc + val.yProj, 0)
+
+  return (width, height) => {
+    return {
+      y: ySum > 0 ? (-3 * height) / 4 : -(height / 5),
+      x: xSum > 0 ? 0 : -width
+    }
+  }
+
 
   // FIXME: Could this be done in a more efficient way like Math.min?
   // TODO:
   // const airportsClone = JSON.parse(JSON.stringify(airports))
-  const airportsClone = airports
-    .filter((airport) => {
-      const location = new LatLonSpherical(airport.lat, airport.lng)
-      const distance = airportLocation.distanceTo(location)
-      return distance < 1500000 // 1500 km
-    })
-    .sort((a, b) => {
-      const locationA = new LatLonSpherical(a.lat, a.lng)
-      const locationB = new LatLonSpherical(b.lat, b.lng)
-      const distanceA = airportLocation.distanceTo(locationA)
-      const distanceB = airportLocation.distanceTo(locationB)
-      return distanceA - distanceB
-    })
-
-  const directionsTaken = []
-  for (let i = 1; i < Math.min(airportsClone.length, 4); i += 1) {
-    const direction = [
-      airportsClone[i].lat - currentAirport.lat > 0,
-      airportsClone[i].lng - currentAirport.lng > 0
-    ]
-    directionsTaken.push(direction)
-  }
-
-  // If no nearby airports, render label to the southeast of the circle
-  if (directionsTaken.length < 1) {
-    return (width, height) => {
-      return {
-        y: -(height / 5),
-        x: 0
-      }
-    }
-  }
-
-  // If there is no nearby airport in the opposite direction of the closest neighbor:
-  // Choose that direction for the label
-  if (!directionsTaken.find(dir =>
-    dir[0] !== directionsTaken[0][0] && dir[1] !== directionsTaken[0][1]
-  )) {
-    return (width, height) => {
-      return {
-        y: directionsTaken[0][0] ? -(height / 5) : (-3 * height) / 4,
-        x: directionsTaken[0][1] ? -width : 0
-      }
-    }
-  }
-  if (!directionsTaken.find(dir => !dir[0] && dir[1])) { // South east
-    return (width, height) => {
-      return {
-        y: -(height / 5),
-        x: 0
-      }
-    }
-  }
-  if (!directionsTaken.find(dir => !dir[0] && !dir[1])) { // South west
-    return (width, height) => {
-      return {
-        y: -(height / 5),
-        x: -width
-      }
-    }
-  }
-  if (!directionsTaken.find(dir => dir[0] && !dir[1])) { // North west
-    return (width, height) => {
-      return {
-        y: (-3 * height) / 4,
-        x: -width
-      }
-    }
-  }
-  return (width, height) => { // Has to be northeast, since all other options have returned
-    return {
-      y: (-3 * height) / 4,
-      x: 0
-    }
-  }
+  // const airportsClone = airports
+  //   .filter((airport) => {
+  //     const location = new LatLonSpherical(airport.lat, airport.lng)
+  //     const distance = airportLocation.distanceTo(location)
+  //     return distance < 1500000 // 1500 km
+  //   })
+  //   .sort((a, b) => {
+  //     const locationA = new LatLonSpherical(a.lat, a.lng)
+  //     const locationB = new LatLonSpherical(b.lat, b.lng)
+  //     const distanceA = airportLocation.distanceTo(locationA)
+  //     const distanceB = airportLocation.distanceTo(locationB)
+  //     return distanceA - distanceB
+  //   })
+  //
+  // const directionsTaken = []
+  // for (let i = 1; i < Math.min(airportsClone.length, 4); i += 1) {
+  //   const direction = [
+  //     airportsClone[i].lat - currentAirport.lat > 0,
+  //     airportsClone[i].lng - currentAirport.lng > 0
+  //   ]
+  //   directionsTaken.push(direction)
+  // }
+  //
+  // // If no nearby airports, render label to the southeast of the circle
+  // if (directionsTaken.length < 1) {
+  //   return (width, height) => {
+  //     return {
+  //       y: -(height / 5),
+  //       x: 0
+  //     }
+  //   }
+  // }
+  //
+  // // If there is no nearby airport in the opposite direction of the closest neighbor:
+  // // Choose that direction for the label
+  // if (!directionsTaken.find(dir =>
+  //   dir[0] !== directionsTaken[0][0] && dir[1] !== directionsTaken[0][1]
+  // )) {
+  //   return (width, height) => {
+  //     return {
+  //       y: directionsTaken[0][0] ? -(height / 5) : (-3 * height) / 4,
+  //       x: directionsTaken[0][1] ? -width : 0
+  //     }
+  //   }
+  // }
+  // if (!directionsTaken.find(dir => !dir[0] && dir[1])) { // South east
+  //   return (width, height) => {
+  //     return {
+  //       y: -(height / 5),
+  //       x: 0
+  //     }
+  //   }
+  // }
+  // if (!directionsTaken.find(dir => !dir[0] && !dir[1])) { // South west
+  //   return (width, height) => {
+  //     return {
+  //       y: -(height / 5),
+  //       x: -width
+  //     }
+  //   }
+  // }
+  // if (!directionsTaken.find(dir => dir[0] && !dir[1])) { // North west
+  //   return (width, height) => {
+  //     return {
+  //       y: (-3 * height) / 4,
+  //       x: -width
+  //     }
+  //   }
+  // }
+  // return (width, height) => { // Has to be northeast, since all other options have returned
+  //   return {
+  //     y: (-3 * height) / 4,
+  //     x: 0
+  //   }
+  // }
+  // return () => {
+  //   return { y: 0, x: 0 }
+  // }
 }
 
 // TODO: Split up into its own file
