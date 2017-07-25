@@ -1,2 +1,3 @@
 node_modules
-.eslint.json
+.eslintrc.json
+bundle.js
