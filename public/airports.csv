@@ -235,9 +235,9 @@ id,name,city,iata,icao,lat,lng
 234,Macau International Airport,Macau,MFM,VMMC,22.15,113.592
 235,Kota Kinabalu International Airport,Kota Kinabalu,BKI,WBKK,5.937,116.051
 236,Jacksonville International Airport,Jacksonville,JAX,KJAX,30.494,-81.688
-237,Gold Coast Airport,Coolangatta,OOL,YBCG,-28.164,153.505
+237,Gold Coast Airport,Gold Coast,OOL,YBCG,-28.164,153.505
 238,Alicante International Airport,Alicante,ALC,LEAL,38.282,-0.558
-239,Ngurah Rai (Bali) International Airport,Denpasar,DPS,WADD,-8.748,115.167
+239,Bali Ngurah Rai International Airport,Denpasar,DPS,WADD,-8.748,115.167
 240,Es Senia Airport,Oran,ORN,DAOO,35.624,-0.621
 241,Tunis Carthage International Airport,Tunis,TUN,DTTA,36.851,10.227
 242,Kualanamu International Airport,Medan,KNO,WIMM,3.642,98.885
@@ -4242,7 +4242,7 @@ id,name,city,iata,icao,lat,lng
 4241,Picton Aerodrome,Picton,PCN,NZPN,-41.346,173.956
 4242,Pitt Island Airport,Pitt Island,,PITT,-44.3,-176.221
 4243,Pukaki Airport,Pukaki,,NZUK,-44.235,170.118
-4244,Queenstown International Airport,Queenstown International,ZQN,NZQN,-45.021,168.739
+4244,Queenstown International Airport,Queenstown,ZQN,NZQN,-45.021,168.739
 4245,Rotorua Regional Airport,Rotorua,ROT,NZRO,-38.109,176.317
 4246,Ryans Creek Aerodrome,Stewart Island,SZS,NZRC,-46.9,168.101
 4247,Takaka Airport,Takaka,KTF,NZTK,-40.813,172.775
@@ -4487,7 +4487,7 @@ id,name,city,iata,icao,lat,lng
 4486,Momote Airport,Momote,MAS,AYMO,-2.062,147.424
 4487,Moro Airport,Moro,MXH,AYMR,-6.363,143.238
 4488,Mount Hagen Kagamuga Airport,Mount Hagen,HGU,AYMH,-5.827,144.296
-4489,Nadzab Airport,Nadzab,LAE,AYNZ,-6.57,146.726
+4489,Lae Nadzab Airport,Lae,LAE,AYNZ,-6.57,146.726
 4490,Nissan Island Airport,Nissan Island,IIS,,-4.5,154.226
 4491,Nuku Airport,Nuku,UKU,,-3.667,142.483
 4492,Obo Airport,Obo,OBX,,-7.583,141.317
@@ -4599,7 +4599,7 @@ id,name,city,iata,icao,lat,lng
 4598,Labo Airport,Ozamis,OZC,RPMO,8.179,123.842
 4599,Pagadian Airport,Pagadian,PAG,RPMP,7.831,123.461
 4600,Puerto Princesa Airport,Puerto Princesa,PPS,RPVP,9.742,118.759
-4601,General Santos International Airport,Romblon,GES,RPMR,6.058,125.096
+4601,General Santos International Airport,General Santos,GES,RPMR,6.058,125.096
 4602,Tugdan Airport,Romblon,TBH,RPVU,12.311,122.085
 4603,Roxas Airport,Roxas City,RXS,RPVR,11.598,122.752
 4604,San Fernando Airport,San Fernando,SFE,RPUS,16.596,120.303
@@ -7657,7 +7657,7 @@ id,name,city,iata,icao,lat,lng
 7656,Macau Ferry Pier,Macau,XZM,,22.197,113.559
 7657,Willemstad Sea Port,Willemstad,,WILL,12.106,-68.936
 7658,Helsingborg Cruise Port,Helsingborg,JHE,,56.042,12.691
-7659,Stockholm Cruise Port,Stockholm,STO,,59.323,18.081
+7659,All Airports,Stockholm,STO,,59.323,18.081
 7660,Stranraer Ferry Port,Stranraer,SR2,,54.902,-5.027
 7661,Ferry Terminal,Anacortes,,ACRT,48.507,-122.678
 7662,Ferry Dock,Bainbridge Island,,BAIN,47.622,-122.509
@@ -8284,3 +8284,4 @@ id,name,city,iata,icao,lat,lng
 8283,General Manuel Carlos Piar,Ciudad Guayana,CGU,,8.289,-62.76
 8284,Dong Hoi,Dong Hoi,VDH,,17.515,106.591
 8285,Crown Bay,Charlotte Amalie,,STCB,18.335,-64.952
+8286,Saint Helena Airport,St. Helena,HLE,FHSH,-15.959,-5.646
