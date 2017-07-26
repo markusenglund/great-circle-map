@@ -17,8 +17,17 @@ function getPixelPositionOffset(curAirport, airports) {
     .filter(airport => airport.id !== curAirport.id)
     .map((airport) => {
       const location = new LatLonSpherical(airport.lat, airport.lng)
-      const distance = curLocation.distanceTo(location)
-      const vectorLength = distance > 100000 ? (1000000 / distance) ** 2.5 : 10 ** 2.5
+      const distance = curLocation.distanceTo(location) / 1000 // in km
+      const vectorLength = 10000 / (1000 + (4 * distance) + ((distance ** 3) / 1000))
+      // const vectorLength = distance > 100000 ? (1000000 / distance) ** 2.5 : 10 ** 2.5
+      // let vectorLength
+      // if (distance < 100000) {
+      //   vectorLength = 10
+      // } else if (distance < 500000) {
+      //   vectorLength = 1000000 / distance
+      // } else {
+      //   vectorLength =
+      // }
       const vectorDirection = (90 - location.rhumbBearingTo(curLocation)) * (Math.PI / 180)
 
       // TODO: When an airport1 is close and northwest of airport2 it get a little bit of
@@ -36,21 +45,22 @@ function getPixelPositionOffset(curAirport, airports) {
     let southEast
     if (val.northEastProj > 0) {
       northEast = acc.northEast + val.northEastProj
-      southWest = acc.southWest - (5 * val.northEastProj)
+      southWest = acc.southWest - (6 * val.northEastProj)
     } else {
-      northEast = acc.northEast + (5 * val.northEastProj)
+      northEast = acc.northEast + (6 * val.northEastProj)
       southWest = acc.southWest - val.northEastProj
     }
 
     if (val.northWestProj > 0) {
       northWest = acc.northWest + val.northWestProj
-      southEast = acc.southEast - (5 * val.northWestProj)
+      southEast = acc.southEast - (6 * val.northWestProj)
     } else {
-      northWest = acc.northWest + (5 * val.northWestProj)
+      northWest = acc.northWest + (6 * val.northWestProj)
       southEast = acc.southEast - val.northWestProj
     }
     return { northEast, southWest, northWest, southEast }
   }, { northEast: 0, southWest: 0, northWest: 0, southEast: 0 })
+  console.log(directionalForces)
 
   const direction = Object.keys(directionalForces).reduce((a, b) => {
     return directionalForces[a] > directionalForces[b] ? a : b
