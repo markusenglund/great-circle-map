@@ -121,15 +121,26 @@ const AsyncGoogleMap = withScriptjs(withGoogleMap((
       {airportsWithPixelOffset.map((airport) => {
         return (
           <div key={airport.id}>
-            <Marker
+            {/* <Marker
               position={{ lat: airport.lat, lng: airport.lng }}
               icon={{
                 path: google.maps.SymbolPath.CIRCLE,
-                scale: 2,
+                scale: 3,
+                strokeWeight: 1,
                 strokeColor: "#D03030",
-                strokeWeight: 3
+                fillColor: "#D03030",
+                fillOpacity: 1
               }}
-            />
+            /> */}
+            <OverlayView
+              position={{ lat: airport.lat, lng: airport.lng }}
+              mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+              getPixelPositionOffset={() => { return { x: -4, y: -4 } }}
+            >
+              <svg>
+                <circle cx="4" cy="4" r="3" fill="#D03030" stroke="#D03030" strokeWidth="1" />
+              </svg>
+            </OverlayView>
             {label !== "none" ? (
               <OverlayView
                 position={{ lat: airport.lat, lng: airport.lng }}
