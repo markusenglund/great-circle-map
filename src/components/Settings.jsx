@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 import PropTypes from "prop-types"
+import ReactTooltip from "react-tooltip"
 import CloseOnEscape from "react-close-on-escape"
 import onClickOutside from "react-onclickoutside"
 import FaCog from "react-icons/fa/cog"
@@ -79,9 +80,16 @@ class Settings extends Component {
         <button
           className={buttonClass}
           onClick={() => this.setState({ isVisible: !this.state.isVisible })}
+          data-tip
+          data-for="settings"
         >
-          <FaCog />{/* <i className="fa fa-cog" aria-hidden="true" /> */}
+          <FaCog />
         </button>
+
+        <ReactTooltip className="tooltip" id="settings" place="right" effect="solid">
+          <span>Settings</span>
+        </ReactTooltip>
+
         {this.state.isVisible ? (
           <CloseOnEscape onEscape={this.handleEscape}>
             <div id="dropdown">
