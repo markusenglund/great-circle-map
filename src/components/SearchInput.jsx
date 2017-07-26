@@ -47,11 +47,9 @@ class SearchInput extends Component {
       return Promise.resolve({ options: [] })
     }
 
-    // TODO: Make value dependent on label-state
     if (input.length === 3) {
       const matches = airportData
         .filter(airport =>
-          // airport.iata === inputUpperCase || inputEntireStringRegex.test(airport.city)
           airport.iata === inputUpperCase ||
             inputStartOfWordRegex.test(airport.city) ||
             inputStartOfWordRegex.test(airport.name)
@@ -157,8 +155,11 @@ class SearchInput extends Component {
       return i ? `${acc}-${val.value}` : val.value
     }, "")
 
-    const newUrlParam = urlParam ?
-      encodeURIComponent(`${urlParam}, ${valueString}`) :
+    // Remove trailing commas, semicolons, slashes or new line
+    const urlParamNoDangle = urlParam ? urlParam.replace(/[,;/\n]$/, "") : ""
+
+    const newUrlParam = urlParamNoDangle ?
+      encodeURIComponent(`${urlParamNoDangle}, ${valueString}`) :
       encodeURIComponent(valueString)
 
     dispatch({ type: "ENABLE_MAP_REBOUND" })
@@ -202,7 +203,7 @@ class SearchInput extends Component {
             multi
             value={this.state.value}
             onChange={input => this.handleChange(input)}
-            loadOptions={input => {
+            loadOptions={(input) => {
               return this.getOptions(input)
             }}
             onInputKeyDown={e => this.handleInputKeyDown(e)}

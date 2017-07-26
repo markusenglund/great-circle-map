@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
-import axios from "axios"
+// import axios from "axios"
 import Sidebar from "react-sidebar"
 import { handleRoutes } from "../actionCreators"
 import Header from "./Header"
@@ -25,7 +25,6 @@ class Main extends Component {
     if (navigator.userAgent.match(/Android/i)
       || navigator.userAgent.match(/webOS/i)
       || navigator.userAgent.match(/iPhone/i)
-      // || navigator.userAgent.match(/iPad/i)
       || navigator.userAgent.match(/iPod/i)
       || navigator.userAgent.match(/BlackBerry/i)
       || navigator.userAgent.match(/Windows Phone/i)

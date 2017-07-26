@@ -135,7 +135,6 @@ export function handleRoutes(routeStr) {
     }
 
     const { airportData } = getState()
-
     const { error, routes } = codes2coords(routesSplitIntoAirportCodes, airportData)
     if (error) {
       dispatch(showError(error.message))

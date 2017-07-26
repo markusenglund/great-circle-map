@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
-import { withGoogleMap, GoogleMap, Polyline, Marker, OverlayView } from "react-google-maps"
+import { withGoogleMap, GoogleMap, Polyline, OverlayView } from "react-google-maps"
 import withScriptjs from "react-google-maps/lib/async/withScriptjs"
 import uniqueId from "lodash.uniqueid"
 import { LatLonSpherical } from "geodesy"
