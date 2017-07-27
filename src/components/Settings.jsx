@@ -82,6 +82,8 @@ class Settings extends Component {
           onClick={() => this.setState({ isVisible: !this.state.isVisible })}
           data-tip
           data-for="settings"
+          data-event="mouseenter focusin"
+          data-event-off="mouseleave focusout click"
         >
           <FaCog />
         </button>
