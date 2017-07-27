@@ -68,19 +68,19 @@ function getPixelPositionOffset(curAirport, airports) {
 
   if (direction === "northEast") {
     return (width, height) => {
-      return { x: 0, y: (-3 * height) / 4 }
+      return { x: 3, y: (-3 * height) / 4 }
     }
   } else if (direction === "northWest") {
     return (width, height) => {
-      return { x: -width, y: (-3 * height) / 4 }
+      return { x: -width - 3, y: (-3 * height) / 4 }
     }
   } else if (direction === "southWest") {
     return (width, height) => {
-      return { x: -width, y: -(height / 5) }
+      return { x: -width - 3, y: -(height / 5) }
     }
   }
   return (width, height) => { // South east
-    return { x: 0, y: -(height / 5) }
+    return { x: 3, y: -(height / 5) }
   }
 }
 
