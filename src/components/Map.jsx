@@ -102,7 +102,6 @@ const AsyncGoogleMap = withScriptjs(withGoogleMap((
         mapTypeControl: false,
         streetViewControl: false,
         zoomControl: false,
-        scaleControl: true,
         fullscreenControl: false
       }}
     >
