@@ -8,10 +8,33 @@ import { LatLonSpherical } from "geodesy"
 
 import { getAirportData, completeMapLoad } from "../actionCreators"
 
-function getPixelPositionOffset(curAirport, airports) {
+function getPixelPositionOffset(curAirport, airports, sectors) {
+  // console.log(sectors)
+  // TODO: Identify which airports are connected to curAirport,
+  // then find out if their incoming bearing is which of the four options
+  // then penalize every option that has at least one incoming route
+  const linkedAirports = sectors
+    .filter(sector => sector.find(airport => airport.id === curAirport.id))
+    .map(sector => (sector[0].id === curAirport.id ? sector[1] : sector[0]))
+  // console.log(linkedAirports)
+
+
   const curLocation = new LatLonSpherical(
     curAirport.lat, curAirport.lng
   )
+
+  const bearings = linkedAirports.map((airport) => {
+    const badBearing = curLocation.bearingTo(new LatLonSpherical(airport.lat, airport.lng))
+    if (badBearing < 90) {
+      return "ne"
+    } else if (badBearing < 180) {
+      return "se"
+    } else if (badBearing < 270) {
+      return "sw"
+    }
+    return "nw"
+  })
+  console.log(bearings)
 
   const vectorProjections = airports
     .filter(airport => airport.id !== curAirport.id)
@@ -21,11 +44,9 @@ function getPixelPositionOffset(curAirport, airports) {
       const vectorLength = 10000 / (1000 + (4 * distance) + ((distance ** 3) / 1000))
       const vectorDirection = (90 - location.rhumbBearingTo(curLocation)) * (Math.PI / 180)
 
-      // TODO: When an airport1 is close and northwest of airport2 it get a little bit of
-      // force to the northwest and MORE negative force southeast so it's negative sum
       const northEastProj = vectorLength * (Math.cos(vectorDirection - (Math.PI / 4)) ** 3)
-
       const northWestProj = vectorLength * (Math.cos(vectorDirection - ((3 * Math.PI) / 4)) ** 3)
+
       return { northEastProj, northWestProj }
     })
 
@@ -51,6 +72,20 @@ function getPixelPositionOffset(curAirport, airports) {
     }
     return { northEast, southWest, northWest, southEast }
   }, { northEast: 0, southWest: 0, northWest: 0, southEast: 0 })
+
+  // Avoid directions where there is a line in the way
+  if (bearings.includes("ne")) {
+    directionalForces.northEast -= 0.5
+  }
+  if (bearings.includes("se")) {
+    directionalForces.southEast -= 0.5
+  }
+  if (bearings.includes("sw")) {
+    directionalForces.southWest -= 0.5
+  }
+  if (bearings.includes("nw")) {
+    directionalForces.northWest -= 0.5
+  }
   console.log(directionalForces)
 
   const direction = Object.keys(directionalForces).reduce((a, b) => {
@@ -81,15 +116,23 @@ const AsyncGoogleMap = withScriptjs(withGoogleMap((
 ) => {
   // Extract all airports in routes and filter away duplicate airports
   const airports = []
+  const sectors = []
   routes.forEach((route) => {
     route.forEach((airport) => {
       if (airports.every(prevAirport => prevAirport.id !== airport.id)) {
         airports.push(airport)
       }
     })
+    for (let i = 1; i < route.length; i += 1) {
+      sectors.push([route[i - 1], route[i]])
+    }
   })
+
   const airportsWithPixelOffset = airports.map((airport) => {
-    return { ...airport, getPixelPositionOffset: getPixelPositionOffset(airport, airports) }
+    return {
+      ...airport,
+      getPixelPositionOffset: getPixelPositionOffset(airport, airports, sectors)
+    }
   })
 
   return (
@@ -121,17 +164,6 @@ const AsyncGoogleMap = withScriptjs(withGoogleMap((
       {airportsWithPixelOffset.map((airport) => {
         return (
           <div key={airport.id}>
-            {/* <Marker
-              position={{ lat: airport.lat, lng: airport.lng }}
-              icon={{
-                path: google.maps.SymbolPath.CIRCLE,
-                scale: 3,
-                strokeWeight: 1,
-                strokeColor: "#D03030",
-                fillColor: "#D03030",
-                fillOpacity: 1
-              }}
-            /> */}
             <OverlayView
               position={{ lat: airport.lat, lng: airport.lng }}
               mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
