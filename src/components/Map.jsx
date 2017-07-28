@@ -19,22 +19,13 @@ function getPixelPositionOffset(curAirport, airports) {
       const location = new LatLonSpherical(airport.lat, airport.lng)
       const distance = curLocation.distanceTo(location) / 1000 // in km
       const vectorLength = 10000 / (1000 + (4 * distance) + ((distance ** 3) / 1000))
-      // const vectorLength = distance > 100000 ? (1000000 / distance) ** 2.5 : 10 ** 2.5
-      // let vectorLength
-      // if (distance < 100000) {
-      //   vectorLength = 10
-      // } else if (distance < 500000) {
-      //   vectorLength = 1000000 / distance
-      // } else {
-      //   vectorLength =
-      // }
       const vectorDirection = (90 - location.rhumbBearingTo(curLocation)) * (Math.PI / 180)
 
       // TODO: When an airport1 is close and northwest of airport2 it get a little bit of
       // force to the northwest and MORE negative force southeast so it's negative sum
-      const northEastProj = vectorLength * Math.cos(vectorDirection - (Math.PI / 4))
+      const northEastProj = vectorLength * (Math.cos(vectorDirection - (Math.PI / 4)) ** 3)
 
-      const northWestProj = vectorLength * Math.cos(vectorDirection - ((3 * Math.PI) / 4))
+      const northWestProj = vectorLength * (Math.cos(vectorDirection - ((3 * Math.PI) / 4)) ** 3)
       return { northEastProj, northWestProj }
     })
 
