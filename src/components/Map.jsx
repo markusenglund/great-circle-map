@@ -9,10 +9,7 @@ import { LatLonSpherical } from "geodesy"
 import { getAirportData, completeMapLoad } from "../actionCreators"
 
 function getPixelPositionOffset(curAirport, airports, sectors) {
-  // console.log(sectors)
-  // TODO: Identify which airports are connected to curAirport,
-  // then find out if their incoming bearing is which of the four options
-  // then penalize every option that has at least one incoming route
+  // Identify which airports are connected to curAirport,
   const linkedAirports = sectors
     .filter(sector => sector.find(airport => airport.id === curAirport.id))
     .map(sector => (sector[0].id === curAirport.id ? sector[1] : sector[0]))
@@ -34,7 +31,6 @@ function getPixelPositionOffset(curAirport, airports, sectors) {
     }
     return "nw"
   })
-  console.log(bearings)
 
   const vectorProjections = airports
     .filter(airport => airport.id !== curAirport.id)
@@ -86,7 +82,6 @@ function getPixelPositionOffset(curAirport, airports, sectors) {
   if (bearings.includes("nw")) {
     directionalForces.northWest -= 0.5
   }
-  console.log(directionalForces)
 
   const direction = Object.keys(directionalForces).reduce((a, b) => {
     return directionalForces[a] > directionalForces[b] ? a : b

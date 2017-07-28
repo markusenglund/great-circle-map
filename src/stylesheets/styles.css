@@ -56,13 +56,14 @@ ul {
 }
 
 #textarea-wrapper {
-  margin-top: 10px;
+  margin-top: 0;
   margin-left: 10px;
   margin-right: 10px;
   /*margin-bottom: 5px;*/
 }
 
 #textarea-wrapper p {
+  margin: 8px 0;
   color: #ddd;
   font-size: 14px;
 }
@@ -82,13 +83,10 @@ ul {
 }
 
 .submit-button-wrapper {
-  margin-left: 10px;
-  margin-right: 10px;
-  margin-bottom: 0;
-  margin-top: 10px;
+  margin: 10px;
   display: flex;
   align-items: top;
-  height: 60px;
+  /*height: 60px;*/
   justify-content: space-between;
 }
 

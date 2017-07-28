@@ -57,7 +57,6 @@ class Main extends Component {
     this.setState({ isSidebarDocked: !this.state.isSidebarDocked })
 
     // Resize map to workaround the empty map bug
-    // FIXME: Could this settimeout cause bugs if transitions take longer?
     const { map } = this.props
     setTimeout(() =>
       google.maps.event.trigger(map.context.__SECRET_MAP_DO_NOT_USE_OR_YOU_WILL_BE_FIRED, "resize"),
