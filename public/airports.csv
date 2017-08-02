@@ -657,7 +657,7 @@ id,name,city,iata,icao,lat,lng
 656,Maitland Airport,Maitland,MTL,YMND,-32.703,151.488
 657,Mallacoota Airport,Mallacoota,XMC,YMCO,-37.598,149.72
 658,Maningrida Airport,Maningrida,MNG,YMGD,-12.056,134.234
-659,Sunshine Coast Airport,Maroochydore,MCY,YBMC,-26.603,153.091
+659,Sunshine Coast Airport,Sunshine Coast,MCY,YBMC,-26.603,153.091
 660,Maryborough Airport,Maryborough,MBH,YMYB,-25.513,152.715
 661,McArthur River Mine Airport,McArthur River Mine,MCV,YMHU,-16.442,136.084
 662,Meekatharra Airport,Meekatharra,MKR,YMEK,-26.612,118.548
@@ -3531,7 +3531,7 @@ id,name,city,iata,icao,lat,lng
 3530,Vincenzo Florio Airport Trapani-Birgi,Trapani,TPS,LICT,37.911,12.488
 3531,San Domino Island Heliport,Tremiti Islands,TQR,,42.103,15.488
 3532,Trento-Mattarello Airport,Trento (TN),TN0,LIDT,46.021,11.124
-3533,Treviso-Sant'Angelo Airport,Treviso (Venice),TSF,LIPH,45.648,12.194
+3533,Venice Treviso-Sant'Angelo Airport,Treviso,TSF,LIPH,45.648,12.194
 3534,Istrana Air Base,Treviso,,LIPS,45.685,12.083
 3535,Torino-Aeritalia Airport,Turin,,LIMA,45.086,7.603
 3536,Varese-Venegono Airport,Varese,,LILN,45.742,8.888
