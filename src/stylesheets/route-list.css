@@ -108,6 +108,13 @@
   font-size: 20px;
 }*/
 #footer {
-  color: blue;
+  color: #ddd;
   margin: 2px;
+  font-size: 12px;
+  display: flex;
+  justify-content: space-around;
+}
+
+#footer a {
+  color: #ddd;
 }
