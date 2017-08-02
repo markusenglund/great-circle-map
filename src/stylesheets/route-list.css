@@ -1,8 +1,18 @@
-#route-list {
+#route-list-wrapper {
+  height: 100%;
   background-color: rgb(22, 22, 22);
   flex: 0 1 auto;
   overflow: auto;
-  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+#route-list {
+  /*background-color: rgb(22, 22, 22);*/
+  /*flex: 0 1 auto;
+  overflow: auto;*/
+  /*height: 100%;*/
 }
 
 .route-element {
@@ -97,3 +107,7 @@
 /*.fa-arrow-down {
   font-size: 20px;
 }*/
+#footer {
+  color: blue;
+  margin: 2px;
+}

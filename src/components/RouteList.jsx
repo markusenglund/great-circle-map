@@ -6,19 +6,24 @@ import RouteElement from "./RouteElement"
 
 function RouteList({ routes, urlParam, history }) {
   return (
-    <ul id="route-list">
-      {routes.map((route, i) => {
-        return route.length > 1 ?
-          <RouteElement
-            key={uniqueId()}
-            route={route}
-            index={i}
-            urlParam={urlParam}
-            history={history}
-          /> :
-        null
-      })}
-    </ul>
+    <div id="route-list-wrapper">
+      <ul id="route-list">
+        {routes.map((route, i) => {
+          return route.length > 1 ?
+            <RouteElement
+              key={uniqueId()}
+              route={route}
+              index={i}
+              urlParam={urlParam}
+              history={history}
+            /> :
+          null
+        })}
+      </ul>
+      <footer id="footer">
+        Made by Markus Englund
+      </footer>
+    </div>
   )
 }
 
