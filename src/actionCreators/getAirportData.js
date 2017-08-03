@@ -1,9 +1,9 @@
 import Papa from "papaparse"
 import getRoutesFromUrl from "./getRoutesFromUrl"
 
-export default function getAirportData(urlParam) {
+export default function getAirportData() {
   return (dispatch, getState) => {
-    const { airportData } = getState()
+    const { airportData, url } = getState()
 
     if (airportData.length === 0) {
       Papa.parse("/airports.csv", {
@@ -15,8 +15,8 @@ export default function getAirportData(urlParam) {
             type: "RECEIVE_AIRPORT_DATA",
             data: results.data
           })
-          if (urlParam) {
-            dispatch(getRoutesFromUrl(urlParam))
+          if (url.param) {
+            dispatch(getRoutesFromUrl(url.param))
           }
         }
       })

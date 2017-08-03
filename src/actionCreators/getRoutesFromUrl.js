@@ -47,9 +47,12 @@ function codes2coords(routeArr, airportData) {
 
 // This is the action creator that gets called when new url is passed
 // Dispatches either an error (if url is invalid input) or the paths of the routes
-export default function getRoutesFromUrl(routeStr) {
+export default function getRoutesFromUrl() {
   return (dispatch, getState) => {
-    if (routeStr === "") {
+    const { url } = getState()
+    const routeStr = url.param
+    // if (routeStr === "") {
+    if (url.param === "") {
       return dispatch({ type: "SUBMIT_ROUTES", routes: [] })
     }
 

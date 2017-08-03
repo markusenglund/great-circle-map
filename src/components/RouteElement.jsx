@@ -172,7 +172,9 @@ function mapStateToProps(state) {
   return {
     distanceUnit: state.settings.distanceUnit.abbr,
     label: state.settings.label.value,
-    error: state.error
+    error: state.error,
+    urlParam: state.url.param,
+    history: state.url.history
   }
 }
 

@@ -204,10 +204,10 @@ class Map extends Component {
   }
 
   handleMapMounted(map) {
-    const { dispatch, urlParam, isMapLoaded } = this.props
+    const { dispatch, isMapLoaded } = this.props
     if (map && !isMapLoaded) {
       dispatch({ type: "COMPLETE_MAP_LOAD", map })
-      dispatch(getAirportData(urlParam))
+      dispatch(getAirportData())
     }
   }
 
@@ -237,7 +237,6 @@ class Map extends Component {
 Map.propTypes = {
   dispatch: PropTypes.func.isRequired,
   routes: PropTypes.arrayOf(PropTypes.array).isRequired,
-  urlParam: PropTypes.string,
   isMapLoaded: PropTypes.bool.isRequired,
   map: PropTypes.shape({ fitBounds: PropTypes.func }),
   shouldMapRebound: PropTypes.bool.isRequired,
@@ -245,7 +244,7 @@ Map.propTypes = {
   label: PropTypes.string.isRequired,
   zoom: PropTypes.number.isRequired
 }
-Map.defaultProps = { urlParam: null, map: null }
+Map.defaultProps = { map: null }
 
 function mapStateToProps(state) {
   return {

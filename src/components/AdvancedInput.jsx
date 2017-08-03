@@ -83,7 +83,7 @@ AdvancedInput.propTypes = {
 AdvancedInput.defaultProps = { urlParam: "" }
 
 function mapStateToProps(state) {
-  return { isMobile: state.mobile }
+  return { isMobile: state.mobile, urlParam: state.url.param, history: state.url.history }
 }
 
 export default connect(mapStateToProps)(AdvancedInput)

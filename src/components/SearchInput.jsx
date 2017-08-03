@@ -237,7 +237,12 @@ SearchInput.propTypes = {
 SearchInput.defaultProps = { urlParam: "" }
 
 function mapStateToProps(state) {
-  return { airportData: state.airportData, isMobile: state.mobile }
+  return {
+    airportData: state.airportData,
+    isMobile: state.mobile,
+    urlParam: state.url.param,
+    history: state.url.history
+  }
 }
 
 export default connect(mapStateToProps)(SearchInput)

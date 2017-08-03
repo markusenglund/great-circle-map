@@ -1,28 +1,19 @@
 import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
-// import axios from "axios"
 import ReactSidebar from "react-sidebar"
+
 import { getRoutesFromUrl } from "../actionCreators"
 import Sidebar from "./Sidebar"
-// import Header from "./Header"
 import Map from "./Map"
-// import RouteInput from "./RouteInput"
-// import RouteList from "./RouteList"
 import ButtonGroup from "./ButtonGroup"
-// import ZoomButtons from "./ZoomButtons"
 
 class App extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = { isSidebarDocked: true, isSidebarOpen: true, transitionsActive: false }
 
-    this.toggleSidebarDock = this.toggleSidebarDock.bind(this)
-    this.handleSetSidebarOpen = this.handleSetSidebarOpen.bind(this)
-  }
-
-  componentWillMount() {
-    const { dispatch } = this.props
+    const { dispatch, match, history } = props
     if (navigator.userAgent.match(/Android/i)
       || navigator.userAgent.match(/webOS/i)
       || navigator.userAgent.match(/iPhone/i)
@@ -33,23 +24,18 @@ class App extends Component {
       dispatch({ type: "IS_MOBILE" })
     }
 
-    // Check if user is in China and set state
-  //   axios.get("https://freegeoip.net/json/")
-  //     .then((res) => {
-  //       console.log("should be location", res)
-  //       dispatch({ type: "GET_LOCATION", location: res.data.country_code })
-  //     })
-  }
+    dispatch({ type: "DECODE_URL", param: match.params.string, history })
 
-  // componentDidMount() {
-  //   this.setState({ transitionsActive: true })
-  // }
+    this.toggleSidebarDock = this.toggleSidebarDock.bind(this)
+    this.handleSetSidebarOpen = this.handleSetSidebarOpen.bind(this)
+  }
 
   componentWillReceiveProps(nextProps) {
     // When we receive new props (meaning route parameters) we dispatch route handling action
-    if (nextProps.match.params.string !== this.props.match.params.string) {
-      const decodedUrlParam = nextProps.match.params.string ? decodeURIComponent(nextProps.match.params.string) : ""
-      this.props.dispatch(getRoutesFromUrl(decodedUrlParam))
+    const { match, dispatch } = this.props
+    if (nextProps.match.params.string !== match.params.string) {
+      dispatch({ type: "DECODE_URL", param: nextProps.match.params.string, history: nextProps.history })
+      dispatch(getRoutesFromUrl())
     }
   }
 
@@ -57,7 +43,7 @@ class App extends Component {
     this.setState({ transitionsActive: true })
     this.setState({ isSidebarDocked: !this.state.isSidebarDocked })
 
-    // Resize map to workaround the empty map bug
+    // Resize map to workaround the empty map bug, 300 is animation delay
     const { map } = this.props
     setTimeout(() =>
       google.maps.event.trigger(map.context.__SECRET_MAP_DO_NOT_USE_OR_YOU_WILL_BE_FIRED, "resize"),
@@ -71,12 +57,11 @@ class App extends Component {
   }
 
   render() {
-    const { match, history, buttonsVisible, isMobile } = this.props
-    const decodedUrlParam = match.params.string ? decodeURIComponent(match.params.string) : ""
+    const { history, buttonsVisible, isMobile } = this.props
 
     return (
       <ReactSidebar
-        sidebar={<Sidebar isMobile={isMobile} decodedUrlParam={decodedUrlParam} />}
+        sidebar={<Sidebar isMobile={isMobile} />}
         docked={!isMobile ? this.state.isSidebarDocked : false}
         open={isMobile ? this.state.isSidebarOpen : false}
         onSetOpen={this.handleSetSidebarOpen}
@@ -96,8 +81,7 @@ class App extends Component {
               history={history}
               buttonsVisible={buttonsVisible}
             />
-            {/* {!isMobile ? <ZoomButtons map={map} buttonsVisible={buttonsVisible} /> : null} */}
-            <Map urlParam={decodedUrlParam} />
+            <Map />
           </div>
         </div>
       </ReactSidebar>

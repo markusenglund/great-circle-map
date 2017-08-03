@@ -4,7 +4,7 @@ import { connect } from "react-redux"
 import uniqueId from "lodash.uniqueid"
 import RouteElement from "./RouteElement"
 
-function RouteList({ routes, urlParam, history }) {
+function RouteList({ routes }) {
   return (
     <div id="route-list-wrapper">
       <ul id="route-list">
@@ -14,8 +14,6 @@ function RouteList({ routes, urlParam, history }) {
               key={uniqueId()}
               route={route}
               index={i}
-              urlParam={urlParam}
-              history={history}
             /> :
           null
         })}
@@ -29,14 +27,7 @@ function RouteList({ routes, urlParam, history }) {
   )
 }
 
-
-RouteList.propTypes = {
-  routes: PropTypes.arrayOf(PropTypes.array).isRequired,
-  urlParam: PropTypes.string,
-  history: PropTypes.shape({ push: PropTypes.function }).isRequired
-}
-RouteList.defaultProps = { urlParam: "" }
-
+RouteList.propTypes = { routes: PropTypes.arrayOf(PropTypes.array).isRequired }
 
 function mapStateToProps(state) {
   return {
