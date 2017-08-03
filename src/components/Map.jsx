@@ -6,7 +6,7 @@ import withScriptjs from "react-google-maps/lib/async/withScriptjs"
 import uniqueId from "lodash.uniqueid"
 import { LatLonSpherical } from "geodesy"
 
-import { getAirportData, completeMapLoad } from "../actionCreators"
+import { getAirportData } from "../actionCreators"
 
 function getPixelPositionOffset(curAirport, airports, sectors) {
   // Identify which airports are connected to curAirport,
@@ -206,7 +206,7 @@ class Map extends Component {
   handleMapMounted(map) {
     const { dispatch, urlParam, isMapLoaded } = this.props
     if (map && !isMapLoaded) {
-      dispatch(completeMapLoad(map))
+      dispatch({ type: "COMPLETE_MAP_LOAD", map })
       dispatch(getAirportData(urlParam))
     }
   }

@@ -2,15 +2,15 @@ import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
 import Toggle from "react-toggle"
-import { changeInputMode } from "../actionCreators"
+// import { changeInputMode } from "../actionCreators"
 
 class InputModeToggle extends Component {
   handleModeChange() {
     const { inputMode, dispatch } = this.props
     if (inputMode === "search") {
-      dispatch(changeInputMode("advanced"))
+      dispatch({ type: "CHANGE_INPUT_MODE", mode: "advanced" })
     } else if (inputMode === "advanced") {
-      dispatch(changeInputMode("search"))
+      dispatch({ type: "CHANGE_INPUT_MODE", mode: "search" })
     }
   }
 

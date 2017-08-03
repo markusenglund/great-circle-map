@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import { connect } from "react-redux"
 // import axios from "axios"
 import Sidebar from "react-sidebar"
-import { handleRoutes } from "../actionCreators"
+import { getRoutesFromUrl } from "../actionCreators"
 import Header from "./Header"
 import Map from "./Map"
 import RouteInput from "./RouteInput"
@@ -48,7 +48,7 @@ class Main extends Component {
     // When we receive new props (meaning route parameters) we dispatch route handling action
     if (nextProps.match.params.string !== this.props.match.params.string) {
       const decodedUrlParam = nextProps.match.params.string ? decodeURIComponent(nextProps.match.params.string) : ""
-      this.props.dispatch(handleRoutes(decodedUrlParam))
+      this.props.dispatch(getRoutesFromUrl(decodedUrlParam))
     }
   }
 

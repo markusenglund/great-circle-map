@@ -6,7 +6,7 @@ import { Collapse } from "react-collapse"
 import uniqueId from "lodash.uniqueid"
 import MdClose from "react-icons/lib/md/close"
 
-import { parseStringWithSlashes } from "../actionCreators"
+import { parseStringWithSlashes } from "../actionCreators/getRoutesFromUrl"
 import SectorElement from "./SectorElement"
 import CollapsibleElement from "./CollapsibleElement"
 
