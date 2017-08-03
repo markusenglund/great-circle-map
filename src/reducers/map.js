@@ -7,8 +7,8 @@ const map = (state = { map: null, isLoaded: false, shouldMapRebound: true, zoom:
       return { ...state, shouldMapRebound: false }
     case "ENABLE_MAP_REBOUND":
       return { ...state, shouldMapRebound: true }
-    case "ZOOM":
-      return { ...state, zoom: action.level }
+    // case "ZOOM":
+    //   return { ...state, zoom: action.level }
     default:
       return state
   }
