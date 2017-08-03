@@ -27,7 +27,7 @@ function getSortValue(airport, inputEntireStringRegex, inputStartOfStringRegex, 
 class SearchInput extends Component {
   constructor(props) {
     super(props)
-    this.state = { value: null }
+    this.state = {}
 
     this.handleSelectMounted = this.handleSelectMounted.bind(this)
   }
@@ -137,7 +137,9 @@ class SearchInput extends Component {
   }
 
   handleChange(input) {
-    this.setState({ value: input, menuRenderer: () => <div /> })
+    this.setState({ menuRenderer: () => <div /> })
+    const { dispatch } = this.props
+    dispatch({ type: "CHANGE_SEARCH_INPUT", input })
   }
 
   handleSubmit(event) {
@@ -148,11 +150,11 @@ class SearchInput extends Component {
       this.select.blurInput()
     }
 
-    const { value } = this.state
+    const { inputValue } = this.props
 
-    if (!value) return
-    // Transform this.state.value to inputstring-format. Use urlParam to combine with old routes
-    const valueString = value.reduce((acc, val, i) => {
+    if (!inputValue) return
+    // Transform inputValue to inputstring-format. Use urlParam to combine with old routes
+    const valueString = inputValue.reduce((acc, val, i) => {
       return i ? `${acc}-${val.value}` : val.value
     }, "")
 
@@ -165,7 +167,7 @@ class SearchInput extends Component {
 
     dispatch({ type: "ENABLE_MAP_REBOUND" })
     history.push(newUrlParam)
-    this.setState({ value: null })
+    dispatch({ type: "CHANGE_SEARCH_INPUT", input: null })
   }
   handleInputKeyDown(event) {
     if (event.keyCode === 13 && !event.target.value) { // Workaround for submitting form on enter
@@ -192,6 +194,7 @@ class SearchInput extends Component {
 
   render() {
     const SelectAsync = Select.Async
+    const { inputValue } = this.props
 
     return (
       <form className="input-form" onSubmit={e => this.handleSubmit(e)}>
@@ -202,7 +205,7 @@ class SearchInput extends Component {
           </p>
           <SelectAsync
             multi
-            value={this.state.value}
+            value={inputValue}
             onChange={input => this.handleChange(input)}
             loadOptions={(input) => {
               return this.getOptions(input)
@@ -233,16 +236,18 @@ SearchInput.propTypes = {
   history: PropTypes.shape({ push: PropTypes.function }).isRequired,
   airportData: PropTypes.arrayOf(PropTypes.object).isRequired,
   dispatch: PropTypes.func.isRequired,
-  isMobile: PropTypes.bool.isRequired
+  isMobile: PropTypes.bool.isRequired,
+  inputValue: PropTypes.arrayOf(PropTypes.object)
 }
-SearchInput.defaultProps = { urlParam: "" }
+SearchInput.defaultProps = { urlParam: "", inputValue: null }
 
 function mapStateToProps(state) {
   return {
     airportData: state.airportData,
     isMobile: state.mobile,
     urlParam: state.url.param,
-    history: state.url.history
+    history: state.url.history,
+    inputValue: state.searchInput
   }
 }
 

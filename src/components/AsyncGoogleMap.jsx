@@ -9,8 +9,6 @@ function getPixelPositionOffset(curAirport, airports, sectors) {
   const linkedAirports = sectors
     .filter(sector => sector.find(airport => airport.id === curAirport.id))
     .map(sector => (sector[0].id === curAirport.id ? sector[1] : sector[0]))
-  // console.log(linkedAirports)
-
 
   const curLocation = new LatLonSpherical(
     curAirport.lat, curAirport.lng

@@ -7,8 +7,9 @@ import inputMode from "./inputMode"
 import settings from "./settings"
 import mobile from "./mobile"
 import url from "./url"
+import searchInput from "./searchInput"
 // import location from "./location"
 
 export default combineReducers(
-  { routes, airportData, error, map, inputMode, settings, mobile, url }
+  { routes, airportData, error, map, inputMode, settings, mobile, url, searchInput }
 )
