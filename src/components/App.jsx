@@ -2,12 +2,13 @@ import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
 // import axios from "axios"
-import Sidebar from "react-sidebar"
+import ReactSidebar from "react-sidebar"
 import { getRoutesFromUrl } from "../actionCreators"
-import Header from "./Header"
+import Sidebar from "./Sidebar"
+// import Header from "./Header"
 import Map from "./Map"
-import RouteInput from "./RouteInput"
-import RouteList from "./RouteList"
+// import RouteInput from "./RouteInput"
+// import RouteList from "./RouteList"
 import ButtonGroup from "./ButtonGroup"
 // import ZoomButtons from "./ZoomButtons"
 
@@ -70,20 +71,12 @@ class App extends Component {
   }
 
   render() {
-    const { match, history, map, buttonsVisible, isMobile } = this.props
+    const { match, history, buttonsVisible, isMobile } = this.props
     const decodedUrlParam = match.params.string ? decodeURIComponent(match.params.string) : ""
 
-    const sidebarContent = (
-      <div className="left-column">
-        {!isMobile ? <Header /> : null}
-        <RouteInput urlParam={decodedUrlParam} history={history} />
-        <RouteList urlParam={decodedUrlParam} history={history} />
-      </div>
-    )
-
     return (
-      <Sidebar
-        sidebar={sidebarContent}
+      <ReactSidebar
+        sidebar={<Sidebar isMobile={isMobile} decodedUrlParam={decodedUrlParam} />}
         docked={!isMobile ? this.state.isSidebarDocked : false}
         open={isMobile ? this.state.isSidebarOpen : false}
         onSetOpen={this.handleSetSidebarOpen}
@@ -107,7 +100,7 @@ class App extends Component {
             <Map urlParam={decodedUrlParam} />
           </div>
         </div>
-      </Sidebar>
+      </ReactSidebar>
     )
   }
 }
