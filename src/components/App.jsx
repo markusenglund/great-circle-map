@@ -31,7 +31,7 @@ class App extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    // When we receive new props (meaning route parameters) we dispatch route handling action
+    // When we receive new props (meaning route parameters) we dispatch getRoutesFromUrl action
     const { match, dispatch } = this.props
     if (nextProps.match.params.string !== match.params.string) {
       dispatch({ type: "DECODE_URL", param: nextProps.match.params.string, history: nextProps.history })

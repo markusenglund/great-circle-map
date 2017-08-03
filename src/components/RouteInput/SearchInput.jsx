@@ -4,6 +4,7 @@ import PropTypes from "prop-types"
 import Select from "react-select"
 import ErrorMessage from "./ErrorMessage"
 
+// Sort search results
 function getSortValue(airport, inputEntireStringRegex, inputStartOfStringRegex, inputUpperCase) {
   let sortValue
   if (airport.icao === inputUpperCase) {
@@ -31,10 +32,10 @@ class SearchInput extends Component {
     this.handleSelectMounted = this.handleSelectMounted.bind(this)
   }
 
+  // FIXME: There's a lot of repetitive code here
   getOptions(input) {
     const { airportData } = this.props
 
-    // TODO: Add more symbols that search should ignore: / ) ( etc
     const inputParts = input.split(/[.-\s]+/)
     const inputRegexString = inputParts.reduce((acc, val) => `${acc}[.-\\s]+${val}`)
 
@@ -72,7 +73,6 @@ class SearchInput extends Component {
         })
         .slice(0, 10)
       return Promise.resolve({ options: matches })
-      // return Promise.resolve({ options: matches })
     }
 
     if (input.length === 4) {
@@ -129,6 +129,7 @@ class SearchInput extends Component {
     return Promise.resolve({ options: cityMatches })
   }
 
+  // Make a reference to the select dom-component so it can be blurred
   handleSelectMounted(selectWrapper) {
     if (selectWrapper) {
       this.select = selectWrapper.select
