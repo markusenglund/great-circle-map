@@ -7,6 +7,7 @@ import { getRoutesFromUrl } from "../actionCreators"
 import Sidebar from "./Sidebar"
 import Map from "./Map"
 import ButtonGroup from "./ButtonGroup"
+import D3Map from "./d3-map"
 
 class App extends Component {
   constructor(props) {
@@ -81,7 +82,8 @@ class App extends Component {
               history={history}
               buttonsVisible={buttonsVisible}
             />
-            <Map />
+            {/* <Map /> */}
+            <D3Map />
           </div>
         </div>
       </ReactSidebar>
