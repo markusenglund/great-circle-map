@@ -3,9 +3,9 @@ import PropTypes from "prop-types"
 import { connect } from "react-redux"
 
 import { getAirportData } from "../actionCreators"
-import AsyncGoogleMap from "./AsyncGoogleMap"
+import GoogleMap from "./GoogleMap"
 
-class Map extends Component {
+class GoogleMapWrapper extends Component {
   componentDidUpdate() {
     // Change the viewport to fit the airports that have been rendered to the map.
     const { routes, shouldMapRebound, map } = this.props
@@ -32,7 +32,7 @@ class Map extends Component {
   render() {
     const { routes, mapType, label, zoom, isMapLoaded } = this.props
     return (
-      <AsyncGoogleMap
+      <GoogleMap
         googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyBISa-Ul-NOnD-H5lweC_w4evLmV_0fuSU"
         loadingElement={
           <div style={{ height: "100%" }} />
@@ -53,7 +53,7 @@ class Map extends Component {
     )
   }
 }
-Map.propTypes = {
+GoogleMapWrapper.propTypes = {
   dispatch: PropTypes.func.isRequired,
   routes: PropTypes.arrayOf(PropTypes.array).isRequired,
   isMapLoaded: PropTypes.bool.isRequired,
@@ -63,7 +63,7 @@ Map.propTypes = {
   label: PropTypes.string.isRequired,
   zoom: PropTypes.number.isRequired
 }
-Map.defaultProps = { map: null }
+GoogleMapWrapper.defaultProps = { map: null }
 
 function mapStateToProps(state) {
   return {
@@ -77,4 +77,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(Map)
+export default connect(mapStateToProps)(GoogleMapWrapper)

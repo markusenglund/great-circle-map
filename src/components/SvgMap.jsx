@@ -3,7 +3,7 @@ import { connect } from "react-redux"
 import * as d3 from "d3"
 import * as topojson from "topojson"
 
-class Map extends Component {
+class SvgMap extends Component {
   constructor() {
     super()
     this.state = {
@@ -22,7 +22,6 @@ class Map extends Component {
       .scale(250)
       .translate([this.width / 2, this.height / 2])
       .clipAngle(90)
-      // .pointRadius(2)
 
     this.λ = d3.scaleLinear()
         .domain([0, this.width])
@@ -134,4 +133,4 @@ function mapStateToProps(state) {
   return { routes: state.routes }
 }
 
-export default connect(mapStateToProps)(Map)
+export default connect(mapStateToProps)(SvgMap)

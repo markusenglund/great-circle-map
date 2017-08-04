@@ -5,9 +5,9 @@ import ReactSidebar from "react-sidebar"
 
 import { getRoutesFromUrl, getAirportData } from "../actionCreators"
 import Sidebar from "./Sidebar"
-import Map from "./Map"
+import GoogleMapWrapper from "./GoogleMapWrapper"
 import ButtonGroup from "./ButtonGroup"
-import D3Map from "./d3-map"
+import SvgMap from "./SvgMap"
 
 class App extends Component {
   constructor(props) {
@@ -83,8 +83,8 @@ class App extends Component {
               history={history}
               buttonsVisible={buttonsVisible}
             />
-            {/* <Map /> */}
-            <D3Map />
+            {/* <GoogleMapWrapper /> */}
+            <SvgMap />
           </div>
         </div>
       </ReactSidebar>
