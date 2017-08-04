@@ -3,93 +3,83 @@ import * as d3 from "d3"
 import * as topojson from "topojson"
 
 class Map extends Component {
+  constructor() {
+    super()
+    this.state = {
+      worldData: [],
+      mouseDownLambda: null,
+      mouseDownPhi: null,
+      lambda: 0,
+      phi: 0
+    }
+    this.width = 1000
+    this.height = 700
+    this.projection = d3
+      .geoOrthographic()
+      .scale(250)
+      .translate([this.width / 2, this.height / 2])
+      .clipAngle(90)
+
+    this.λ = d3.scaleLinear()
+        .domain([0, this.width])
+        .range([-180, 180])
+
+    this.φ = d3.scaleLinear()
+        .domain([0, this.height])
+        .range([90, -90])
+
+    this.handleMouseDown = this.handleMouseDown.bind(this)
+    this.handleMouseUp = this.handleMouseUp.bind(this)
+    this.handleMouseMove = this.handleMouseMove.bind(this)
+  }
+
   componentDidMount() {
-//
-//     const width = 1000
-//     const height = 500
-//     const svg = d3.select("#d3-map-wrapper").append("svg")
-//       .attr("width", width)
-//       .attr("height", height)
-//       .on("wheel", () => d3.event.preventDefault())
-//     const g = svg.append("g")
-//
-//     // Converts lat and long to points on the svg
-//     const projection = d3.geoOrthographic()
-//       .translate([width / 2, height / 2])
-//       .scale(150)
-//
-//     const path = d3.geoPath()
-//       .projection(projection)
-//
-//     const zoom = d3.zoom()
-//       .scaleExtent([1, 10])
-//       .on("zoom", () => {
-//         g.attr("transform", d3.event.transform)
-//       })
-//     svg.call(zoom)
-//
-//     function renderMap(err, mapData) {
-//       if (err) throw err
-//       console.log(mapData)
-//       const countries = topojson.feature(mapData, mapData.objects.ne_50m_admin_0_countries_lakes
-// ).features
-//
-//       g.selectAll("path")
-//         .data(countries)
-//         .enter()
-//         .append("path")
-//           .attr("d", path)
-//     }
-//
-//     d3.json("/map.json", renderMap)
-    const width = 1000
-    const height = 700
-    var projection = d3.geoOrthographic()
-        .scale(250)
-        .translate([width / 2, height / 2])
-        .clipAngle(90);
+    if (this.state.worldData.length === 0) {
+      d3.json("/world-110m.json", (error, world) => {
+        if (error) throw error
+        this.setState({ worldData: topojson.feature(world, world.objects.land) })
+      })
+    }
+  }
 
-    console.log("projection: ", projection)
-    var path = d3.geoPath()
-        .projection(projection);
+  handleMouseDown(event) {
+    const x = event.clientX
+    const y = event.clientY
+    this.setState({
+      mouseDownLambda: this.λ(x) - this.state.lambda,
+      mouseDownPhi: this.φ(y) - this.state.phi
+    })
+  }
 
-    console.log("path: ", path)
-    var λ = d3.scaleLinear()
-        .domain([0, width])
-        .range([-180, 180]);
+  handleMouseUp() {
+    this.setState({ mouseDownLambda: null, mouseDownPhi: null })
+  }
 
-    var φ = d3.scaleLinear()
-        .domain([0, height])
-        .range([90, -90]);
-
-    // var svg = d3.select("#d3-map-wrapper").append("svg")
-    //     .attr("width", width)
-    //     .attr("height", height);
-    let svg = d3.select("#svg")
-
-    svg.on("mousemove", function() {
-      var p = d3.mouse(this);
-      projection.rotate([λ(p[0]), φ(p[1])]);
-      svg.selectAll("path").attr("d", path);
-    });
-
-    d3.json("/world-110m.json", function(error, world) {
-      if (error) throw error;
-
-      svg.append("path")
-          .datum(topojson.feature(world, world.objects.land))
-          .attr("class", "land")
-          .attr("d", path);
-    });
+  handleMouseMove(event) {
+    if (this.state.mouseDownLambda) {
+      const lambda = this.λ(event.clientX) - this.state.mouseDownLambda
+      const phi = this.φ(event.clientY) - this.state.mouseDownPhi
+      this.setState({ lambda, phi })
+    }
   }
 
   render() {
-    const width = 1000
-    const height = 700
+    this.projection.rotate([this.state.lambda, this.state.phi])
+    const path = d3
+      .geoPath()
+      .projection(this.projection)
+
     return (
       <div id="d3-map-wrapper">
-        <svg id="svg" width={width} height={height}>
-
+        <svg
+          id="svg"
+          width={this.width}
+          height={this.height}
+          onMouseDown={this.handleMouseDown}
+          onMouseUp={this.handleMouseUp}
+          onMouseMove={this.handleMouseMove}
+        >
+          <path className="svg-land" d={path(this.state.worldData)} />
         </svg>
       </div>
     )
