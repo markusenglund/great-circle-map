@@ -1,7 +1,8 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 import PropTypes from "prop-types"
-import * as d3 from "d3"
+import { geoOrthographic, geoPath } from "d3-geo"
+import { scaleLinear } from "d3-scale"
 
 class SvgMap extends Component {
   constructor() {
@@ -16,17 +17,16 @@ class SvgMap extends Component {
     }
     this.width = 1000
     this.height = 700
-    this.projection = d3
-      .geoOrthographic()
+    this.projection = geoOrthographic()
       .scale(250)
       .translate([this.width / 2, this.height / 2])
       .clipAngle(90)
 
-    this.λ = d3.scaleLinear()
+    this.λ = scaleLinear()
         .domain([0, this.width])
         .range([-180, 180])
 
-    this.φ = d3.scaleLinear()
+    this.φ = scaleLinear()
         .domain([0, this.height])
         .range([90, -90])
 
@@ -74,8 +74,7 @@ class SvgMap extends Component {
 
   render() {
     this.projection.rotate([this.state.lambda, this.state.phi])
-    const path = d3
-      .geoPath()
+    const path = geoPath()
       .projection(this.projection)
       .pointRadius(3)
 
