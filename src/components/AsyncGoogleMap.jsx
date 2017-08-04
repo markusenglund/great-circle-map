@@ -100,7 +100,7 @@ function getPixelPositionOffset(curAirport, airports, sectors) {
 }
 
 const AsyncGoogleMap = withScriptjs(withGoogleMap((
-  { routes, onMapMounted, mapType, label, zoom }
+  { routes, onMapMounted, mapType, label, zoom, isMapLoaded }
 ) => {
   // Extract all airports in routes and filter away duplicate airports
   const airports = []
@@ -149,7 +149,7 @@ const AsyncGoogleMap = withScriptjs(withGoogleMap((
           key={uniqueId()}
         />
       ))}
-      {airportsWithPixelOffset.map((airport) => {
+      {isMapLoaded && airportsWithPixelOffset.map((airport) => {
         return (
           <div key={airport.id}>
             <OverlayView

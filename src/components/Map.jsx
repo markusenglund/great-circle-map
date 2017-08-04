@@ -9,7 +9,7 @@ class Map extends Component {
   componentDidUpdate() {
     // Change the viewport to fit the airports that have been rendered to the map.
     const { routes, shouldMapRebound, map } = this.props
-    if (routes.length && shouldMapRebound) {
+    if (routes.length && shouldMapRebound && map) {
       const { LatLngBounds, LatLng } = google.maps
       const newBounds = new LatLngBounds()
       routes.forEach((route) => {
@@ -25,12 +25,12 @@ class Map extends Component {
     const { dispatch, isMapLoaded } = this.props
     if (map && !isMapLoaded) {
       dispatch({ type: "COMPLETE_MAP_LOAD", map })
-      dispatch(getAirportData())
+      // dispatch(getAirportData())
     }
   }
 
   render() {
-    const { routes, mapType, label, zoom } = this.props
+    const { routes, mapType, label, zoom, isMapLoaded } = this.props
     return (
       <AsyncGoogleMap
         googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyBISa-Ul-NOnD-H5lweC_w4evLmV_0fuSU"
@@ -48,6 +48,7 @@ class Map extends Component {
         mapType={mapType}
         label={label}
         zoom={zoom}
+        isMapLoaded={isMapLoaded}
       />
     )
   }
