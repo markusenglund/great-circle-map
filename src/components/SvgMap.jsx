@@ -82,7 +82,7 @@ class SvgMap extends Component {
     const { mapData } = this.props
 
     return (
-      <div id="d3-map-wrapper">
+      <div id="svg-wrapper">
         <svg
           id="svg"
           width={this.width}

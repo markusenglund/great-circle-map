@@ -1,3 +1,11 @@
+#svg-wrapper {
+  background: #aaa;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 #svg {
   background: #05153a;
   border-radius: 50%;
