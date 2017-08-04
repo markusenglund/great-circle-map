@@ -83,8 +83,8 @@ class App extends Component {
               history={history}
               buttonsVisible={buttonsVisible}
             />
-            <Map />
-            {/* <D3Map /> */}
+            {/* <Map /> */}
+            <D3Map />
           </div>
         </div>
       </ReactSidebar>
