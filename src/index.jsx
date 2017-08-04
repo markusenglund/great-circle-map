@@ -12,6 +12,7 @@ import "./stylesheets/map.css"
 import "./stylesheets/route-list.css"
 import "./stylesheets/react-select.css"
 import "./stylesheets/react-toggle.css"
+import "./stylesheets/svg-map.css"
 
 import reducer from "./reducers"
 import App from "./components/App"

@@ -15,10 +15,10 @@ class SvgMap extends Component {
       airports: [],
       sectors: []
     }
-    this.width = 1000
-    this.height = 700
+    this.width = 600
+    this.height = 600
     this.projection = geoOrthographic()
-      .scale(250)
+      .scale(this.width / 2)
       .translate([this.width / 2, this.height / 2])
       .clipAngle(90)
 
@@ -91,7 +91,7 @@ class SvgMap extends Component {
           onMouseUp={this.handleMouseUp}
           onMouseMove={this.handleMouseMove}
         >
-          <path className="svg-land" d={path(mapData)} />
+          <path className="svg-land" d={path(mapData)} fill="#432" />
           <g>
             {airports.map(airport => (
               <path
