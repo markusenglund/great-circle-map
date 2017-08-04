@@ -1,13 +1,12 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
+import PropTypes from "prop-types"
 import * as d3 from "d3"
-import * as topojson from "topojson"
 
 class SvgMap extends Component {
   constructor() {
     super()
     this.state = {
-      worldData: [],
       mouseDownLambda: null,
       mouseDownPhi: null,
       lambda: 0,
@@ -34,15 +33,6 @@ class SvgMap extends Component {
     this.handleMouseDown = this.handleMouseDown.bind(this)
     this.handleMouseUp = this.handleMouseUp.bind(this)
     this.handleMouseMove = this.handleMouseMove.bind(this)
-  }
-
-  componentDidMount() {
-    if (this.state.worldData.length === 0) {
-      d3.json("/world-110m.json", (error, world) => {
-        if (error) throw error
-        this.setState({ worldData: topojson.feature(world, world.objects.land) })
-      })
-    }
   }
 
   componentWillReceiveProps({ routes }) {
@@ -90,6 +80,7 @@ class SvgMap extends Component {
       .pointRadius(3)
 
     const { airports, sectors } = this.state
+    const { mapData } = this.props
 
     return (
       <div id="d3-map-wrapper">
@@ -101,7 +92,7 @@ class SvgMap extends Component {
           onMouseUp={this.handleMouseUp}
           onMouseMove={this.handleMouseMove}
         >
-          <path className="svg-land" d={path(this.state.worldData)} />
+          <path className="svg-land" d={path(mapData)} />
           <g>
             {airports.map(airport => (
               <path
@@ -130,7 +121,11 @@ class SvgMap extends Component {
   }
 }
 function mapStateToProps(state) {
-  return { routes: state.routes }
+  return { routes: state.routes, mapData: state.svgMap }
+}
+
+SvgMap.propTypes = {
+  mapData: PropTypes.shape({ geometry: PropTypes.object }).isRequired
 }
 
 export default connect(mapStateToProps)(SvgMap)

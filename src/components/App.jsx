@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import { connect } from "react-redux"
 import ReactSidebar from "react-sidebar"
 
-import { getRoutesFromUrl, getAirportData } from "../actionCreators"
+import { getRoutesFromUrl, getAirportData, getSvgMap } from "../actionCreators"
 import Sidebar from "./Sidebar"
 import GoogleMapWrapper from "./GoogleMapWrapper"
 import ButtonGroup from "./ButtonGroup"
@@ -27,6 +27,7 @@ class App extends Component {
 
     dispatch({ type: "DECODE_URL", param: match.params.string, history })
     dispatch(getAirportData())
+    dispatch(getSvgMap())
 
     this.toggleSidebarDock = this.toggleSidebarDock.bind(this)
     this.handleSetSidebarOpen = this.handleSetSidebarOpen.bind(this)
