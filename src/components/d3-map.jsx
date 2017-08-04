@@ -19,6 +19,7 @@ class Map extends Component {
       .scale(250)
       .translate([this.width / 2, this.height / 2])
       .clipAngle(90)
+      // .pointRadius(2)
 
     this.λ = d3.scaleLinear()
         .domain([0, this.width])
@@ -68,6 +69,10 @@ class Map extends Component {
     const path = d3
       .geoPath()
       .projection(this.projection)
+      .pointRadius(3)
+
+    const lineString = { type: "LineString", coordinates: [[0, 0], [80, -40]] }
+    const point = { type: "Point", coordinates: [0, 0] }
 
     return (
       <div id="d3-map-wrapper">
@@ -80,6 +85,8 @@ class Map extends Component {
           onMouseMove={this.handleMouseMove}
         >
           <path className="svg-land" d={path(this.state.worldData)} />
+          <path fill="red" d={path(point)} />
+          <path stroke="red" fill="none" d={path(lineString)} />
         </svg>
       </div>
     )
