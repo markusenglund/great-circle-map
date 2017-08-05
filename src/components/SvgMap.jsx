@@ -23,7 +23,7 @@ class SvgMap extends Component {
 
     this.λ = scaleLinear()
         .domain([0, this.diameter])
-        .range([-180, 180])
+        .range([-90, 90])
 
     this.φ = scaleLinear()
         .domain([0, this.diameter])
@@ -51,6 +51,8 @@ class SvgMap extends Component {
   }
 
   handleMouseDown(event) {
+    // FIXME: Should be based on "svg-pixels" (600) instead of real pixels
+    event.preventDefault()
     const x = event.clientX
     const y = event.clientY
     this.setState({
