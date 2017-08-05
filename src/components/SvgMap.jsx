@@ -15,19 +15,18 @@ class SvgMap extends Component {
       airports: [],
       sectors: []
     }
-    this.width = 600
-    this.height = 600
+    this.diameter = 600
     this.projection = geoOrthographic()
-      .scale(this.width / 2)
-      .translate([this.width / 2, this.height / 2])
+      .scale(this.diameter / 2)
+      .translate([this.diameter / 2, this.diameter / 2])
       .clipAngle(90)
 
     this.λ = scaleLinear()
-        .domain([0, this.width])
+        .domain([0, this.diameter])
         .range([-180, 180])
 
     this.φ = scaleLinear()
-        .domain([0, this.height])
+        .domain([0, this.diameter])
         .range([90, -90])
 
     this.handleMouseDown = this.handleMouseDown.bind(this)
@@ -85,12 +84,17 @@ class SvgMap extends Component {
       <div id="svg-wrapper">
         <svg
           id="svg"
-          width={this.width}
-          height={this.height}
+          viewBox={`-10 -10 ${this.diameter + 20} ${this.diameter + 20}`}
           onMouseDown={this.handleMouseDown}
           onMouseUp={this.handleMouseUp}
           onMouseMove={this.handleMouseMove}
         >
+          <circle
+            r={this.diameter / 2}
+            cx={this.diameter / 2}
+            cy={this.diameter / 2}
+            fill="#05153a"
+          />
           <path className="svg-land" d={path(mapData)} fill="#432" />
           <g>
             {airports.map(airport => (
