@@ -1,12 +1,12 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 import PropTypes from "prop-types"
-import { geoOrthographic, geoPath, geoDistance, geoGraticule } from "d3-geo"
+import { geoOrthographic, geoPath, geoDistance, geoGraticule, geoBounds } from "d3-geo"
 import { scaleLinear } from "d3-scale"
 
 class SvgMap extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       mouseDownLambda: null,
       mouseDownPhi: null,
@@ -37,17 +37,42 @@ class SvgMap extends Component {
   componentWillReceiveProps({ routes }) {
     const airports = []
     const sectors = []
-    routes.forEach((route) => {
-      route.forEach((airport) => {
-        if (airports.every(prevAirport => prevAirport.id !== airport.id)) {
-          airports.push(airport)
+    if (routes.length) {
+      routes.forEach((route) => {
+        route.forEach((airport) => {
+          if (airports.every(prevAirport => prevAirport.id !== airport.id)) {
+            airports.push(airport)
+          }
+        })
+        for (let i = 1; i < route.length; i += 1) {
+          sectors.push([route[i - 1], route[i]])
         }
       })
-      for (let i = 1; i < route.length; i += 1) {
-        sectors.push([route[i - 1], route[i]])
+      const airportCoords = airports.map((airport) => {
+        return [airport.lng, airport.lat]
+      })
+      const multiPoint = {
+        type: "MultiPoint",
+        coordinates: airportCoords
       }
-    })
-    this.setState({ airports, sectors })
+      const boundingBox = geoBounds(multiPoint)
+      let lambda
+      if (boundingBox[0][0] < boundingBox[1][0]) {
+        lambda = -(boundingBox[0][0] + boundingBox[1][0]) / 2
+      } else {
+        lambda = (-(boundingBox[0][0] + boundingBox[1][0] + 360) / 2)
+      }
+      let phi = -(boundingBox[0][1] + boundingBox[1][1]) / 2
+      if (phi < -60) {
+        phi = -60
+      } else if (phi > 60) {
+        phi = 60
+      }
+
+      this.setState({ airports, sectors, lambda, phi })
+    } else {
+      this.setState({ airports, sectors })
+    }
   }
 
   handleMouseDown(event) {
@@ -85,13 +110,12 @@ class SvgMap extends Component {
 
     const { airports, sectors } = this.state
     const { mapData, label } = this.props
-    console.log("graticule ", geoGraticule())
 
     return (
       <div id="svg-wrapper">
         <svg
           id="svg"
-          viewBox={`-10 -10 ${this.diameter + 20} ${this.diameter + 20}`}
+          viewBox={`-25 -25 ${this.diameter + 50} ${this.diameter + 50}`}
           onMouseDown={this.handleMouseDown}
           onMouseUp={this.handleMouseUp}
           onMouseMove={this.handleMouseMove}
@@ -113,7 +137,6 @@ class SvgMap extends Component {
             r={this.diameter / 2}
             cx={this.diameter / 2}
             cy={this.diameter / 2}
-            // fill="#05153a"
             fill="url(#ocean-gradient)"
           />
           <path className="svg-land" d={path(mapData)} fill="url(#land-gradient)" />
