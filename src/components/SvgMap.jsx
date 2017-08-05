@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 import PropTypes from "prop-types"
-import { geoOrthographic, geoPath } from "d3-geo"
+import { geoOrthographic, geoPath, geoDistance } from "d3-geo"
 import { scaleLinear } from "d3-scale"
 
 class SvgMap extends Component {
@@ -85,7 +85,8 @@ class SvgMap extends Component {
 
     const { airports, sectors } = this.state
     const { mapData, label } = this.props
-    console.log("projection: ", this.projection([0, 0]))
+    // console.log(geoDistance([0, 0], [this.state.lambda, this.state.phi])) // [airport.lng, airport.lat], [this.state.lambda, this.state.phi]))
+
 
     return (
       <div id="svg-wrapper">
@@ -111,11 +112,19 @@ class SvgMap extends Component {
                   d={path({ type: "Point", coordinates: [airport.lng, airport.lat] })}
                   key={airport.id}
                 />
-                <text
-                  x={this.projection([airport.lng, airport.lat])[0]}
-                  y={this.projection([airport.lng, airport.lat])[1]}
-                  fill="red">{airport[label] || airport.iata || airport.icao}
-                </text>
+                {geoDistance(
+                  [airport.lng, airport.lat],
+                  [-this.state.lambda, -this.state.phi]
+                ) < (Math.PI / 2) ?
+                  <text
+                    x={this.projection([airport.lng, airport.lat])[0] + 2}
+                    y={this.projection([airport.lng, airport.lat])[1] + 15}
+                    className="svg-label"
+                  >
+                    {airport[label] || airport.iata || airport.icao}
+                  </text>
+                  : null
+                }
               </g>
             ))}
           </g>
