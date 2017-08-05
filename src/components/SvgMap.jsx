@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 import PropTypes from "prop-types"
-import { geoOrthographic, geoPath, geoDistance } from "d3-geo"
+import { geoOrthographic, geoPath, geoDistance, geoGraticule } from "d3-geo"
 import { scaleLinear } from "d3-scale"
 
 class SvgMap extends Component {
@@ -85,8 +85,7 @@ class SvgMap extends Component {
 
     const { airports, sectors } = this.state
     const { mapData, label } = this.props
-    // console.log(geoDistance([0, 0], [this.state.lambda, this.state.phi])) // [airport.lng, airport.lat], [this.state.lambda, this.state.phi]))
-
+    console.log("graticule ", geoGraticule())
 
     return (
       <div id="svg-wrapper">
@@ -97,13 +96,27 @@ class SvgMap extends Component {
           onMouseUp={this.handleMouseUp}
           onMouseMove={this.handleMouseMove}
         >
+          <defs>
+            <radialGradient id="ocean-gradient" cx="65%" cy="20%">
+              <stop offset="0%" stopColor="#799" />
+              <stop offset="100%" stopColor="#368" />
+            </radialGradient>
+          </defs>
+          <defs>
+            <radialGradient id="land-gradient" cx="62%" cy="23%">
+              <stop offset="0%" stopColor="#765" />
+              <stop offset="100%" stopColor="#543" />
+            </radialGradient>
+          </defs>
+
           <circle
             r={this.diameter / 2}
             cx={this.diameter / 2}
             cy={this.diameter / 2}
-            fill="#05153a"
+            // fill="#05153a"
+            fill="url(#ocean-gradient)"
           />
-          <path className="svg-land" d={path(mapData)} fill="#432" />
+          <path className="svg-land" d={path(mapData)} fill="url(#land-gradient)" />
           <g>
             {airports.map(airport => (
               <g>
@@ -141,6 +154,7 @@ class SvgMap extends Component {
               />
             ))}
           </g>
+          <path id="graticule" d={path(geoGraticule()())} />
         </svg>
       </div>
     )

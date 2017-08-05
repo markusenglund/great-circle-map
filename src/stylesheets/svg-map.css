@@ -10,7 +10,7 @@
 }
 
 .svg-label {
-  fill: red;
+  fill: white;
   font-size:  14px;
   paint-order: stroke;
   stroke: #000000;
@@ -18,4 +18,11 @@
   stroke-linecap: butt;
   stroke-linejoin: miter;
   font-weight: 800;
+}
+
+#graticule {
+  fill: none;
+  stroke: #222;
+  stroke-width: .2;
+  /*opacity: .5;*/
 }
