@@ -51,7 +51,6 @@ class SvgMap extends Component {
   }
 
   handleMouseDown(event) {
-    // FIXME: Should be based on "svg-pixels" (600) instead of real pixels
     event.preventDefault()
     const x = event.clientX
     const y = event.clientY
@@ -68,7 +67,12 @@ class SvgMap extends Component {
   handleMouseMove(event) {
     if (this.state.mouseDownLambda) {
       const lambda = this.λ(event.clientX) - this.state.mouseDownLambda
-      const phi = this.φ(event.clientY) - this.state.mouseDownPhi
+      let phi = this.φ(event.clientY) - this.state.mouseDownPhi
+      if (phi < -60) {
+        phi = -60
+      } else if (phi > 60) {
+        phi = 60
+      }
       this.setState({ lambda, phi })
     }
   }
@@ -80,7 +84,8 @@ class SvgMap extends Component {
       .pointRadius(3)
 
     const { airports, sectors } = this.state
-    const { mapData } = this.props
+    const { mapData, label } = this.props
+    console.log("projection: ", this.projection([0, 0]))
 
     return (
       <div id="svg-wrapper">
@@ -100,11 +105,18 @@ class SvgMap extends Component {
           <path className="svg-land" d={path(mapData)} fill="#432" />
           <g>
             {airports.map(airport => (
-              <path
-                fill="red"
-                d={path({ type: "Point", coordinates: [airport.lng, airport.lat] })}
-                key={airport.id}
-              />
+              <g>
+                <path
+                  fill="red"
+                  d={path({ type: "Point", coordinates: [airport.lng, airport.lat] })}
+                  key={airport.id}
+                />
+                <text
+                  x={this.projection([airport.lng, airport.lat])[0]}
+                  y={this.projection([airport.lng, airport.lat])[1]}
+                  fill="red">{airport[label] || airport.iata || airport.icao}
+                </text>
+              </g>
             ))}
           </g>
           <g>
@@ -126,11 +138,17 @@ class SvgMap extends Component {
   }
 }
 function mapStateToProps(state) {
-  return { routes: state.routes, mapData: state.svgMap }
+  return {
+    routes: state.routes,
+    mapData: state.svgMap,
+    label: state.settings.label.value
+
+  }
 }
 
 SvgMap.propTypes = {
-  mapData: PropTypes.shape({ geometry: PropTypes.object }).isRequired
+  mapData: PropTypes.shape({ geometry: PropTypes.object }).isRequired,
+  label: PropTypes.string.isRequired
 }
 
 export default connect(mapStateToProps)(SvgMap)

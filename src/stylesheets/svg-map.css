@@ -1,5 +1,6 @@
 #svg-wrapper {
   height: 100%;
+  overflow-y: hidden;
 }
 
 #svg {
