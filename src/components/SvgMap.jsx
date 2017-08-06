@@ -4,14 +4,48 @@ import PropTypes from "prop-types"
 import { geoOrthographic, geoPath, geoDistance, geoGraticule, geoBounds } from "d3-geo"
 import { scaleLinear } from "d3-scale"
 
+function calculateLambdaPhi(airports) {
+  const airportCoords = airports.map((airport) => {
+    return [airport.lng, airport.lat]
+  })
+  const multiPoint = {
+    type: "MultiPoint",
+    coordinates: airportCoords
+  }
+  const boundingBox = geoBounds(multiPoint)
+  let lambda
+  if (boundingBox[0][0] <= boundingBox[1][0]) {
+    lambda = -(boundingBox[0][0] + boundingBox[1][0]) / 2
+  } else {
+    lambda = (-(boundingBox[0][0] + boundingBox[1][0] + 360) / 2)
+  }
+  let phi = -(boundingBox[0][1] + boundingBox[1][1]) / 2
+  if (phi < -65) {
+    phi = -65
+  } else if (phi > 65) {
+    phi = 65
+  }
+
+  return { lambda, phi }
+}
+
 class SvgMap extends Component {
   constructor(props) {
     super(props)
+    let lambda
+    let phi
+    if (props.airports.length) {
+      lambda = calculateLambdaPhi(props.airports).lambda
+      phi = calculateLambdaPhi(props.airports).phi
+    } else {
+      lambda = 0
+      phi = 0
+    }
     this.state = {
       mouseDownLambda: null,
       mouseDownPhi: null,
-      lambda: 0,
-      phi: 0
+      lambda,
+      phi
     }
     this.diameter = 600
     this.projection = geoOrthographic()
@@ -33,32 +67,8 @@ class SvgMap extends Component {
   }
 
   componentWillReceiveProps({ airports }) {
-    this.calculateLambdaPhi(airports)
-  }
-
-  calculateLambdaPhi(airports) {
     if (airports.length) {
-      const airportCoords = airports.map((airport) => {
-        return [airport.lng, airport.lat]
-      })
-      const multiPoint = {
-        type: "MultiPoint",
-        coordinates: airportCoords
-      }
-      const boundingBox = geoBounds(multiPoint)
-      let lambda
-      if (boundingBox[0][0] < boundingBox[1][0]) {
-        lambda = -(boundingBox[0][0] + boundingBox[1][0]) / 2
-      } else {
-        lambda = (-(boundingBox[0][0] + boundingBox[1][0] + 360) / 2)
-      }
-      let phi = -(boundingBox[0][1] + boundingBox[1][1]) / 2
-      if (phi < -65) {
-        phi = -65
-      } else if (phi > 65) {
-        phi = 65
-      }
-
+      const { lambda, phi } = calculateLambdaPhi(airports)
       this.setState({ lambda, phi })
     }
   }
