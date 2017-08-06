@@ -24,7 +24,7 @@ class GoogleMapWrapper extends Component {
   }
 
   handleMapMounted(map) {
-    const { dispatch, isMapLoaded } = this.props
+    const { dispatch } = this.props
     if (map) {
     // if (map && !isMapLoaded) {
       dispatch({ type: "COMPLETE_MAP_LOAD", map })
