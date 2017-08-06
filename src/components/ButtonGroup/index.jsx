@@ -65,12 +65,13 @@ function ButtonGroup({
           data-event="mouseenter focusin"
           data-event-off="mouseleave focusout click"
           className={buttonClass}
+          id="globe-3d"
           onClick={() => {
             dispatch({ type: "ENABLE_MAP_REBOUND" })
             dispatch({ type: "CHANGE_MAP" })
           }}
         >
-          Switch map
+          <img src="/earth.png" alt="3d-globe" />
         </button>
       </div>
       <Settings buttonClass={buttonClass} />
