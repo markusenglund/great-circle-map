@@ -4,18 +4,15 @@ import PropTypes from "prop-types"
 import { geoOrthographic, geoPath, geoDistance, geoGraticule, geoBounds } from "d3-geo"
 import { scaleLinear } from "d3-scale"
 
-function calculateLambdaPhi(airports) {
+function calculateLambdaPhi(sectors) {
   let lambda = 0
   let phi = 0
-  if (airports.length) {
-    const airportCoords = airports.map((airport) => {
-      return [airport.lng, airport.lat]
+  if (sectors.length) {
+    const lineStringCoords = sectors.map((sector) => {
+      return [[sector[0].lng, sector[0].lat], [sector[1].lng, sector[1].lat]]
     })
-    const multiPoint = {
-      type: "MultiPoint",
-      coordinates: airportCoords
-    }
-    const boundingBox = geoBounds(multiPoint)
+    const multiLineString = { type: "MultiLineString", coordinates: lineStringCoords }
+    const boundingBox = geoBounds(multiLineString)
 
     if (boundingBox[0][0] <= boundingBox[1][0]) {
       lambda = -(boundingBox[0][0] + boundingBox[1][0]) / 2
@@ -37,7 +34,7 @@ function calculateLambdaPhi(airports) {
 class SvgMap extends Component {
   constructor(props) {
     super(props)
-    const { lambda, phi } = calculateLambdaPhi(props.airports)
+    const { lambda, phi } = calculateLambdaPhi(props.sectors)
     this.state = {
       mouseDownLambda: null,
       mouseDownPhi: null,
@@ -64,9 +61,9 @@ class SvgMap extends Component {
     this.handleMouseMove = this.handleMouseMove.bind(this)
   }
 
-  componentWillReceiveProps({ airports }) {
-    if (airports.length) {
-      const { lambda, phi } = calculateLambdaPhi(airports)
+  componentWillReceiveProps({ sectors }) {
+    if (sectors.length) {
+      const { lambda, phi } = calculateLambdaPhi(sectors)
       this.setState({ lambda, phi })
     }
   }
