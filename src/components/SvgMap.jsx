@@ -5,59 +5,57 @@ import { geoOrthographic, geoPath, geoDistance, geoGraticule, geoBounds } from "
 import { scaleLinear } from "d3-scale"
 
 function calculateLambdaPhi(airports) {
-  const airportCoords = airports.map((airport) => {
-    return [airport.lng, airport.lat]
-  })
-  const multiPoint = {
-    type: "MultiPoint",
-    coordinates: airportCoords
-  }
-  const boundingBox = geoBounds(multiPoint)
-  let lambda
-  if (boundingBox[0][0] <= boundingBox[1][0]) {
-    lambda = -(boundingBox[0][0] + boundingBox[1][0]) / 2
-  } else {
-    lambda = (-(boundingBox[0][0] + boundingBox[1][0] + 360) / 2)
-  }
-  let phi = -(boundingBox[0][1] + boundingBox[1][1]) / 2
-  if (phi < -65) {
-    phi = -65
-  } else if (phi > 65) {
-    phi = 65
-  }
+  let lambda = 0
+  let phi = 0
+  if (airports.length) {
+    const airportCoords = airports.map((airport) => {
+      return [airport.lng, airport.lat]
+    })
+    const multiPoint = {
+      type: "MultiPoint",
+      coordinates: airportCoords
+    }
+    const boundingBox = geoBounds(multiPoint)
 
+    if (boundingBox[0][0] <= boundingBox[1][0]) {
+      lambda = -(boundingBox[0][0] + boundingBox[1][0]) / 2
+    } else {
+      lambda = (-(boundingBox[0][0] + boundingBox[1][0] + 360) / 2)
+    }
+
+    if (phi < -65) {
+      phi = -65
+    } else if (phi > 65) {
+      phi = 65
+    } else {
+      phi = -(boundingBox[0][1] + boundingBox[1][1]) / 2
+    }
+  }
   return { lambda, phi }
 }
 
 class SvgMap extends Component {
   constructor(props) {
     super(props)
-    let lambda
-    let phi
-    if (props.airports.length) {
-      lambda = calculateLambdaPhi(props.airports).lambda
-      phi = calculateLambdaPhi(props.airports).phi
-    } else {
-      lambda = 0
-      phi = 0
-    }
+    const { lambda, phi } = calculateLambdaPhi(props.airports)
     this.state = {
       mouseDownLambda: null,
       mouseDownPhi: null,
       lambda,
       phi
     }
+
     this.diameter = 600
     this.projection = geoOrthographic()
       .scale(this.diameter / 2)
       .translate([this.diameter / 2, this.diameter / 2])
       .clipAngle(90)
 
-    this.λ = scaleLinear()
+    this.lambdaScale = scaleLinear()
         .domain([0, this.diameter])
         .range([-90, 90])
 
-    this.φ = scaleLinear()
+    this.phiScale = scaleLinear()
         .domain([0, this.diameter])
         .range([90, -90])
 
@@ -78,8 +76,8 @@ class SvgMap extends Component {
     const x = event.clientX
     const y = event.clientY
     this.setState({
-      mouseDownLambda: this.λ(x) - this.state.lambda,
-      mouseDownPhi: this.φ(y) - this.state.phi
+      mouseDownLambda: this.lambdaScale(x) - this.state.lambda,
+      mouseDownPhi: this.phiScale(y) - this.state.phi
     })
   }
 
@@ -89,8 +87,15 @@ class SvgMap extends Component {
 
   handleMouseMove(event) {
     if (this.state.mouseDownLambda) {
-      const lambda = this.λ(event.clientX) - this.state.mouseDownLambda
-      let phi = this.φ(event.clientY) - this.state.mouseDownPhi
+      const lambda = this.lambdaScale(event.clientX) - this.state.mouseDownLambda
+
+      if ((this.phiScale(event.clientY) - this.state.mouseDownPhi) < -65) {
+        this.setState({ mouseDownPhi: this.phiScale(event.clientY) + 65 })
+      } else if ((this.phiScale(event.clientY) - this.state.mouseDownPhi) > 65) {
+        this.setState({ mouseDownPhi: this.phiScale(event.clientY) - 65 })
+      }
+      let phi = this.phiScale(event.clientY) - this.state.mouseDownPhi
+
       if (phi < -65) {
         phi = -65
       } else if (phi > 65) {
