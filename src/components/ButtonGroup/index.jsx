@@ -1,4 +1,5 @@
 import React from "react"
+import { connect } from "react-redux"
 import PropTypes from "prop-types"
 import ReactTooltip from "react-tooltip"
 import FaBars from "react-icons/fa/bars"
@@ -13,7 +14,8 @@ function ButtonGroup({
   history,
   buttonsVisible,
   handleSetSidebarOpen,
-  isMobile
+  isMobile,
+  dispatch
 }) {
   const buttonClass = buttonsVisible ? "map-button" : "map-button invisible"
   return (
@@ -56,6 +58,18 @@ function ButtonGroup({
           <span>Clear routes</span>
         </ReactTooltip>
       </div>
+      <div>
+        <button
+          data-tip
+          data-for="switch-map"
+          data-event="mouseenter focusin"
+          data-event-off="mouseleave focusout click"
+          className={buttonClass}
+          onClick={() => dispatch({ type: "CHANGE_MAP" })}
+        >
+          Switch map
+        </button>
+      </div>
       <Settings buttonClass={buttonClass} />
     </div>
   )
@@ -70,4 +84,4 @@ ButtonGroup.propTypes = {
   isMobile: PropTypes.bool.isRequired
 }
 
-export default ButtonGroup
+export default connect()(ButtonGroup)

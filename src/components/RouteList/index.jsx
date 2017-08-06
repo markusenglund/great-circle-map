@@ -31,7 +31,7 @@ RouteList.propTypes = { routes: PropTypes.arrayOf(PropTypes.array).isRequired }
 
 function mapStateToProps(state) {
   return {
-    routes: state.routes
+    routes: state.routeData.routes
   }
 }
 

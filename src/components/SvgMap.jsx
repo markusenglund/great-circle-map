@@ -11,9 +11,7 @@ class SvgMap extends Component {
       mouseDownLambda: null,
       mouseDownPhi: null,
       lambda: 0,
-      phi: 0,
-      airports: [],
-      sectors: []
+      phi: 0
     }
     this.diameter = 600
     this.projection = geoOrthographic()
@@ -34,20 +32,12 @@ class SvgMap extends Component {
     this.handleMouseMove = this.handleMouseMove.bind(this)
   }
 
-  componentWillReceiveProps({ routes }) {
-    const airports = []
-    const sectors = []
-    if (routes.length) {
-      routes.forEach((route) => {
-        route.forEach((airport) => {
-          if (airports.every(prevAirport => prevAirport.id !== airport.id)) {
-            airports.push(airport)
-          }
-        })
-        for (let i = 1; i < route.length; i += 1) {
-          sectors.push([route[i - 1], route[i]])
-        }
-      })
+  componentWillReceiveProps({ airports }) {
+    this.calculateLambdaPhi(airports)
+  }
+
+  calculateLambdaPhi(airports) {
+    if (airports.length) {
       const airportCoords = airports.map((airport) => {
         return [airport.lng, airport.lat]
       })
@@ -69,9 +59,7 @@ class SvgMap extends Component {
         phi = 65
       }
 
-      this.setState({ airports, sectors, lambda, phi })
-    } else {
-      this.setState({ airports, sectors })
+      this.setState({ lambda, phi })
     }
   }
 
@@ -108,8 +96,7 @@ class SvgMap extends Component {
       .projection(this.projection)
       .pointRadius(3)
 
-    const { airports, sectors } = this.state
-    const { mapData, label } = this.props
+    const { mapData, label, airports, sectors } = this.props
 
     return (
       <div id="svg-wrapper">
@@ -185,7 +172,9 @@ class SvgMap extends Component {
 }
 function mapStateToProps(state) {
   return {
-    routes: state.routes,
+    routes: state.routeData.routes,
+    sectors: state.routeData.sectors,
+    airports: state.routeData.airports,
     mapData: state.svgMap,
     label: state.settings.label.value
 
@@ -194,7 +183,9 @@ function mapStateToProps(state) {
 
 SvgMap.propTypes = {
   mapData: PropTypes.shape({ geometry: PropTypes.object }).isRequired,
-  label: PropTypes.string.isRequired
+  label: PropTypes.string.isRequired,
+  sectors: PropTypes.arrayOf(PropTypes.array).isRequired,
+  airports: PropTypes.arrayOf(PropTypes.object).isRequired
 }
 
 export default connect(mapStateToProps)(SvgMap)

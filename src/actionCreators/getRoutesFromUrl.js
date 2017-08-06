@@ -1,4 +1,4 @@
-/**  HELPER FUNCTIONS  **/
+  /*  HELPER FUNCTIONS  */
 
 function hasForbiddenCharacter(inputString) {
   const invalidSymbolsRegex = /[^A-Za-z,;/-\s\d]/
@@ -98,6 +98,7 @@ export default function getRoutesFromUrl() {
     if (error) {
       return dispatch({ type: "SHOW_ERROR", error: error.message })
     }
+
     dispatch({ type: "SUBMIT_ROUTES", routes })
     return dispatch({ type: "HIDE_ERROR" })
   }

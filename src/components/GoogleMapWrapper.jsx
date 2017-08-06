@@ -1,8 +1,6 @@
 import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
-
-// import { getAirportData } from "../actionCreators"
 import GoogleMap from "./GoogleMap"
 
 class GoogleMapWrapper extends Component {
@@ -30,7 +28,7 @@ class GoogleMapWrapper extends Component {
   }
 
   render() {
-    const { routes, mapType, label, zoom, isMapLoaded } = this.props
+    const { routes, airports, sectors, mapType, label, zoom, isMapLoaded } = this.props
     return (
       <GoogleMap
         googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyBISa-Ul-NOnD-H5lweC_w4evLmV_0fuSU"
@@ -44,6 +42,8 @@ class GoogleMapWrapper extends Component {
           <div id="map" />
         }
         routes={routes}
+        airports={airports}
+        sectors={sectors}
         onMapMounted={map => this.handleMapMounted(map)}
         mapType={mapType}
         label={label}
@@ -56,6 +56,8 @@ class GoogleMapWrapper extends Component {
 GoogleMapWrapper.propTypes = {
   dispatch: PropTypes.func.isRequired,
   routes: PropTypes.arrayOf(PropTypes.array).isRequired,
+  sectors: PropTypes.arrayOf(PropTypes.array).isRequired,
+  airports: PropTypes.arrayOf(PropTypes.object).isRequired,
   isMapLoaded: PropTypes.bool.isRequired,
   map: PropTypes.shape({ fitBounds: PropTypes.func }),
   shouldMapRebound: PropTypes.bool.isRequired,
@@ -67,7 +69,9 @@ GoogleMapWrapper.defaultProps = { map: null }
 
 function mapStateToProps(state) {
   return {
-    routes: state.routes,
+    routes: state.routeData.routes,
+    sectors: state.routeData.sectors,
+    airports: state.routeData.airports,
     isMapLoaded: state.map.isLoaded,
     mapType: state.settings.mapType.type,
     label: state.settings.label.value,
