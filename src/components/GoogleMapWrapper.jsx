@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
 
-import { getAirportData } from "../actionCreators"
+// import { getAirportData } from "../actionCreators"
 import GoogleMap from "./GoogleMap"
 
 class GoogleMapWrapper extends Component {

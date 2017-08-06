@@ -63,10 +63,10 @@ class SvgMap extends Component {
         lambda = (-(boundingBox[0][0] + boundingBox[1][0] + 360) / 2)
       }
       let phi = -(boundingBox[0][1] + boundingBox[1][1]) / 2
-      if (phi < -60) {
-        phi = -60
-      } else if (phi > 60) {
-        phi = 60
+      if (phi < -65) {
+        phi = -65
+      } else if (phi > 65) {
+        phi = 65
       }
 
       this.setState({ airports, sectors, lambda, phi })
@@ -93,10 +93,10 @@ class SvgMap extends Component {
     if (this.state.mouseDownLambda) {
       const lambda = this.λ(event.clientX) - this.state.mouseDownLambda
       let phi = this.φ(event.clientY) - this.state.mouseDownPhi
-      if (phi < -60) {
-        phi = -60
-      } else if (phi > 60) {
-        phi = 60
+      if (phi < -65) {
+        phi = -65
+      } else if (phi > 65) {
+        phi = 65
       }
       this.setState({ lambda, phi })
     }
@@ -127,7 +127,7 @@ class SvgMap extends Component {
             </radialGradient>
           </defs>
           <defs>
-            <radialGradient id="land-gradient" cx="62%" cy="23%">
+            <radialGradient id="land-gradient" cx="65%" cy="20%">
               <stop offset="0%" stopColor="#765" />
               <stop offset="100%" stopColor="#543" />
             </radialGradient>
@@ -148,7 +148,7 @@ class SvgMap extends Component {
                   d={path({ type: "Point", coordinates: [airport.lng, airport.lat] })}
                   key={airport.id}
                 />
-                {geoDistance(
+                {label !== "none" && geoDistance(
                   [airport.lng, airport.lat],
                   [-this.state.lambda, -this.state.phi]
                 ) < (Math.PI / 2) ?
