@@ -65,7 +65,10 @@ function ButtonGroup({
           data-event="mouseenter focusin"
           data-event-off="mouseleave focusout click"
           className={buttonClass}
-          onClick={() => dispatch({ type: "CHANGE_MAP" })}
+          onClick={() => {
+            dispatch({ type: "ENABLE_MAP_REBOUND" })
+            dispatch({ type: "CHANGE_MAP" })
+          }}
         >
           Switch map
         </button>

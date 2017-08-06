@@ -5,6 +5,10 @@ import GoogleMap from "./GoogleMap"
 
 class GoogleMapWrapper extends Component {
   componentDidUpdate() {
+    this.fitBounds()
+  }
+
+  fitBounds() {
     // Change the viewport to fit the airports that have been rendered to the map.
     const { routes, shouldMapRebound, map } = this.props
     if (routes.length && shouldMapRebound && map) {
@@ -21,9 +25,9 @@ class GoogleMapWrapper extends Component {
 
   handleMapMounted(map) {
     const { dispatch, isMapLoaded } = this.props
-    if (map && !isMapLoaded) {
+    if (map) {
+    // if (map && !isMapLoaded) {
       dispatch({ type: "COMPLETE_MAP_LOAD", map })
-      // dispatch(getAirportData())
     }
   }
 
