@@ -20,52 +20,55 @@ function ButtonGroup({
   const buttonClass = buttonsVisible ? "map-button" : "map-button invisible"
   return (
     <div id="button-group">
-      <div>
-        <button
-          className={buttonClass}
-          onClick={!isMobile ? toggleSidebarDock : () => handleSetSidebarOpen(true)}
-          data-tip
-          data-for="menu"
-          data-event="mouseenter focusin"
-          data-event-off="mouseleave focusout click"
-        >
-          {!isSidebarDocked || isMobile ?
-            <FaBars /> :
-            <FaArrowsAlt />
-          }
-        </button>
-        <ReactTooltip
-          className="tooltip"
-          id="menu"
-          place="right"
-          effect="solid"
-        >
-          <span>{!isSidebarDocked || isMobile ? "Show menu" : "Fullscreen"}</span>
-        </ReactTooltip>
+      <div id="left-button-group">
+        <div>
+          <button
+            className={buttonClass}
+            onClick={!isMobile ? toggleSidebarDock : () => handleSetSidebarOpen(true)}
+            data-tip
+            data-for="menu"
+            data-event="mouseenter focusin"
+            data-event-off="mouseleave focusout click"
+          >
+            {!isSidebarDocked || isMobile ?
+              <FaBars /> :
+              <FaArrowsAlt />
+            }
+          </button>
+          <ReactTooltip
+            className="tooltip"
+            id="menu"
+            place="right"
+            effect="solid"
+          >
+            <span>{!isSidebarDocked || isMobile ? "Show menu" : "Fullscreen"}</span>
+          </ReactTooltip>
+        </div>
+        <div id="purge">
+          <button
+            data-tip
+            data-for="delete"
+            className={buttonClass}
+            onClick={() => history.push("/")}
+            data-event="mouseenter focusin"
+            data-event-off="mouseleave focusout click"
+          >
+            <FaTrashO />
+          </button>
+          <ReactTooltip className="tooltip" id="delete" place="right" effect="solid">
+            <span>Clear routes</span>
+          </ReactTooltip>
+        </div>
+        <Settings buttonClass={buttonClass} />
       </div>
-      <div id="purge">
-        <button
-          data-tip
-          data-for="delete"
-          className={buttonClass}
-          onClick={() => history.push("/")}
-          data-event="mouseenter focusin"
-          data-event-off="mouseleave focusout click"
-        >
-          <FaTrashO />
-        </button>
-        <ReactTooltip className="tooltip" id="delete" place="right" effect="solid">
-          <span>Clear routes</span>
-        </ReactTooltip>
-      </div>
-      <div>
+      <div id="map-switch-wrapper">
         <button
           data-tip
           data-for="switch-map"
           data-event="mouseenter focusin"
           data-event-off="mouseleave focusout click"
           className={buttonClass}
-          id="globe-3d"
+          id="map-switch"
           onClick={() => {
             dispatch({ type: "ENABLE_MAP_REBOUND" })
             dispatch({ type: "CHANGE_MAP" })
@@ -74,7 +77,6 @@ function ButtonGroup({
           <img src="/earth.png" alt="3d-globe" />
         </button>
       </div>
-      <Settings buttonClass={buttonClass} />
     </div>
   )
 }

@@ -23,7 +23,7 @@ grey: rgb(44, 44, 44) , grey-text: #bbd;*/
   }
 }
 
-#button-group {
+#left-button-group {
   position: absolute;
   z-index: 2;
   margin: 5px;
@@ -62,16 +62,20 @@ grey: rgb(44, 44, 44) , grey-text: #bbd;*/
   /*background: rgba(44, 44, 44, 0.8) !important;*/
 }
 
-#globe-3d {
-  padding: 3px;
-  margin: 0;
-  height: 66px;
-  opacity: 0.8;
-  /*position: absolute;*/
-  /*bottom: 0px;*/
+#map-switch-wrapper {
+  position: absolute;
+  z-index: 2;
+  margin: 5px;
+  right: 0px;
 }
 
-#globe-3d:hover, #globe-3d:focus {
+#map-switch {
+  padding: 3px;
+  height: 66px;
+  opacity: 0.8;
+}
+
+#map-switch:hover, #globe-3d:focus {
   opacity: 1;
 }
 
