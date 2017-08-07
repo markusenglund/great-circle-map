@@ -57,10 +57,10 @@ class Settings extends Component {
 
   render() {
     const { mapType, distanceUnit, label, buttonClass } = this.props
-    const mapTypes = [
-      { type: "satellite", readable: "Satellite" },
-      { type: "roadmap", readable: "Roadmap" },
-      { type: "hybrid", readable: "Hybrid" }]
+    // const mapTypes = [
+    //   { type: "satellite", readable: "Satellite" },
+    //   { type: "roadmap", readable: "Roadmap" },
+    //   { type: "hybrid", readable: "Hybrid" }]
 
     const distanceUnits = [
       { abbr: "km", readable: "Kilometers" },
@@ -95,14 +95,14 @@ class Settings extends Component {
         {this.state.isVisible ? (
           <CloseOnEscape onEscape={this.handleEscape}>
             <div id="dropdown">
-              <MenuButton
+              {/* <MenuButton
                 selectedOption={mapType}
                 options={mapTypes}
                 handleSelection={this.handleMapTypeSelection}
                 handleMenuToggle={this.handleMenuToggle}
                 readable="Map type"
                 cssId="map-type"
-              />
+              /> */}
               <MenuButton
                 selectedOption={distanceUnit}
                 options={distanceUnits}

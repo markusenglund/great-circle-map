@@ -77,7 +77,7 @@ function mapStateToProps(state) {
     sectors: state.routeData.sectors,
     airports: state.routeData.airports,
     isMapLoaded: state.map.isLoaded,
-    mapType: state.settings.mapType.type,
+    mapType: state.settings.mapType,
     label: state.settings.label.value,
     shouldMapRebound: state.map.shouldMapRebound,
     map: state.map.map,

@@ -62,7 +62,7 @@ function ButtonGroup({
         </div>
         <Settings buttonClass={buttonClass} />
       </div>
-      <MapSelection buttonClass={buttonClass} />
+      <MapSelection buttonsVisible={buttonsVisible} />
     </div>
   )
 }

@@ -63,20 +63,37 @@ grey: rgb(44, 44, 44) , grey-text: #bbd;*/
 }
 
 #map-selection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   position: absolute;
   z-index: 2;
   margin: 5px;
   right: 0px;
 }
 
-#svg-map-button {
-  padding: 3px;
-  height: 66px;
-  opacity: 0.8;
+
+.map-selection-button {
+  margin: 3px;
+  padding: 0px;
+  background: #777;
+  border: solid #888 2px;
+  display: block;
+  cursor: pointer;
+  opacity: 0.9;
 }
 
-#map-switch:hover, #globe-3d:focus {
+.map-selection-button:hover, .map-selection-button:focus {
   opacity: 1;
+}
+
+.map-selection-button img {
+  vertical-align: middle;
+}
+
+
+#svg-map-button {
+  border-radius: 50%;
 }
 
 #zoom-buttons {

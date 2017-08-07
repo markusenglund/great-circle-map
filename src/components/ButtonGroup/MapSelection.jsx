@@ -4,83 +4,109 @@ import PropTypes from "prop-types"
 import ReactTooltip from "react-tooltip"
 
 
-function MapSelection({ dispatch, buttonClass }) {
+function MapSelection({ dispatch, buttonsVisible, mapState }) {
+  const buttonClass = buttonsVisible ? "map-selection-button" : "map-selection-button invisible"
+
+  function handleChangeToGoogleMap(mapType) {
+    if (mapState === "svg") {
+      dispatch({ type: "ENABLE_MAP_REBOUND" })
+      dispatch({ type: "CHANGE_MAP", map: "google" })
+    } else {
+      dispatch({ type: "DISABLE_MAP_REBOUND" })
+    }
+    dispatch({ type: "CHANGE_MAP_TYPE", mapType })
+  }
+
   return (
     <div id="map-selection">
-      <div>
-        <button
-          data-tip
-          data-for="svg-map-button"
-          data-event="mouseenter focusin"
-          data-event-off="mouseleave focusout click"
-          className={buttonClass}
-          id="svg-map-button"
-          onClick={() => {
-            dispatch({ type: "ENABLE_MAP_REBOUND" })
-            dispatch({ type: "CHANGE_MAP" })
-          }}
-        >
-          <img src="/earth.png" alt="3d-globe" />
-        </button>
-        <ReactTooltip
-          className="tooltip"
-          id="svg-map-button"
-          place="left"
-          effect="solid"
-        >
-          <span>3D globe</span>
-        </ReactTooltip>
-      </div>
-      <div>
-        <button
-          data-tip
-          data-for="satellite-button"
-          data-event="mouseenter focusin"
-          data-event-off="mouseleave focusout click"
-          className={buttonClass}
-          id="satellite-button"
-          onClick={() => {
-            dispatch({ type: "ENABLE_MAP_REBOUND" })
-            dispatch({ type: "CHANGE_MAP" })
-          }}
-        >
-          <img src="/satellite.png" alt="3d-globe" />
-        </button>
-        <ReactTooltip
-          className="tooltip"
-          id="satellite-button"
-          place="left"
-          effect="solid"
-        >
-          <span>Satellite</span>
-        </ReactTooltip>
-      </div>
-      <div>
-        <button
-          data-tip
-          data-for="roadmap-button"
-          data-event="mouseenter focusin"
-          data-event-off="mouseleave focusout click"
-          className={buttonClass}
-          id="roadmap-button"
-          onClick={() => {
-            dispatch({ type: "ENABLE_MAP_REBOUND" })
-            dispatch({ type: "CHANGE_MAP" })
-          }}
-        >
-          <img src="/roadmap.png" alt="3d-globe" />
-        </button>
-        <ReactTooltip
-          className="tooltip"
-          id="roadmap-button"
-          place="left"
-          effect="solid"
-        >
-          <span>Roadmap</span>
-        </ReactTooltip>
-      </div>
+      {mapState !== "svg" ? (
+        <div>
+          <button
+            data-tip
+            data-for="svg-map-button"
+            data-event="mouseenter focusin"
+            data-event-off="mouseleave focusout click"
+            className={buttonClass}
+            id="svg-map-button"
+            onClick={() => {
+              dispatch({ type: "CHANGE_MAP", map: "svg" })
+            }}
+          >
+            <img src="/earth.png" alt="3d-globe" />
+          </button>
+          <ReactTooltip
+            className="tooltip"
+            id="svg-map-button"
+            place="left"
+            effect="solid"
+          >
+            <span>3D globe</span>
+          </ReactTooltip>
+        </div>
+        ) : null
+      }
+      {mapState !== "satellite" ? (
+        <div>
+          <button
+            data-tip
+            data-for="satellite-button"
+            data-event="mouseenter focusin"
+            data-event-off="mouseleave focusout click"
+            className={buttonClass}
+            id="satellite-button"
+            onClick={() => handleChangeToGoogleMap("satellite")}
+          >
+            <img src="/satellite.png" alt="3d-globe" />
+          </button>
+          <ReactTooltip
+            className="tooltip"
+            id="satellite-button"
+            place="left"
+            effect="solid"
+          >
+            <span>Satellite</span>
+          </ReactTooltip>
+        </div>
+        ) : null
+      }
+      {mapState !== "roadmap" ? (
+        <div>
+          <button
+            data-tip
+            data-for="roadmap-button"
+            data-event="mouseenter focusin"
+            data-event-off="mouseleave focusout click"
+            className={buttonClass}
+            id="roadmap-button"
+            onClick={() => handleChangeToGoogleMap("roadmap")}
+          >
+            <img src="/roadmap.png" alt="3d-globe" />
+          </button>
+          <ReactTooltip
+            className="tooltip"
+            id="roadmap-button"
+            place="left"
+            effect="solid"
+          >
+            <span>Roadmap</span>
+          </ReactTooltip>
+        </div>
+        ) : null
+      }
     </div>
   )
 }
 
-export default connect()(MapSelection)
+function mapStateToProps(state) {
+  let mapState
+  if (state.settings.map === "svg") {
+    mapState = "svg"
+  } else if (state.settings.mapType === "satellite") {
+    mapState = "satellite"
+  } else if (state.settings.mapType === "roadmap") {
+    mapState = "roadmap"
+  }
+  return { mapState }
+}
+
+export default connect(mapStateToProps)(MapSelection)
