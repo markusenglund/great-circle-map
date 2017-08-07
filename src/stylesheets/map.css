@@ -62,14 +62,14 @@ grey: rgb(44, 44, 44) , grey-text: #bbd;*/
   /*background: rgba(44, 44, 44, 0.8) !important;*/
 }
 
-#map-switch-wrapper {
+#map-selection {
   position: absolute;
   z-index: 2;
   margin: 5px;
   right: 0px;
 }
 
-#map-switch {
+#svg-map-button {
   padding: 3px;
   height: 66px;
   opacity: 0.8;

@@ -6,6 +6,7 @@ import FaBars from "react-icons/fa/bars"
 import FaArrowsAlt from "react-icons/fa/arrows-alt"
 import FaTrashO from "react-icons/fa/trash-o"
 import Settings from "./Settings"
+import MapSelection from "./MapSelection"
 
 
 function ButtonGroup({
@@ -61,22 +62,7 @@ function ButtonGroup({
         </div>
         <Settings buttonClass={buttonClass} />
       </div>
-      <div id="map-switch-wrapper">
-        <button
-          data-tip
-          data-for="switch-map"
-          data-event="mouseenter focusin"
-          data-event-off="mouseleave focusout click"
-          className={buttonClass}
-          id="map-switch"
-          onClick={() => {
-            dispatch({ type: "ENABLE_MAP_REBOUND" })
-            dispatch({ type: "CHANGE_MAP" })
-          }}
-        >
-          <img src="/earth.png" alt="3d-globe" />
-        </button>
-      </div>
+      <MapSelection buttonClass={buttonClass} />
     </div>
   )
 }
