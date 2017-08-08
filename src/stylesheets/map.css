@@ -79,7 +79,7 @@ grey: rgb(44, 44, 44) , grey-text: #bbd;*/
   border: solid #557 1px;
   display: block;
   cursor: pointer;
-  opacity: 0.9;
+  /*opacity: 0.9;*/
 }
 
 .map-selection-button:hover, .map-selection-button:focus {

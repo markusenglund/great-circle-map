@@ -56,7 +56,7 @@ function MapSelection({ dispatch, buttonsVisible, mapState }) {
             id="satellite-button"
             onClick={() => handleChangeToGoogleMap("satellite")}
           >
-            <img src="/satellite.png" alt="3d-globe" />
+            <img src="/satellite.png" alt="satellite" />
           </button>
           <ReactTooltip
             className="tooltip"
@@ -80,7 +80,7 @@ function MapSelection({ dispatch, buttonsVisible, mapState }) {
             id="roadmap-button"
             onClick={() => handleChangeToGoogleMap("roadmap")}
           >
-            <img src="/roadmap.png" alt="3d-globe" />
+            <img src="/roadmap.png" alt="roadmap" />
           </button>
           <ReactTooltip
             className="tooltip"
