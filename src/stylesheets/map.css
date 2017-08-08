@@ -59,7 +59,6 @@ grey: rgb(44, 44, 44) , grey-text: #bbd;*/
   font-size: 15px !important;
   padding: 4px 6px 6px 6px !important;
   border-radius: 5px !important;
-  /*background: rgba(44, 44, 44, 0.8) !important;*/
 }
 
 #map-selection {
@@ -77,7 +76,7 @@ grey: rgb(44, 44, 44) , grey-text: #bbd;*/
   margin: 3px;
   padding: 0px;
   background: #777;
-  border: solid #888 2px;
+  border: solid #557 1px;
   display: block;
   cursor: pointer;
   opacity: 0.9;
