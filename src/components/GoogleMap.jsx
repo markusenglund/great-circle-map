@@ -31,7 +31,7 @@ function getPixelPositionOffset(curAirport, airports, sectors) {
     .map((airport) => {
       const location = new LatLonSpherical(airport.lat, airport.lng)
       const distance = curLocation.distanceTo(location) / 1000 // in km
-      const vectorLength = 10000 / (1000 + (4 * distance) + ((distance ** 3) / 1000))
+      const vectorLength = 10000 / (1000 + (4 * distance) + ((distance ** 2.5) / 800))
       const vectorDirection = (90 - location.rhumbBearingTo(curLocation)) * (Math.PI / 180)
 
       const northEastProj = vectorLength * (Math.cos(vectorDirection - (Math.PI / 4)) ** 3)

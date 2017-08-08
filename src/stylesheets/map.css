@@ -7,7 +7,7 @@ grey: rgb(44, 44, 44) , grey-text: #bbd;*/
 }
 
 .map-label {
-  color: #D03030;
+  color: white;
   font-size: 13px;
   font-weight: bold;
   text-shadow:
@@ -73,7 +73,7 @@ grey: rgb(44, 44, 44) , grey-text: #bbd;*/
 
 
 .map-selection-button {
-  margin: 3px;
+  margin: 5px;
   padding: 0px;
   background: #777;
   border: solid #557 1px;
@@ -93,6 +93,7 @@ grey: rgb(44, 44, 44) , grey-text: #bbd;*/
 
 #svg-map-button {
   border-radius: 50%;
+  margin: 0;
 }
 
 #zoom-buttons {

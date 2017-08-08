@@ -95,14 +95,6 @@ class Settings extends Component {
         {this.state.isVisible ? (
           <CloseOnEscape onEscape={this.handleEscape}>
             <div id="dropdown">
-              {/* <MenuButton
-                selectedOption={mapType}
-                options={mapTypes}
-                handleSelection={this.handleMapTypeSelection}
-                handleMenuToggle={this.handleMenuToggle}
-                readable="Map type"
-                cssId="map-type"
-              /> */}
               <MenuButton
                 selectedOption={distanceUnit}
                 options={distanceUnits}
@@ -129,10 +121,7 @@ class Settings extends Component {
 }
 
 Settings.propTypes = {
-  mapType: PropTypes.shape({
-    type: PropTypes.string.isRequired,
-    readable: PropTypes.string.isRequired
-  }).isRequired,
+  mapType: PropTypes.string.isRequired,
   distanceUnit: PropTypes.shape({
     abbr: PropTypes.string.isRequired,
     readable: PropTypes.string.isRequired
