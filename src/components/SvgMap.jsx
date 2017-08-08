@@ -59,6 +59,8 @@ class SvgMap extends Component {
     this.handleMouseDown = this.handleMouseDown.bind(this)
     this.handleMouseUp = this.handleMouseUp.bind(this)
     this.handleMouseMove = this.handleMouseMove.bind(this)
+    this.handleTouchStart = this.handleTouchStart.bind(this)
+    this.handleTouchMove = this.handleTouchMove.bind(this)
   }
 
   componentWillReceiveProps({ sectors }) {
@@ -102,6 +104,19 @@ class SvgMap extends Component {
     }
   }
 
+  handleTouchStart(event) {
+    const x = event.touches[0].clientX
+    const y = event.touches[0].clientY
+    this.setState({
+      mouseDownLambda: this.lambdaScale(x) - this.state.lambda,
+      mouseDownPhi: this.phiScale(y) - this.state.phi
+    })
+  }
+
+  handleTouchMove(event) {
+    this.handleMouseMove(event.touches[0])
+  }
+
   render() {
     this.projection.rotate([this.state.lambda, this.state.phi])
     const path = geoPath()
@@ -115,8 +130,11 @@ class SvgMap extends Component {
         <svg
           id="svg"
           viewBox={`-25 -25 ${this.diameter + 50} ${this.diameter + 50}`}
+          onTouchStart={this.handleTouchStart}
           onMouseDown={this.handleMouseDown}
+          onTouchEnd={this.handleMouseUp}
           onMouseUp={this.handleMouseUp}
+          onTouchMove={this.handleTouchMove}
           onMouseMove={this.handleMouseMove}
         >
           <defs>
