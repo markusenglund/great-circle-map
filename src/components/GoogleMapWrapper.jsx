@@ -32,7 +32,7 @@ class GoogleMapWrapper extends Component {
   }
 
   render() {
-    const { routes, airports, sectors, mapType, label, zoom, isMapLoaded } = this.props
+    const { routes, airports, sectors, mapType, label, zoom, isMapLoaded, routeColor } = this.props
     return (
       <GoogleMap
         googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyBISa-Ul-NOnD-H5lweC_w4evLmV_0fuSU"
@@ -53,6 +53,7 @@ class GoogleMapWrapper extends Component {
         label={label}
         zoom={zoom}
         isMapLoaded={isMapLoaded}
+        routeColor={routeColor}
       />
     )
   }
@@ -67,7 +68,8 @@ GoogleMapWrapper.propTypes = {
   shouldMapRebound: PropTypes.bool.isRequired,
   mapType: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  zoom: PropTypes.number.isRequired
+  zoom: PropTypes.number.isRequired,
+  routeColor: PropTypes.string.isRequired
 }
 GoogleMapWrapper.defaultProps = { map: null }
 
@@ -81,7 +83,8 @@ function mapStateToProps(state) {
     label: state.settings.label.value,
     shouldMapRebound: state.map.shouldMapRebound,
     map: state.map.map,
-    zoom: state.map.zoom
+    zoom: state.map.zoom,
+    routeColor: state.settings.routeColor
   }
 }
 

@@ -149,8 +149,8 @@ class SvgMap extends Component {
     this.handleTouchMove = this.handleTouchMove.bind(this)
   }
 
-  componentWillReceiveProps({ sectors }) {
-    if (sectors.length) {
+  componentWillReceiveProps({ sectors, routeColor }) {
+    if (sectors.length && routeColor === this.props.routeColor) {
       const { lambda, phi } = calculateLambdaPhi(sectors)
       this.setState({ lambda, phi })
     }
@@ -210,7 +210,7 @@ class SvgMap extends Component {
       .projection(this.projection)
       .pointRadius(3)
 
-    const { mapData, label, airports, sectors } = this.props
+    const { mapData, label, airports, sectors, routeColor } = this.props
     const pixelPositions = getPixelPositions(airports, this.projection, lambda, phi)
 
     return (
@@ -237,7 +237,6 @@ class SvgMap extends Component {
               <stop offset="100%" stopColor="#543" />
             </radialGradient>
           </defs>
-
           <circle
             r={this.diameter / 2}
             cx={this.diameter / 2}
@@ -245,11 +244,12 @@ class SvgMap extends Component {
             fill="url(#ocean-gradient)"
           />
           <path className="svg-land" d={path(mapData)} fill="url(#land-gradient)" />
+          <path id="graticule" d={path(geoGraticule()())} />
           <g>
             {airports.map((airport, i) => (
               <g>
                 <path
-                  fill="red"
+                  fill={routeColor}
                   d={path({ type: "Point", coordinates: [airport.lng, airport.lat] })}
                   key={airport.id}
                 />
@@ -275,7 +275,7 @@ class SvgMap extends Component {
           <g>
             {sectors.map(sector => (
               <path
-                stroke="red"
+                stroke={routeColor}
                 fill="none"
                 d={path({
                   type: "LineString",
@@ -285,7 +285,6 @@ class SvgMap extends Component {
               />
             ))}
           </g>
-          <path id="graticule" d={path(geoGraticule()())} />
         </svg>
       </div>
     )
@@ -297,7 +296,8 @@ function mapStateToProps(state) {
     sectors: state.routeData.sectors,
     airports: state.routeData.airports,
     mapData: state.svgMap,
-    label: state.settings.label.value
+    label: state.settings.label.value,
+    routeColor: state.settings.routeColor
 
   }
 }
@@ -306,7 +306,8 @@ SvgMap.propTypes = {
   mapData: PropTypes.shape({ geometry: PropTypes.object }).isRequired,
   label: PropTypes.string.isRequired,
   sectors: PropTypes.arrayOf(PropTypes.array).isRequired,
-  airports: PropTypes.arrayOf(PropTypes.object).isRequired
+  airports: PropTypes.arrayOf(PropTypes.object).isRequired,
+  routeColor: PropTypes.string.isRequired
 }
 
 export default connect(mapStateToProps)(SvgMap)

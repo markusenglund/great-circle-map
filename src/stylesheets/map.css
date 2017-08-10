@@ -219,3 +219,25 @@ grey: rgb(44, 44, 44) , grey-text: #bbd;*/
   cursor: default;
   font-weight: bold;
 }
+
+.color-picker-selection {
+  padding-left: 5px;
+  padding-right: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.color-picker-trigger {
+  cursor: pointer;
+  width: 80px;
+  height: 17px;
+  border: solid black 1px;
+
+}
+
+.color-picker {
+  position:absolute;
+  margin-top: 48px;
+  /*top: 20px;*/
+}

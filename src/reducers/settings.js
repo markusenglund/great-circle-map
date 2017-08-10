@@ -1,7 +1,7 @@
 const settings = (state = {
   map: "google",
   mapType: "satellite",
-  // mapType: { type: "satellite", readable: "Satellite" },
+  routeColor: "#d03030",
   distanceUnit: { abbr: "km", readable: "Kilometers" },
   label: { value: "city", readable: "City name" },
   buttonsVisible: true
@@ -21,6 +21,9 @@ const settings = (state = {
     }
     case "TOGGLE_BUTTON_VISIBILITY": {
       return { ...state, buttonsVisible: action.visible }
+    }
+    case "CHANGE_ROUTE_COLOR": {
+      return { ...state, routeColor: action.color }
     }
     default:
       return state

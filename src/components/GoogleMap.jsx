@@ -100,7 +100,7 @@ function getPixelPositionOffset(curAirport, airports, sectors) {
 }
 
 const AsyncGoogleMap = withScriptjs(withGoogleMap((
-  { routes, airports, sectors, onMapMounted, mapType, label, zoom, isMapLoaded }
+  { routes, airports, sectors, onMapMounted, mapType, label, zoom, isMapLoaded, routeColor }
 ) => {
   const airportsWithPixelOffset = airports.map((airport) => {
     return {
@@ -129,7 +129,7 @@ const AsyncGoogleMap = withScriptjs(withGoogleMap((
           })}
           options={{
             geodesic: true,
-            strokeColor: "#B03030",
+            strokeColor: routeColor,
             strokeWeight: 2
           }}
           key={uniqueId()}
@@ -144,7 +144,7 @@ const AsyncGoogleMap = withScriptjs(withGoogleMap((
               getPixelPositionOffset={() => { return { x: -4, y: -4 } }}
             >
               <svg>
-                <circle cx="4" cy="4" r="3" fill="#D03030" stroke="#D03030" strokeWidth="1" />
+                <circle cx="4" cy="4" r="3" fill={routeColor} stroke={routeColor} strokeWidth="1" />
               </svg>
             </OverlayView>
             {label !== "none" ? (

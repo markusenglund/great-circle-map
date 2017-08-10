@@ -7,6 +7,7 @@ import onClickOutside from "react-onclickoutside"
 import FaCog from "react-icons/fa/cog"
 import MenuButton from "./MenuButton"
 import ButtonToggle from "./ButtonToggle"
+import ColorPicker from "./ColorPicker"
 
 class Settings extends Component {
   constructor() {
@@ -56,11 +57,7 @@ class Settings extends Component {
   }
 
   render() {
-    const { mapType, distanceUnit, label, buttonClass } = this.props
-    // const mapTypes = [
-    //   { type: "satellite", readable: "Satellite" },
-    //   { type: "roadmap", readable: "Roadmap" },
-    //   { type: "hybrid", readable: "Hybrid" }]
+    const { distanceUnit, label, buttonClass } = this.props
 
     const distanceUnits = [
       { abbr: "km", readable: "Kilometers" },
@@ -112,6 +109,7 @@ class Settings extends Component {
                 cssId="label"
               />
               <ButtonToggle />
+              <ColorPicker />
             </div>
           </CloseOnEscape>
         ) : null}
@@ -121,7 +119,6 @@ class Settings extends Component {
 }
 
 Settings.propTypes = {
-  mapType: PropTypes.string.isRequired,
   distanceUnit: PropTypes.shape({
     abbr: PropTypes.string.isRequired,
     readable: PropTypes.string.isRequired
@@ -130,12 +127,13 @@ Settings.propTypes = {
     value: PropTypes.string.isRequired,
     readable: PropTypes.string.isRequired
   }).isRequired,
-  dispatch: PropTypes.func.isRequired
+  dispatch: PropTypes.func.isRequired,
+  buttonClass: PropTypes.string.isRequired
 }
 
 function mapStateToProps(state) {
-  const { mapType, distanceUnit, label } = state.settings
-  return { mapType, distanceUnit, label } // Lol this can be shortened
+  const { distanceUnit, label } = state.settings
+  return { distanceUnit, label } // Lol this can be shortened
 }
 
 export default connect(mapStateToProps)(onClickOutside(Settings))
