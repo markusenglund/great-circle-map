@@ -247,11 +247,10 @@ class SvgMap extends Component {
           <path id="graticule" d={path(geoGraticule()())} />
           <g>
             {airports.map((airport, i) => (
-              <g>
+              <g key={airport.id}>
                 <path
                   fill={routeColor}
                   d={path({ type: "Point", coordinates: [airport.lng, airport.lat] })}
-                  key={airport.id}
                 />
                 {label !== "none" && geoDistance(
                   [airport.lng, airport.lat],

@@ -7,7 +7,7 @@ import onClickOutside from "react-onclickoutside"
 import FaCog from "react-icons/fa/cog"
 import MenuButton from "./MenuButton"
 import ButtonToggle from "./ButtonToggle"
-import ColorPicker from "./ColorPicker"
+import RouteColorPicker from "./RouteColorPicker"
 
 class Settings extends Component {
   constructor() {
@@ -109,7 +109,7 @@ class Settings extends Component {
                 cssId="label"
               />
               <ButtonToggle />
-              <ColorPicker />
+              <RouteColorPicker />
             </div>
           </CloseOnEscape>
         ) : null}
