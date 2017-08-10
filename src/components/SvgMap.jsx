@@ -48,7 +48,6 @@ function getPixelPositions(airports, projection, lambda, phi) {
         const distance = Math.hypot(dx, dy) * 20
         const vectorLength = 10000 / (1000 + (4 * distance) + ((distance ** 2.5) / 800))
         const vectorDirection = Math.atan2(dy, dx)
-        console.log("DISTANCE: ", distance)
 
         const northEastProj = vectorLength * (Math.cos(vectorDirection - (Math.PI / 4)) ** 3)
         const northWestProj = vectorLength * (Math.cos(vectorDirection - ((3 * Math.PI) / 4)) ** 3)
@@ -57,7 +56,7 @@ function getPixelPositions(airports, projection, lambda, phi) {
       })
 
     if (vectorProjections.length === 0) {
-      return { x: curPosition[0], y: curPosition[1] + 14, textAnchor: "start"}
+      return { x: curPosition[0], y: curPosition[1] + 14, textAnchor: "start" }
     }
 
     const directionalForces = vectorProjections.reduce((acc, val) => {
@@ -211,11 +210,8 @@ class SvgMap extends Component {
       .projection(this.projection)
       .pointRadius(3)
 
-
     const { mapData, label, airports, sectors } = this.props
-
     const pixelPositions = getPixelPositions(airports, this.projection, lambda, phi)
-    console.log(airports, pixelPositions)
 
     return (
       <div id="svg-wrapper">
