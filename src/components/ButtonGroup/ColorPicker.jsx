@@ -1,7 +1,7 @@
-import { GithubPicker } from "react-color"
 import React, { Component } from "react"
 import PropTypes from "prop-types"
 import onClickOutside from "react-onclickoutside"
+import { GithubPicker } from "react-color"
 
 class ColorPicker extends Component {
   handleClickOutside() {
