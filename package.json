@@ -47,6 +47,7 @@
     "redux": "^3.6.0",
     "redux-logger": "^3.0.1",
     "redux-thunk": "^2.2.0",
+    "rxjs": "^5.4.3",
     "serve-favicon": "^2.4.2",
     "topojson-client": "^3.0.0"
   },
