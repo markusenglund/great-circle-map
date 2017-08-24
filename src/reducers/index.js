@@ -9,7 +9,18 @@ import mobile from "./mobile"
 import url from "./url"
 import searchInput from "./searchInput"
 import svgMap from "./svgMap"
+import globePosition from "./globePosition"
 
-export default combineReducers(
-  { routes, airportData, error, map, inputMode, settings, mobile, url, searchInput, svgMap }
-)
+export default combineReducers({
+  routes,
+  airportData,
+  error,
+  map,
+  inputMode,
+  settings,
+  mobile,
+  url,
+  searchInput,
+  svgMap,
+  globePosition
+})
