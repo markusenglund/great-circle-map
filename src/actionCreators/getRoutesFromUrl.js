@@ -9,11 +9,12 @@ function hasForbiddenCharacter(inputString) {
 
 // Helper function for splitting routes with slashes into separate routes
 // Is exported to be used in different context
-export function parseStringWithSlashes(str) { // ex str = ["LHR/DUB-JFK"]
-  const wordWithSlashes = /[\w/]*\/[\w/]*/
-  const slashString = str.match(wordWithSlashes)[0] // ex ["LHR/DUB"]
-  const slashArray = slashString.split(/\//g) // ex ["LHR", "DUB"]
-  const routeArray = slashArray.map(part => str.replace(wordWithSlashes, part))
+export function parseStringWithSlashes(string) { // ex str = ["LHR/DUB-JFK"]
+  const wordWithSlashesRegex = /[\w/]*\/[\w/]*/
+  const routeArray = string
+    .match(wordWithSlashesRegex)[0] // ex ["LHR/DUB"]
+    .split(/\//g)
+    .map(part => string.replace(wordWithSlashesRegex, part))
   return routeArray
 }
 
@@ -50,40 +51,40 @@ function codes2coords(routeArr, airportData) {
 export default function getRoutesFromUrl() {
   return (dispatch, getState) => {
     const { url } = getState()
-    const routeStr = url.param
+    const routeString = url.param
     // if (routeStr === "") {
     if (url.param === "") {
       return dispatch({ type: "SUBMIT_ROUTES", routes: [] })
     }
 
-    // Make string all uppercase and remove spaces
-    const routeStrAllCaps = routeStr.toUpperCase()
-    const routeStrWithoutSpaces = routeStrAllCaps.replace(/ /g, "")
-
-    // Remove dangling comma, semi-colon or slash
-    const routeStrNoDangle = routeStrWithoutSpaces.replace(/[,;/\n]$/, "")
+    // Make string all uppercase and remove spaces and dangling comma, semi-colon or slash
+    const parsedRouteString = routeString
+      .toUpperCase()
+      .replace(/ /g, "")
+      .replace(/[,;/\n]$/, "")
 
     // Check for forbidden characters in input
-    const forbiddenCharacter = hasForbiddenCharacter(routeStrNoDangle)
+    const forbiddenCharacter = hasForbiddenCharacter(parsedRouteString)
     if (forbiddenCharacter) {
       return dispatch({ type: "SHOW_ERROR", error: `'${forbiddenCharacter}' is not a valid character` })
     }
 
     // Split route-string by commas into an array
-    const routeArr = routeStrNoDangle.split(/[,;\n]+/g)
-    // Separate routes slashes so they create new routes
-    const routeArrWithParsedSlashes = routeArr.reduce((acc, val) => {
-      if ((/\//).test(val)) {
-        return acc.concat(parseStringWithSlashes(val))
-      }
-      return acc.concat(val)
-    }, [])
-
+    // and separate routes with slashes so they create new routes
     // This is an array of routes, which in turn are arrays of airport-codes
-    const routesSplitIntoAirportCodes = routeArrWithParsedSlashes.map(route => route.split("-"))
+    const routeArray = parsedRouteString
+      .split(/[,;\n]+/g)
+      .reduce((acc, val) => {
+        if ((/\//).test(val)) {
+          return acc.concat(parseStringWithSlashes(val))
+        }
+        return acc.concat(val)
+      }, [])
+      .map(route => route.split("-"))
+
     // Check if any route contains an airport code that isn't the right length, dispatch error
-    for (let i = 0; i < routesSplitIntoAirportCodes.length; i += 1) {
-      const codeWithWrongLength = routesSplitIntoAirportCodes[i].find((airportCode) => {
+    for (let i = 0; i < routeArray.length; i += 1) {
+      const codeWithWrongLength = routeArray[i].find((airportCode) => {
         return airportCode.length !== 3 && airportCode.length !== 4
       })
       if (codeWithWrongLength === "") {
@@ -94,7 +95,7 @@ export default function getRoutesFromUrl() {
     }
 
     const { airportData } = getState()
-    const { error, routes } = codes2coords(routesSplitIntoAirportCodes, airportData)
+    const { error, routes } = codes2coords(routeArray, airportData)
     if (error) {
       return dispatch({ type: "SHOW_ERROR", error: error.message })
     }
