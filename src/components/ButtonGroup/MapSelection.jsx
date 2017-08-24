@@ -4,9 +4,7 @@ import PropTypes from "prop-types"
 import ReactTooltip from "react-tooltip"
 
 
-function MapSelection({ dispatch, buttonsVisible, mapState }) {
-  const buttonClass = buttonsVisible ? "map-selection-button" : "map-selection-button invisible"
-
+function MapSelection({ dispatch, mapState, buttonClass }) {
   function handleChangeToGoogleMap(mapType) {
     if (mapState === "svg") {
       dispatch({ type: "ENABLE_MAP_REBOUND" })
@@ -98,6 +96,7 @@ function MapSelection({ dispatch, buttonsVisible, mapState }) {
 }
 
 function mapStateToProps(state) {
+  // mapState is the state that describes which map is shown, has nothing to do with mapStatoToProps
   let mapState
   if (state.settings.map === "svg") {
     mapState = "svg"
@@ -106,7 +105,10 @@ function mapStateToProps(state) {
   } else if (state.settings.mapType === "roadmap") {
     mapState = "roadmap"
   }
-  return { mapState }
+  return {
+    mapState,
+    buttonClass: state.settings.buttonsVisible ? "map-selection-button" : "map-selection-button invisible"
+  }
 }
 
 export default connect(mapStateToProps)(MapSelection)

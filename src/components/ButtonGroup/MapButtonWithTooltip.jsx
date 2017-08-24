@@ -1,6 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import ReactTooltip from "react-tooltip"
+import { connect } from "react-redux"
 
 function MapButtonWithTooltip({
   buttonClass,
@@ -34,11 +35,17 @@ function MapButtonWithTooltip({
 }
 
 MapButtonWithTooltip.propTypes = {
-  buttonClass: PropTypes.string.isRequired,
   handleClick: PropTypes.func.isRequired,
   tooltipId: PropTypes.string.isRequired,
   buttonContent: PropTypes.element.isRequired,
-  tooltipContent: PropTypes.element.isRequired
+  tooltipContent: PropTypes.element.isRequired,
+  buttonClass: PropTypes.string.isRequired
 }
 
-export default MapButtonWithTooltip
+function mapStateToProps(state) {
+  return {
+    buttonClass: state.settings.buttonsVisible ? "map-button" : "map-button invisible"
+  }
+}
+
+export default connect(mapStateToProps)(MapButtonWithTooltip)

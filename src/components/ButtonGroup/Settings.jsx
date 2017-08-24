@@ -57,7 +57,7 @@ class Settings extends Component {
   }
 
   render() {
-    const { distanceUnit, label, buttonClass } = this.props
+    const { distanceUnit, label } = this.props
 
     const distanceUnits = [
       { abbr: "km", readable: "Kilometers" },
@@ -75,7 +75,6 @@ class Settings extends Component {
     return (
       <div id="settings">
         <MapButtonWithTooltip
-          buttonClass={buttonClass}
           handleClick={() => this.setState({ isVisible: !this.state.isVisible })}
           tooltipId="settings"
           buttonContent={<FaCog />}
@@ -119,8 +118,7 @@ Settings.propTypes = {
     value: PropTypes.string.isRequired,
     readable: PropTypes.string.isRequired
   }).isRequired,
-  dispatch: PropTypes.func.isRequired,
-  buttonClass: PropTypes.string.isRequired
+  dispatch: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state) {

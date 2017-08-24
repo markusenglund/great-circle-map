@@ -60,7 +60,7 @@ class App extends Component {
   }
 
   render() {
-    const { history, buttonsVisible, isMobile, googleOrSvg } = this.props
+    const { history, isMobile, googleOrSvg } = this.props
 
     return (
       <ReactSidebar
@@ -82,7 +82,6 @@ class App extends Component {
               handleSetSidebarOpen={this.handleSetSidebarOpen}
               isMobile={isMobile}
               history={history}
-              buttonsVisible={buttonsVisible}
             />
             {googleOrSvg === "google" ?
               <GoogleMapWrapper /> :
@@ -100,7 +99,6 @@ App.propTypes = {
   match: PropTypes.shape({ params: PropTypes.object }).isRequired,
   history: PropTypes.shape({ push: PropTypes.function }).isRequired,
   map: PropTypes.shape({ fitBounds: PropTypes.func }),
-  buttonsVisible: PropTypes.bool.isRequired,
   isMobile: PropTypes.bool.isRequired,
   googleOrSvg: PropTypes.string.isRequired
 }
@@ -111,7 +109,6 @@ App.defaultProps = {
 function mapStateToProps(state) {
   return {
     map: state.map.map,
-    buttonsVisible: state.settings.buttonsVisible,
     isMobile: state.mobile,
     googleOrSvg: state.settings.map
   }
