@@ -46,12 +46,14 @@ class SvgMap extends Component {
 
   handleMouseDown(event) {
     event.preventDefault()
+    const { dispatch } = this.props
     const x = event.clientX
     const y = event.clientY
     this.setState({
       mouseDownLambda: this.lambdaScale(x) - this.state.lambda,
       mouseDownPhi: this.phiScale(y) - this.state.phi
     })
+    dispatch({ type: "MOUSE_DOWN" })
   }
 
   handleMouseUp() {
@@ -59,6 +61,7 @@ class SvgMap extends Component {
   }
 
   handleMouseMove(event) {
+    const { dispatch } = this.props
     if (this.state.mouseDownLambda) {
       const lambda = this.lambdaScale(event.clientX) - this.state.mouseDownLambda
 
@@ -75,6 +78,7 @@ class SvgMap extends Component {
         phi = 65
       }
       this.setState({ lambda, phi })
+      dispatch({ type: "MOUSE_MOVE" })
     }
   }
 
@@ -188,6 +192,7 @@ function mapStateToProps(state) {
 }
 
 SvgMap.propTypes = {
+  dispatch: PropTypes.func.isRequired,
   mapData: PropTypes.shape({ geometry: PropTypes.object }).isRequired,
   label: PropTypes.string.isRequired,
   sectors: PropTypes.arrayOf(PropTypes.array).isRequired,
