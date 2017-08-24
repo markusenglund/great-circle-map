@@ -1,6 +1,6 @@
 import { geoBounds } from "d3-geo"
 
-export default function calculateLambdaPhi(sectors) {
+export default function calculateGlobePosition(sectors) {
   console.log("CALCULATE LAMBDA PHI IS CALLED")
   let lambda = 0
   let phi = 0

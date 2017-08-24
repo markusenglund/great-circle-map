@@ -1,5 +1,5 @@
 import { combineReducers } from "redux"
-import routeData from "./routeData"
+import routes from "./routeData"
 import airportData from "./airportData"
 import error from "./error"
 import map from "./map"
@@ -11,5 +11,5 @@ import searchInput from "./searchInput"
 import svgMap from "./svgMap"
 
 export default combineReducers(
-  { routeData, airportData, error, map, inputMode, settings, mobile, url, searchInput, svgMap }
+  { routes, airportData, error, map, inputMode, settings, mobile, url, searchInput, svgMap }
 )

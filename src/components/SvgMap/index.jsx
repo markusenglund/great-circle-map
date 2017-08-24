@@ -3,14 +3,12 @@ import { connect } from "react-redux"
 import PropTypes from "prop-types"
 import { geoOrthographic, geoPath, geoDistance, geoGraticule } from "d3-geo"
 import { scaleLinear } from "d3-scale"
-import calculateLambdaPhi from "./utils/calculateLambdaPhi"
+import { getAirports, getSectors, getGlobePosition } from "../../selectors"
 import getPixelPositions from "./utils/getPixelPositions"
 
 class SvgMap extends Component {
   constructor(props) {
     super(props)
-    // const { lambda, phi } = calculateLambdaPhi(props.sectors)
-
     this.state = {
       mouseDownLambda: null,
       mouseDownPhi: null,
@@ -150,8 +148,6 @@ class SvgMap extends Component {
                     x={pixelPositions[i].x}
                     y={pixelPositions[i].y}
                     textAnchor={pixelPositions[i].textAnchor}
-                    // x={this.projection([airport.lng, airport.lat])[0] + 2}
-                    // y={this.projection([airport.lng, airport.lat])[1] + 15}
                     className="svg-label"
                   >
                     {airport[label] || airport.iata || airport.icao}
@@ -181,14 +177,13 @@ class SvgMap extends Component {
 }
 function mapStateToProps(state) {
   return {
-    routes: state.routeData.routes,
-    sectors: state.routeData.sectors,
-    airports: state.routeData.airports,
+    routes: state.routes,
+    sectors: getSectors(state),
+    airports: getAirports(state),
+    globePosition: getGlobePosition(state),
     mapData: state.svgMap,
     label: state.settings.label.value,
-    routeColor: state.settings.routeColor,
-    globePosition: calculateLambdaPhi(state.routeData.sectors)
-
+    routeColor: state.settings.routeColor
   }
 }
 

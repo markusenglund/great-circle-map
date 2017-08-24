@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
 import GoogleMap from "./GoogleMap"
+import { getAirports, getSectors } from "../selectors"
 
 class GoogleMapWrapper extends Component {
   componentDidUpdate() {
@@ -75,9 +76,9 @@ GoogleMapWrapper.defaultProps = { map: null }
 
 function mapStateToProps(state) {
   return {
-    routes: state.routeData.routes,
-    sectors: state.routeData.sectors,
-    airports: state.routeData.airports,
+    routes: state.routes,
+    sectors: getSectors(state),
+    airports: getAirports(state),
     isMapLoaded: state.map.isLoaded,
     mapType: state.settings.mapType,
     label: state.settings.label.value,
