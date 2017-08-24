@@ -1,6 +1,7 @@
 import axios from "axios"
 import { feature } from "topojson-client"
 
+// Get the topojson-data that describes the svg globe projection
 export default function getSvgMap() {
   return (dispatch) => {
     axios.get("/world-110m.json")

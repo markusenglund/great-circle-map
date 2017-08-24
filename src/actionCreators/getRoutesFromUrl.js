@@ -43,7 +43,7 @@ function codes2coords(routeArr, airportData) {
   }
 }
 
-/** MAIN FUNCTION **/
+  /* MAIN FUNCTION */
 
 // This is the action creator that gets called when new url is passed
 // Dispatches either an error (if url is invalid input) or the paths of the routes

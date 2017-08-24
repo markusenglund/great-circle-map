@@ -1,13 +1,13 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 import PropTypes from "prop-types"
-import ReactTooltip from "react-tooltip"
 import CloseOnEscape from "react-close-on-escape"
 import onClickOutside from "react-onclickoutside"
 import FaCog from "react-icons/fa/cog"
 import MenuButton from "./MenuButton"
 import ButtonToggle from "./ButtonToggle"
 import RouteColorPicker from "./RouteColorPicker"
+import MapButtonWithTooltip from "./MapButtonWithTooltip"
 
 class Settings extends Component {
   constructor() {
@@ -74,21 +74,13 @@ class Settings extends Component {
 
     return (
       <div id="settings">
-        <button
-          className={buttonClass}
-          onClick={() => this.setState({ isVisible: !this.state.isVisible })}
-          data-tip
-          data-for="settings"
-          data-event="mouseenter focusin"
-          data-event-off="mouseleave focusout click"
-        >
-          <FaCog />
-        </button>
-
-        <ReactTooltip className="tooltip" id="settings" place="right" effect="solid">
-          <span>Settings</span>
-        </ReactTooltip>
-
+        <MapButtonWithTooltip
+          buttonClass={buttonClass}
+          handleClick={() => this.setState({ isVisible: !this.state.isVisible })}
+          tooltipId="settings"
+          buttonContent={<FaCog />}
+          tooltipContent={<span>Settings</span>}
+        />
         {this.state.isVisible ? (
           <CloseOnEscape onEscape={this.handleEscape}>
             <div id="dropdown">
