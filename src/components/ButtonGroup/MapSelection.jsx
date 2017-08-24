@@ -95,6 +95,12 @@ function MapSelection({ dispatch, mapState, buttonClass }) {
   )
 }
 
+MapSelection.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  mapState: PropTypes.string.isRequired,
+  buttonClass: PropTypes.string.isRequired
+}
+
 function mapStateToProps(state) {
   // mapState is the state that describes which map is shown, has nothing to do with mapStatoToProps
   let mapState
