@@ -1,5 +1,5 @@
 import { combineReducers } from "redux"
-import routes from "./routeData"
+import routes from "./routes"
 import airportData from "./airportData"
 import error from "./error"
 import map from "./map"
