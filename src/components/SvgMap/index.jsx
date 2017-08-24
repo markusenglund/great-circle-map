@@ -9,13 +9,13 @@ import getPixelPositions from "./utils/getPixelPositions"
 class SvgMap extends Component {
   constructor(props) {
     super(props)
-    const { lambda, phi } = calculateLambdaPhi(props.sectors)
+    // const { lambda, phi } = calculateLambdaPhi(props.sectors)
 
     this.state = {
       mouseDownLambda: null,
       mouseDownPhi: null,
-      lambda,
-      phi
+      lambda: props.globePosition.lambda,
+      phi: props.globePosition.phi
     }
 
     this.diameter = 600
@@ -39,9 +39,9 @@ class SvgMap extends Component {
     this.handleTouchMove = this.handleTouchMove.bind(this)
   }
 
-  componentWillReceiveProps({ sectors, routeColor }) {
+  componentWillReceiveProps({ sectors, globePosition, routeColor }) {
     if (sectors.length && routeColor === this.props.routeColor) {
-      const { lambda, phi } = calculateLambdaPhi(sectors)
+      const { lambda, phi } = globePosition
       this.setState({ lambda, phi })
     }
   }
@@ -186,7 +186,8 @@ function mapStateToProps(state) {
     airports: state.routeData.airports,
     mapData: state.svgMap,
     label: state.settings.label.value,
-    routeColor: state.settings.routeColor
+    routeColor: state.settings.routeColor,
+    globePosition: calculateLambdaPhi(state.routeData.sectors)
 
   }
 }
@@ -196,7 +197,11 @@ SvgMap.propTypes = {
   label: PropTypes.string.isRequired,
   sectors: PropTypes.arrayOf(PropTypes.array).isRequired,
   airports: PropTypes.arrayOf(PropTypes.object).isRequired,
-  routeColor: PropTypes.string.isRequired
+  routeColor: PropTypes.string.isRequired,
+  globePosition: PropTypes.shape({
+    lambda: PropTypes.number,
+    phi: PropTypes.number
+  }).isRequired
 }
 
 export default connect(mapStateToProps)(SvgMap)
