@@ -9,7 +9,6 @@ import mobile from "./mobile"
 import url from "./url"
 import searchInput from "./searchInput"
 import svgMap from "./svgMap"
-import globePosition from "./globePosition"
 
 export default combineReducers({
   routes,
@@ -21,6 +20,5 @@ export default combineReducers({
   mobile,
   url,
   searchInput,
-  svgMap,
-  globePosition
+  svgMap
 })

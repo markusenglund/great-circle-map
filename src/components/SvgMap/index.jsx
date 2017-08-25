@@ -11,8 +11,8 @@ class SvgMap extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      // mouseDownLambda: null,
-      // mouseDownPhi: null,
+      mouseDownLambda: null,
+      mouseDownPhi: null,
       lambda: props.initialGlobePosition.lambda,
       phi: props.initialGlobePosition.phi
     }
@@ -44,29 +44,25 @@ class SvgMap extends Component {
 
   handleDragStart(event) {
     event.preventDefault()
-    const { dispatch } = this.props
     const x = event.clientX ? event.clientX : event.touches[0].clientX
     const y = event.clientY ? event.clientY : event.touches[0].clientY
     const mouseDownLambda = this.lambdaScale(x) - this.state.lambda
     const mouseDownPhi = this.phiScale(y) - this.state.phi
 
-    // this.setState({ mouseDownLambda, mouseDownPhi })
-    dispatch({ type: "MOUSE_DOWN", mouseDownLambda, mouseDownPhi })
+    this.setState({ mouseDownLambda, mouseDownPhi })
   }
 
   handleDrag(event) {
-    const { dispatch, mouseDownLambda, mouseDownPhi } = this.props
+    const { mouseDownLambda, mouseDownPhi } = this.state
     if (mouseDownLambda) {
       const x = event.clientX ? event.clientX : event.touches[0].clientX
       const y = event.clientY ? event.clientY : event.touches[0].clientY
       const lambda = this.lambdaScale(x) - mouseDownLambda
 
       if ((this.phiScale(y) - mouseDownPhi) < -65) {
-        // this.setState({ mouseDownPhi: this.phiScale(event.clientY) + 65 })
-        dispatch({ type: "CHANGE_REFERENCE_PHI", mouseDownPhi: this.phiScale(y) + 65 })
+        this.setState({ mouseDownPhi: this.phiScale(event.clientY) + 65 })
       } else if ((this.phiScale(y) - mouseDownPhi) > 65) {
-        dispatch({ type: "CHANGE_REFERENCE_PHI", mouseDownPhi: this.phiScale(y) - 65 })
-        // this.setState({ mouseDownPhi: this.phiScale(event.clientY) - 65 })
+        this.setState({ mouseDownPhi: this.phiScale(event.clientY) - 65 })
       }
       let phi = this.phiScale(y) - mouseDownPhi
 
@@ -76,7 +72,6 @@ class SvgMap extends Component {
         phi = 65
       }
       this.setState({ lambda, phi })
-      dispatch({ type: "MOUSE_MOVE" })
     }
   }
 
@@ -165,14 +160,11 @@ function mapStateToProps(state) {
     initialGlobePosition: getGlobePosition(state),
     mapData: state.svgMap,
     label: state.settings.label.value,
-    routeColor: state.settings.routeColor,
-    mouseDownLambda: state.globePosition.mouseDownLambda,
-    mouseDownPhi: state.globePosition.mouseDownPhi
+    routeColor: state.settings.routeColor
   }
 }
 
 SvgMap.propTypes = {
-  dispatch: PropTypes.func.isRequired,
   mapData: PropTypes.shape({ geometry: PropTypes.object }).isRequired,
   label: PropTypes.string.isRequired,
   sectors: PropTypes.arrayOf(PropTypes.array).isRequired,
@@ -181,9 +173,7 @@ SvgMap.propTypes = {
   initialGlobePosition: PropTypes.shape({
     lambda: PropTypes.number,
     phi: PropTypes.number
-  }).isRequired,
-  mouseDownLambda: PropTypes.number.isRequired,
-  mouseDownPhi: PropTypes.number.isRequired
+  }).isRequired
 }
 
 export default connect(mapStateToProps)(SvgMap)
