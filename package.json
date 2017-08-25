@@ -33,6 +33,7 @@
     "react-collapse": "^4.0.2",
     "react-color": "^2.13.4",
     "react-dom": "^15.5.4",
+    "react-draggable": "^3.0.2",
     "react-google-maps": "^6.3.0",
     "react-icons": "^2.2.5",
     "react-motion": "^0.5.0",

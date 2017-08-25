@@ -18,6 +18,9 @@ const globePosition = (state = {
     case "MOUSE_UP": {
       return state
     }
+    case "CHANGE_REFERENCE_PHI": {
+      return { ...state, mouseDownPhi: action.mouseDownPhi }
+    }
     default:
       return state
   }
