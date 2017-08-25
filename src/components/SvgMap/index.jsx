@@ -31,8 +31,8 @@ class SvgMap extends Component {
         .domain([0, this.diameter])
         .range([90, -90])
 
-    this.handleMouseDown = this.handleMouseDown.bind(this)
-    this.handleMouseMove = this.handleMouseMove.bind(this)
+    this.handleDragStart = this.handleDragStart.bind(this)
+    this.handleDrag = this.handleDrag.bind(this)
   }
 
   componentWillReceiveProps({ sectors, initialGlobePosition, routeColor }) {
@@ -42,7 +42,7 @@ class SvgMap extends Component {
     }
   }
 
-  handleMouseDown(event) {
+  handleDragStart(event) {
     event.preventDefault()
     const { dispatch } = this.props
     const x = event.clientX ? event.clientX : event.touches[0].clientX
@@ -54,7 +54,7 @@ class SvgMap extends Component {
     dispatch({ type: "MOUSE_DOWN", mouseDownLambda, mouseDownPhi })
   }
 
-  handleMouseMove(event) {
+  handleDrag(event) {
     const { dispatch, mouseDownLambda, mouseDownPhi } = this.props
     if (mouseDownLambda) {
       const x = event.clientX ? event.clientX : event.touches[0].clientX
@@ -92,7 +92,7 @@ class SvgMap extends Component {
 
     return (
       <div id="svg-wrapper">
-        <DraggableCore onStart={this.handleMouseDown} onDrag={this.handleMouseMove}>
+        <DraggableCore onStart={this.handleDragStart} onDrag={this.handleDrag}>
           <svg id="svg" viewBox={`-25 -25 ${this.diameter + 50} ${this.diameter + 50}`}>
             <defs>
               <radialGradient id="ocean-gradient" cx="65%" cy="20%">
