@@ -1,8 +1,8 @@
 import { geoBounds } from "d3-geo"
 
 export default function calculateGlobePosition(sectors) {
-  let lambda = 0
-  let phi = 0
+  let centerLng = 0
+  let centerLat = 0
   if (sectors.length) {
     const lineStringCoords = sectors.map((sector) => {
       return [[sector[0].lng, sector[0].lat], [sector[1].lng, sector[1].lat]]
@@ -11,18 +11,18 @@ export default function calculateGlobePosition(sectors) {
     const boundingBox = geoBounds(multiLineString)
 
     if (boundingBox[0][0] <= boundingBox[1][0]) {
-      lambda = -(boundingBox[0][0] + boundingBox[1][0]) / 2
+      centerLng = (boundingBox[0][0] - boundingBox[1][0]) / 2
     } else {
-      lambda = (-(boundingBox[0][0] + boundingBox[1][0] + 360) / 2)
+      centerLng = (boundingBox[0][0] - boundingBox[1][0] + 360) / 2
     }
 
-    if (phi < -65) {
-      phi = -65
-    } else if (phi > 65) {
-      phi = 65
+    if (centerLat < -65) {
+      centerLat = -65
+    } else if (centerLat > 65) {
+      centerLat = 65
     } else {
-      phi = -(boundingBox[0][1] + boundingBox[1][1]) / 2
+      centerLat = (boundingBox[0][1] - boundingBox[1][1]) / 2
     }
   }
-  return { lambda, phi }
+  return { centerLng, centerLat }
 }

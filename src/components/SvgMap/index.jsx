@@ -2,7 +2,6 @@ import React, { Component } from "react"
 import { connect } from "react-redux"
 import PropTypes from "prop-types"
 import { geoOrthographic, geoPath, geoDistance, geoGraticule } from "d3-geo"
-import { scaleLinear } from "d3-scale"
 import { DraggableCore } from "react-draggable"
 import { getAirports, getSectors, getGlobePosition } from "../../selectors"
 import getPixelPositions from "./utils/getPixelPositions"
@@ -11,10 +10,12 @@ class SvgMap extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      mouseDownLambda: null,
-      mouseDownPhi: null,
-      lambda: props.initialGlobePosition.lambda,
-      phi: props.initialGlobePosition.phi
+      startX: null,
+      startY: null,
+      startLat: null,
+      startLng: null,
+      centerLng: props.initialGlobePosition.centerLng,
+      centerLat: props.initialGlobePosition.centerLat
     }
 
     this.diameter = 600
@@ -23,67 +24,58 @@ class SvgMap extends Component {
       .translate([this.diameter / 2, this.diameter / 2])
       .clipAngle(90)
 
-    this.lambdaScale = scaleLinear()
-        .domain([0, this.diameter])
-        .range([-90, 90])
-
-    this.phiScale = scaleLinear()
-        .domain([0, this.diameter])
-        .range([90, -90])
-
     this.handleDragStart = this.handleDragStart.bind(this)
     this.handleDrag = this.handleDrag.bind(this)
   }
 
   componentWillReceiveProps({ sectors, initialGlobePosition, routeColor }) {
     if (sectors.length && routeColor === this.props.routeColor) {
-      const { lambda, phi } = initialGlobePosition
-      this.setState({ lambda, phi })
+      const { centerLng, centerLat } = initialGlobePosition
+      this.setState({ centerLng, centerLat })
     }
   }
 
   handleDragStart(event) {
-    event.preventDefault()
-    const x = event.clientX ? event.clientX : event.touches[0].clientX
-    const y = event.clientY ? event.clientY : event.touches[0].clientY
-    const mouseDownLambda = this.lambdaScale(x) - this.state.lambda
-    const mouseDownPhi = this.phiScale(y) - this.state.phi
-
-    this.setState({ mouseDownLambda, mouseDownPhi })
+    const startX = event.clientX ? event.clientX : event.touches[0].clientX
+    const startY = event.clientY ? event.clientY : event.touches[0].clientY
+    const startLat = this.state.centerLat
+    const startLng = this.state.centerLng
+    this.setState({ startX, startY, startLat, startLng })
   }
 
   handleDrag(event) {
-    const { mouseDownLambda, mouseDownPhi } = this.state
-    if (mouseDownLambda) {
+    const { startX, startY, startLat, startLng } = this.state
+    if (startX) {
       const x = event.clientX ? event.clientX : event.touches[0].clientX
       const y = event.clientY ? event.clientY : event.touches[0].clientY
-      const lambda = this.lambdaScale(x) - mouseDownLambda
 
-      if ((this.phiScale(y) - mouseDownPhi) < -65) {
-        this.setState({ mouseDownPhi: this.phiScale(event.clientY) + 65 })
-      } else if ((this.phiScale(y) - mouseDownPhi) > 65) {
-        this.setState({ mouseDownPhi: this.phiScale(event.clientY) - 65 })
-      }
-      let phi = this.phiScale(y) - mouseDownPhi
+      // Values are scaled
+      const dx = (x - startX) / 3
+      const dy = (y - startY) / 3
 
-      if (phi < -65) {
-        phi = -65
-      } else if (phi > 65) {
-        phi = 65
+      const centerLng = startLng + dx
+      let centerLat = startLat - dy
+      if (centerLat < -65) {
+        this.setState({ startLat: dy - 65 })
+        centerLat = -65
+      } else if (centerLat > 65) {
+        this.setState({ startLat: dy + 65 })
+        centerLat = 65
       }
-      this.setState({ lambda, phi })
+      console.log("centerLng: ", centerLng, "centerLat: ", centerLat, "startlat: ", startLat, "startlong: ", startLng)
+      this.setState({ centerLng, centerLat })
     }
   }
 
   render() {
-    const { lambda, phi } = this.state
-    this.projection.rotate([lambda, phi])
+    const { centerLng, centerLat } = this.state
+    this.projection.rotate([centerLng, centerLat])
     const path = geoPath()
       .projection(this.projection)
       .pointRadius(3)
 
     const { mapData, label, airports, sectors, routeColor } = this.props
-    const pixelPositions = getPixelPositions(airports, this.projection, lambda, phi)
+    const pixelPositions = getPixelPositions(airports, this.projection, centerLng, centerLat)
 
     return (
       <div id="svg-wrapper">
@@ -118,7 +110,7 @@ class SvgMap extends Component {
                   />
                   {label !== "none" && geoDistance(
                     [airport.lng, airport.lat],
-                    [-this.state.lambda, -this.state.phi]
+                    [-this.state.centerLng, -this.state.centerLat]
                   ) < (Math.PI / 2) ?
                     <text
                       x={pixelPositions[i].x}
@@ -171,8 +163,8 @@ SvgMap.propTypes = {
   airports: PropTypes.arrayOf(PropTypes.object).isRequired,
   routeColor: PropTypes.string.isRequired,
   initialGlobePosition: PropTypes.shape({
-    lambda: PropTypes.number,
-    phi: PropTypes.number
+    centerLng: PropTypes.number,
+    centerLat: PropTypes.number
   }).isRequired
 }
 
