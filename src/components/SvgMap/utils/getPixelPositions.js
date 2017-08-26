@@ -1,12 +1,14 @@
 import { geoDistance } from "d3-geo"
 
-export default function getPixelPositions(airports, projection, lambda, phi) {
+export default function getPixelPositions(airports, projection, centerLng, centerLat) {
   return airports.map((curAirport) => {
     const curPosition = projection([curAirport.lng, curAirport.lat])
 
     const vectorProjections = airports
       .filter(airport => airport.id !== curAirport.id)
-      .filter(airport => geoDistance([airport.lng, airport.lat], [-lambda, -phi]) < (Math.PI / 2))
+      .filter(airport => geoDistance(
+        [airport.lng, airport.lat], [centerLng, centerLat]
+      ) < (Math.PI / 2))
       .map((airport) => {
         const otherPosition = projection([airport.lng, airport.lat])
 

@@ -53,23 +53,22 @@ class SvgMap extends Component {
       const dx = (x - startX) / 3
       const dy = (y - startY) / 3
 
-      const centerLng = startLng + dx
-      let centerLat = startLat - dy
+      const centerLng = startLng - dx
+      let centerLat = startLat + dy
       if (centerLat < -65) {
-        this.setState({ startLat: dy - 65 })
+        this.setState({ startLat: -dy - 65 })
         centerLat = -65
       } else if (centerLat > 65) {
-        this.setState({ startLat: dy + 65 })
+        this.setState({ startLat: -dy + 65 })
         centerLat = 65
       }
-      console.log("centerLng: ", centerLng, "centerLat: ", centerLat, "startlat: ", startLat, "startlong: ", startLng)
       this.setState({ centerLng, centerLat })
     }
   }
 
   render() {
     const { centerLng, centerLat } = this.state
-    this.projection.rotate([centerLng, centerLat])
+    this.projection.rotate([-centerLng, -centerLat])
     const path = geoPath()
       .projection(this.projection)
       .pointRadius(3)
@@ -110,7 +109,7 @@ class SvgMap extends Component {
                   />
                   {label !== "none" && geoDistance(
                     [airport.lng, airport.lat],
-                    [-this.state.centerLng, -this.state.centerLat]
+                    [this.state.centerLng, this.state.centerLat]
                   ) < (Math.PI / 2) ?
                     <text
                       x={pixelPositions[i].x}
