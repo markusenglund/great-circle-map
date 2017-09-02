@@ -167,12 +167,6 @@ class SearchInput extends Component {
     history.push(newUrlParam)
     dispatch({ type: "CHANGE_SEARCH_INPUT", input: null })
   }
-  handleInputKeyDown(event) {
-    if (event.keyCode === 13 && !event.target.value) { // Workaround for submitting form on enter
-      event.preventDefault()
-      this.handleSubmit(event)
-    }
-  }
 
   renderValue(option) {
     return <span>{option.value}</span>
@@ -206,7 +200,6 @@ class SearchInput extends Component {
             loadOptions={(input) => {
               return this.getOptions(input)
             }}
-            onInputKeyDown={e => this.handleInputKeyDown(e)}
             valueRenderer={option => this.renderValue(option)}
             optionRenderer={option => this.renderOption(option)}
             arrowRenderer={() => undefined}
