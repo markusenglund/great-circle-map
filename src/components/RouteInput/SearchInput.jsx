@@ -27,7 +27,6 @@ function getSortValue(airport, inputEntireStringRegex, inputStartOfStringRegex, 
 class SearchInput extends Component {
   constructor(props) {
     super(props)
-    this.state = {}
 
     this.handleSelectMounted = this.handleSelectMounted.bind(this)
   }
@@ -137,7 +136,6 @@ class SearchInput extends Component {
   }
 
   handleChange(input) {
-    this.setState({ menuRenderer: () => <div /> })
     const { dispatch } = this.props
     dispatch({ type: "CHANGE_SEARCH_INPUT", input })
   }
@@ -173,8 +171,6 @@ class SearchInput extends Component {
     if (event.keyCode === 13 && !event.target.value) { // Workaround for submitting form on enter
       event.preventDefault()
       this.handleSubmit(event)
-    } else if (!event.target.value) {
-      this.setState({ menuRenderer: undefined }) // Workaround city, one way ticket
     }
   }
 
@@ -216,7 +212,6 @@ class SearchInput extends Component {
             arrowRenderer={() => undefined}
             ignoreCase={false}
             filterOptions={options => options}
-            menuRenderer={this.state.menuRenderer}
             searchPromptText={null}
             placeholder="Name of city or airport-code"
             ref={this.handleSelectMounted}
