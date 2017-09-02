@@ -20,10 +20,10 @@ export function parseStringWithSlashes(string) { // ex str = ["LHR/DUB-JFK"]
 
 // Takes array of arrays of airportcodes, returns array of arrays of airports w coordinates, name...
 // If any of the airportcodes does not exist in db, an error message is returned instead
-function codes2coords(routeArr, airportData) {
+function codes2DetailedRoutes(routeArr, airportData) {
   try {
-    const routes = routeArr.map((route) => {
-      return route.map((airportCode) => {
+    const detailedRoutes = routeArr.map((route) => {
+      const detailedRoute = route.map((airportCode) => {
         let myAirport
         // if iata-code
         if (airportCode.length === 3) {
@@ -37,8 +37,12 @@ function codes2coords(routeArr, airportData) {
         }
         return { ...myAirport, userEnteredCode: airportCode }
       })
+      detailedRoute.id = detailedRoute.reduce((acc, airport, i) => {
+        return i ? `${acc}-${airport.id}` : `${airport.id}`
+      }, "")
+      return detailedRoute
     })
-    return { routes }
+    return { detailedRoutes }
   } catch (error) {
     return { error }
   }
@@ -49,11 +53,11 @@ function codes2coords(routeArr, airportData) {
 // This is the action creator that gets called when new url is passed
 // Dispatches either an error (if url is invalid input) or the paths of the routes
 export default function getRoutesFromUrl() {
+  const t0 = performance.now()
   return (dispatch, getState) => {
     const { url } = getState()
     const routeString = url.param
-    // if (routeStr === "") {
-    if (url.param === "") {
+    if (routeString === "") {
       return dispatch({ type: "SUBMIT_ROUTES", routes: [] })
     }
 
@@ -95,12 +99,14 @@ export default function getRoutesFromUrl() {
     }
 
     const { airportData } = getState()
-    const { error, routes } = codes2coords(routeArray, airportData)
+    const { error, detailedRoutes } = codes2DetailedRoutes(routeArray, airportData)
     if (error) {
       return dispatch({ type: "SHOW_ERROR", error: error.message })
     }
+    const t1 = performance.now()
+    console.log("TIME TO GET THE ROUTES:: ", t1 - t0)
 
-    dispatch({ type: "SUBMIT_ROUTES", routes })
+    dispatch({ type: "SUBMIT_ROUTES", routes: detailedRoutes })
     return dispatch({ type: "HIDE_ERROR" })
   }
 }

@@ -1,7 +1,6 @@
 import React from "react"
 import withScriptjs from "react-google-maps/lib/async/withScriptjs"
 import { withGoogleMap, GoogleMap, Polyline, OverlayView } from "react-google-maps"
-import uniqueId from "lodash.uniqueid"
 import { LatLonSpherical } from "geodesy"
 
 function getPixelPositionOffset(curAirport, airports, sectors) {
@@ -132,7 +131,7 @@ const AsyncGoogleMap = withScriptjs(withGoogleMap((
             strokeColor: routeColor,
             strokeWeight: 2
           }}
-          key={uniqueId()}
+          key={route.id}
         />
       ))}
       {isMapLoaded && airportsWithPixelOffset.map((airport) => {
