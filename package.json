@@ -19,7 +19,6 @@
     "compression": "^1.6.2",
     "cookie-parser": "^1.4.3",
     "d3-geo": "^1.6.4",
-    "d3-scale": "^1.0.6",
     "express": "^4.15.2",
     "express-session": "^1.15.2",
     "geodesy": "^1.1.1",
@@ -47,10 +46,8 @@
     "react-tooltip": "^3.3.0",
     "redux": "^3.6.0",
     "redux-logger": "^3.0.1",
-    "redux-observable": "^0.16.0",
     "redux-thunk": "^2.2.0",
     "reselect": "^3.0.1",
-    "rxjs": "^5.4.3",
     "serve-favicon": "^2.4.2",
     "topojson-client": "^3.0.0"
   },
