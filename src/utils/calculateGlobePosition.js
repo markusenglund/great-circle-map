@@ -9,7 +9,6 @@ export default function calculateGlobePosition(sectors) {
     })
     const multiLineString = { type: "MultiLineString", coordinates: lineStringCoords }
     const boundingBox = geoBounds(multiLineString)
-    console.log(boundingBox)
     if (boundingBox[0][0] <= boundingBox[1][0]) {
       centerLng = (boundingBox[0][0] + boundingBox[1][0]) / 2
     } else {
@@ -24,6 +23,5 @@ export default function calculateGlobePosition(sectors) {
       centerLat = (boundingBox[0][1] + boundingBox[1][1]) / 2
     }
   }
-  console.log(centerLng, centerLat)
   return { centerLng, centerLat }
 }
