@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom"
 import { createStore, applyMiddleware } from "redux"
 import { Provider } from "react-redux"
 import ReduxThunk from "redux-thunk"
-import logger from "redux-logger"
+import Perf from "react-addons-perf"
 
 import "./stylesheets/styles.css"
 import "./stylesheets/map.css"
@@ -17,7 +17,9 @@ import "./stylesheets/svg-map.css"
 import reducer from "./reducers"
 import App from "./components/App"
 
-const store = createStore(reducer, applyMiddleware(ReduxThunk, logger))
+window.Perf = Perf
+
+const store = createStore(reducer, applyMiddleware(ReduxThunk))
 
 ReactDOM.render(
   <Provider store={store}>

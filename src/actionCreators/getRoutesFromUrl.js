@@ -53,7 +53,6 @@ function codes2DetailedRoutes(routeArr, airportData) {
 // This is the action creator that gets called when new url is passed
 // Dispatches either an error (if url is invalid input) or the paths of the routes
 export default function getRoutesFromUrl() {
-  const t0 = performance.now()
   return (dispatch, getState) => {
     const { url } = getState()
     const routeString = url.param
@@ -103,8 +102,6 @@ export default function getRoutesFromUrl() {
     if (error) {
       return dispatch({ type: "SHOW_ERROR", error: error.message })
     }
-    const t1 = performance.now()
-    console.log("TIME TO GET THE ROUTES:: ", t1 - t0)
 
     dispatch({ type: "SUBMIT_ROUTES", routes: detailedRoutes })
     return dispatch({ type: "HIDE_ERROR" })
