@@ -6,6 +6,7 @@ import { createStore, applyMiddleware } from "redux"
 import { Provider } from "react-redux"
 import ReduxThunk from "redux-thunk"
 
+import "./stylesheets/variables.scss"
 import "./stylesheets/styles.scss"
 import "./stylesheets/map.scss"
 import "./stylesheets/react-toggle.scss"
