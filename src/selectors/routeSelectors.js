@@ -1,6 +1,33 @@
+import { createSelector } from "reselect"
 import { geoBounds } from "d3-geo"
 
-export default function calculateGlobePosition(sectors) {
+function getRoutes(state) {
+  return state.routes
+}
+
+export const getAirports = createSelector([getRoutes], (routes) => {
+  const airports = []
+  routes.forEach((route) => {
+    route.forEach((airport) => {
+      if (airports.every(prevAirport => prevAirport.id !== airport.id)) {
+        airports.push(airport)
+      }
+    })
+  })
+  return airports
+})
+
+export const getSectors = createSelector([getRoutes], (routes) => {
+  const sectors = []
+  routes.forEach((route) => {
+    for (let i = 1; i < route.length; i += 1) {
+      sectors.push([route[i - 1], route[i]])
+    }
+  })
+  return sectors
+})
+
+export const getGlobePosition = createSelector([getSectors], (sectors) => {
   let centerLng = 0
   let centerLat = 0
   if (sectors.length) {
@@ -24,4 +51,4 @@ export default function calculateGlobePosition(sectors) {
     }
   }
   return { centerLng, centerLat }
-}
+})

@@ -2,8 +2,7 @@ import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
 import GoogleMap from "./GoogleMap"
-import { getAirports, getSectors } from "../selectors"
-import getBrighterColor from "../selectors/getBrighterColor"
+import { getAirports, getSectors, getBrighterColor } from "../selectors"
 
 class GoogleMapWrapper extends Component {
   componentDidUpdate() {
