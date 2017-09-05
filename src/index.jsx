@@ -5,19 +5,13 @@ import { BrowserRouter as Router, Route } from "react-router-dom"
 import { createStore, applyMiddleware } from "redux"
 import { Provider } from "react-redux"
 import ReduxThunk from "redux-thunk"
-import Perf from "react-addons-perf"
 
 import "./stylesheets/styles.css"
 import "./stylesheets/map.css"
-import "./stylesheets/route-list.css"
-import "./stylesheets/react-select.css"
 import "./stylesheets/react-toggle.css"
-import "./stylesheets/svg-map.css"
 
 import reducer from "./reducers"
 import App from "./components/App"
-
-window.Perf = Perf
 
 const store = createStore(reducer, applyMiddleware(ReduxThunk))
 

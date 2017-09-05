@@ -3,6 +3,7 @@ import { connect } from "react-redux"
 import PropTypes from "prop-types"
 import Select from "react-select"
 import ErrorMessage from "./ErrorMessage"
+import "./react-select.css"
 
 // Sort search results
 function getSortValue(airport, inputEntireStringRegex, inputStartOfStringRegex, inputUpperCase) {

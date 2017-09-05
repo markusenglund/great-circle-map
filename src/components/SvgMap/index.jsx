@@ -4,7 +4,8 @@ import PropTypes from "prop-types"
 import { geoOrthographic, geoPath, geoDistance, geoGraticule } from "d3-geo"
 import { DraggableCore } from "react-draggable"
 import { getAirports, getSectors, getGlobePosition } from "../../selectors"
-import getPixelPositions from "./utils/getPixelPositions"
+import getPixelPositions from "./getPixelPositions"
+import "./svg-map.css"
 
 class SvgMap extends Component {
   constructor(props) {
@@ -98,7 +99,7 @@ class SvgMap extends Component {
               cy={this.diameter / 2}
               fill="url(#ocean-gradient)"
             />
-            <path className="svg-land" d={path(mapData)} fill="url(#land-gradient)" />
+            <path d={path(mapData)} fill="url(#land-gradient)" />
             <path id="graticule" d={path(geoGraticule()())} />
             <g>
               {airports.map((airport, i) => (
