@@ -67,7 +67,9 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^5.0.3",
     "eslint-plugin-react": "^7.0.1",
+    "node-sass": "^4.5.3",
     "react-addons-perf": "^15.4.2",
+    "sass-loader": "^6.0.6",
     "style-loader": "^0.17.0",
     "webpack": "^2.4.1"
   }

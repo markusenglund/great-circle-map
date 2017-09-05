@@ -5,7 +5,7 @@ import { geoOrthographic, geoPath, geoDistance, geoGraticule } from "d3-geo"
 import { DraggableCore } from "react-draggable"
 import { getAirports, getSectors, getGlobePosition } from "../../selectors"
 import getPixelPositions from "./getPixelPositions"
-import "./svg-map.css"
+import "./svg-map.scss"
 
 class SvgMap extends Component {
   constructor(props) {

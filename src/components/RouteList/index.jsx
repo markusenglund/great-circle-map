@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import { connect } from "react-redux"
 import uniqueId from "lodash.uniqueid"
 import RouteElement from "./RouteElement"
-import "./route-list.css"
+import "./route-list.scss"
 
 function RouteList({ routes }) {
   return (
