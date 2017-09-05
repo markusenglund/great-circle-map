@@ -4,6 +4,7 @@ import PropTypes from "prop-types"
 import { geoOrthographic, geoPath, geoDistance, geoGraticule } from "d3-geo"
 import { DraggableCore } from "react-draggable"
 import { getAirports, getSectors, getGlobePosition } from "../../selectors"
+import getBrighterColor from "../../selectors/getBrighterColor"
 import getPixelPositions from "./getPixelPositions"
 import "./svg-map.scss"
 
@@ -74,7 +75,7 @@ class SvgMap extends Component {
       .projection(this.projection)
       .pointRadius(3)
 
-    const { mapData, label, airports, sectors, routeColor } = this.props
+    const { mapData, label, airports, sectors, routeColor, pointColor } = this.props
     const pixelPositions = getPixelPositions(airports, this.projection, centerLng, centerLat)
 
     return (
@@ -102,10 +103,23 @@ class SvgMap extends Component {
             <path d={path(mapData)} fill="url(#land-gradient)" />
             <path id="graticule" d={path(geoGraticule()())} />
             <g>
+              {sectors.map(sector => (
+                <path
+                  stroke={routeColor}
+                  fill="none"
+                  d={path({
+                    type: "LineString",
+                    coordinates: [[sector[0].lng, sector[0].lat], [sector[1].lng, sector[1].lat]]
+                  })}
+                  key={`${sector[0].id}-${sector[1].id}`}
+                />
+              ))}
+            </g>
+            <g>
               {airports.map((airport, i) => (
                 <g key={airport.id}>
                   <path
-                    fill={routeColor}
+                    fill={pointColor}
                     d={path({ type: "Point", coordinates: [airport.lng, airport.lat] })}
                   />
                   {label !== "none" && geoDistance(
@@ -125,19 +139,6 @@ class SvgMap extends Component {
                 </g>
               ))}
             </g>
-            <g>
-              {sectors.map(sector => (
-                <path
-                  stroke={routeColor}
-                  fill="none"
-                  d={path({
-                    type: "LineString",
-                    coordinates: [[sector[0].lng, sector[0].lat], [sector[1].lng, sector[1].lat]]
-                  })}
-                  key={`${sector[0].id}-${sector[1].id}`}
-                />
-              ))}
-            </g>
           </svg>
         </DraggableCore>
       </div>
@@ -152,7 +153,8 @@ function mapStateToProps(state) {
     initialGlobePosition: getGlobePosition(state),
     mapData: state.svgMap,
     label: state.settings.label.value,
-    routeColor: state.settings.routeColor
+    routeColor: state.settings.routeColor,
+    pointColor: getBrighterColor(state)
   }
 }
 
@@ -162,6 +164,7 @@ SvgMap.propTypes = {
   sectors: PropTypes.arrayOf(PropTypes.array).isRequired,
   airports: PropTypes.arrayOf(PropTypes.object).isRequired,
   routeColor: PropTypes.string.isRequired,
+  pointColor: PropTypes.string.isRequired,
   initialGlobePosition: PropTypes.shape({
     centerLng: PropTypes.number,
     centerLat: PropTypes.number

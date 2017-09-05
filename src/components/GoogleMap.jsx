@@ -98,20 +98,9 @@ function getPixelPositionOffset(curAirport, airports, sectors) {
   }
 }
 
-function getBrighterColor(color) {
-  let newColor = "#"
-  for (let i = 1; i < 6; i += 2) {
-    const number = parseInt(color.substr(i, 2), 16)
-    const newNumber = Math.round(Math.min(number + 20, 255)).toString(16)
-    newColor += newNumber
-  }
-  return newColor
-}
-
 const AsyncGoogleMap = withScriptjs(withGoogleMap((
-  { routes, airports, sectors, onMapMounted, mapType, label, zoom, isMapLoaded, routeColor }
+  { routes, airports, sectors, onMapMounted, mapType, label, zoom, isMapLoaded, routeColor, pointColor }
 ) => {
-  const pointColor = getBrighterColor(routeColor)
   const airportsWithPixelOffset = airports.map((airport) => {
     return {
       ...airport,

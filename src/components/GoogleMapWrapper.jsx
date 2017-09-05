@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 import { connect } from "react-redux"
 import GoogleMap from "./GoogleMap"
 import { getAirports, getSectors } from "../selectors"
+import getBrighterColor from "../selectors/getBrighterColor"
 
 class GoogleMapWrapper extends Component {
   componentDidUpdate() {
@@ -33,7 +34,7 @@ class GoogleMapWrapper extends Component {
   }
 
   render() {
-    const { routes, airports, sectors, mapType, label, zoom, isMapLoaded, routeColor } = this.props
+    const { routes, airports, sectors, mapType, label, zoom, isMapLoaded, routeColor, pointColor } = this.props
     return (
       <GoogleMap
         googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyBISa-Ul-NOnD-H5lweC_w4evLmV_0fuSU"
@@ -55,6 +56,7 @@ class GoogleMapWrapper extends Component {
         zoom={zoom}
         isMapLoaded={isMapLoaded}
         routeColor={routeColor}
+        pointColor={pointColor}
       />
     )
   }
@@ -70,7 +72,8 @@ GoogleMapWrapper.propTypes = {
   mapType: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   zoom: PropTypes.number.isRequired,
-  routeColor: PropTypes.string.isRequired
+  routeColor: PropTypes.string.isRequired,
+  pointColor: PropTypes.string.isRequired
 }
 GoogleMapWrapper.defaultProps = { map: null }
 
@@ -85,7 +88,8 @@ function mapStateToProps(state) {
     shouldMapRebound: state.map.shouldMapRebound,
     map: state.map.map,
     zoom: state.map.zoom,
-    routeColor: state.settings.routeColor
+    routeColor: state.settings.routeColor,
+    pointColor: getBrighterColor(state)
   }
 }
 
