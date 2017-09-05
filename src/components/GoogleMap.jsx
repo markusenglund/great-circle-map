@@ -98,9 +98,20 @@ function getPixelPositionOffset(curAirport, airports, sectors) {
   }
 }
 
+function getBrighterColor(color) {
+  let newColor = "#"
+  for (let i = 1; i < 6; i += 2) {
+    const number = parseInt(color.substr(i, 2), 16)
+    const newNumber = Math.round(Math.min(number + 20, 255)).toString(16)
+    newColor += newNumber
+  }
+  return newColor
+}
+
 const AsyncGoogleMap = withScriptjs(withGoogleMap((
   { routes, airports, sectors, onMapMounted, mapType, label, zoom, isMapLoaded, routeColor }
 ) => {
+  const pointColor = getBrighterColor(routeColor)
   const airportsWithPixelOffset = airports.map((airport) => {
     return {
       ...airport,
@@ -143,7 +154,7 @@ const AsyncGoogleMap = withScriptjs(withGoogleMap((
               getPixelPositionOffset={() => { return { x: -4, y: -4 } }}
             >
               <svg>
-                <circle cx="4" cy="4" r="3" fill={routeColor} stroke={routeColor} strokeWidth="1" />
+                <circle cx="4" cy="4" r="3" fill={pointColor} stroke={pointColor} strokeWidth="1" />
               </svg>
             </OverlayView>
             {label !== "none" ? (
