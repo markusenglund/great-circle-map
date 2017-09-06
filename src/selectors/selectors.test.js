@@ -2,35 +2,35 @@ const { getBrighterColor } = require("./colorSelector.js")
 const { getAirports, getSectors, getGlobePosition } = require("./routeSelectors")
 
 describe("getBrighterColor", () => {
-  test("brighten dark color", () => {
+  it("brightens dark color", () => {
     expect(getBrighterColor({ settings: { routeColor: "#000000" } })).toBe("#141414")
   })
-  test("turn C0FEFE to d4ffff", () => {
+  it("turns C0FEFE to d4ffff", () => {
     expect(getBrighterColor({ settings: { routeColor: "#C0FEFE" } })).toBe("#d4ffff")
   })
 })
 
 describe("getAirports", () => {
-  test("one route returns all of its airports", () => {
+  it("returns all the airports if passed one route", () => {
     expect(getAirports({ routes: [
       [{ id: 1 }, { id: 20 }]
     ] }))
     .toEqual([{ id: 1 }, { id: 20 }])
   })
-  test("multiple routes with repeating airports", () => {
+  it("returns each airport only once if passed many routes with repeat airports", () => {
     expect(getAirports({ routes: [
       [{ id: 1 }, { id: 2 }, { id: 34 }],
       [{ id: 2 }, { id: 3 }]
     ] }))
     .toEqual([{ id: 1 }, { id: 2 }, { id: 34 }, { id: 3 }])
   })
-  test("return empty array if routes is empty array", () => {
+  it("returns empty array if routes is empty array", () => {
     expect(getAirports({ routes: [] })).toEqual([])
   })
 })
 
 describe("getSectors", () => {
-  test("route with three airports returns two sectors", () => {
+  it("returns two sectors if passed aroute with three airports ", () => {
     expect(getSectors({ routes: [
       [{ id: 1 }, { id: 20 }, { id: 21 }]
     ] }))
@@ -39,7 +39,7 @@ describe("getSectors", () => {
       [{ id: 20 }, { id: 21 }]
     ])
   })
-  test("multiple routes", () => {
+  it("works with multiple routes", () => {
     expect(getSectors({ routes: [
       [{ id: 1 }, { id: 2 }, { id: 34 }],
       [{ id: 2 }, { id: 3 }]
@@ -50,7 +50,7 @@ describe("getSectors", () => {
       [{ id: 2 }, { id: 3 }]
     ])
   })
-  test("empty array", () => {
+  it("works with empty array", () => {
     expect(getSectors({ routes: [] })).toEqual([])
   })
 })
