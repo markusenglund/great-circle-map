@@ -6,7 +6,8 @@
   "scripts": {
     "build": "webpack --watch",
     "build:prod": "webpack -p",
-    "test": "jest"
+    "test": "jest --coverage",
+    "test:watch": "jest --watch"
   },
   "author": "",
   "license": "ISC",
