@@ -1,7 +1,6 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
-import uniqueId from "lodash.uniqueid"
 import RouteElement from "./RouteElement"
 import "./route-list.scss"
 
@@ -12,7 +11,7 @@ function RouteList({ routes }) {
         {routes.map((route, i) => {
           return route.length > 1 ?
             <RouteElement
-              key={uniqueId()}
+              key={route.id}
               route={route}
               index={i}
             /> :

@@ -133,7 +133,6 @@ class RouteElement extends Component {
           </div>
           <button onClick={this.handleDeleteRoute} className="delete-button">
             <MdClose />
-            {/* <i className="fa fa-times" aria-hidden /> */}
           </button>
         </div>
         <Collapse isOpened={this.state.isOpened}>
