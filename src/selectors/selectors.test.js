@@ -1,7 +1,7 @@
 const { getBrighterColor } = require("./colorSelector.js")
 const { getAirports, getSectors, getGlobePosition } = require("./routeSelectors")
 
-describe("getBrighterColor", () => {
+describe("getBrighterColor()", () => {
   it("brightens dark color", () => {
     expect(getBrighterColor({ settings: { routeColor: "#000000" } })).toBe("#141414")
   })
@@ -10,7 +10,7 @@ describe("getBrighterColor", () => {
   })
 })
 
-describe("getAirports", () => {
+describe("getAirports()", () => {
   it("returns all the airports if passed one route", () => {
     expect(getAirports({ routes: [
       [{ id: 1 }, { id: 20 }]
@@ -29,7 +29,7 @@ describe("getAirports", () => {
   })
 })
 
-describe("getSectors", () => {
+describe("getSectors()", () => {
   it("returns two sectors if passed aroute with three airports ", () => {
     expect(getSectors({ routes: [
       [{ id: 1 }, { id: 20 }, { id: 21 }]
@@ -52,5 +52,15 @@ describe("getSectors", () => {
   })
   it("works with empty array", () => {
     expect(getSectors({ routes: [] })).toEqual([])
+  })
+})
+
+describe("getGlobePosition()", () => {
+  it("returns 0,0 for empty routes", () => {
+    expect(getGlobePosition({ routes: [] })).toEqual({ centerLat: 0, centerLng: 0 })
+  })
+  it("correctly computes bounding box that passes the antimeridian", () => {
+    expect(getGlobePosition({ routes: [[{ lat: 40, lng: 140 }, { lat: 40, lng: -160 }]] }))
+      .toEqual({ centerLat: 42.04765636333083, centerLng: 170 })
   })
 })

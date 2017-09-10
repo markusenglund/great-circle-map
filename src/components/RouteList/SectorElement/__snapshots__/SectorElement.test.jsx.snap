@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly with missing icao 1`] = `
+<div
+  className="sector-element"
+>
+  <span
+    className="airport-code"
+  >
+    <span>
+      AAA
+       ⇾ 
+      BBBB
+    </span>
+  </span>
+  <span
+    className="distance-number"
+  >
+    1337 km
+  </span>
+</div>
+`;
