@@ -6,6 +6,7 @@
   "scripts": {
     "build": "webpack --watch",
     "build:prod": "webpack -p",
+    "lint": "eslint --ext .js,.jsx src/ server.js",
     "test": "jest --coverage",
     "test:watch": "jest --watch"
   },
