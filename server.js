@@ -26,4 +26,6 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"))
 })
 
+/* eslint-disable no-console */
 app.listen(port, () => console.log(`Server listening on port ${port}`))
+/* eslint-enable no-console */

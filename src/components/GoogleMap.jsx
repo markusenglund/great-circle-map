@@ -99,7 +99,18 @@ function getPixelPositionOffset(curAirport, airports, sectors) {
 }
 
 const AsyncGoogleMap = withScriptjs(withGoogleMap((
-  { routes, airports, sectors, onMapMounted, mapType, label, zoom, isMapLoaded, routeColor, pointColor }
+  {
+    routes,
+    airports,
+    sectors,
+    onMapMounted,
+    mapType,
+    label,
+    zoom,
+    isMapLoaded,
+    routeColor,
+    pointColor
+  }
 ) => {
   const airportsWithPixelOffset = airports.map((airport) => {
     return {

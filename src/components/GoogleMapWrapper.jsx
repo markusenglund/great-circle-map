@@ -33,7 +33,17 @@ class GoogleMapWrapper extends Component {
   }
 
   render() {
-    const { routes, airports, sectors, mapType, label, zoom, isMapLoaded, routeColor, pointColor } = this.props
+    const {
+      routes,
+      airports,
+      sectors,
+      mapType,
+      label,
+      zoom,
+      isMapLoaded,
+      routeColor,
+      pointColor
+    } = this.props
     return (
       <GoogleMap
         googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyBISa-Ul-NOnD-H5lweC_w4evLmV_0fuSU"

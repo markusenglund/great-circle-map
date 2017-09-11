@@ -169,6 +169,7 @@ class SearchInput extends Component {
     dispatch({ type: "CHANGE_SEARCH_INPUT", input: null })
   }
 
+  /* eslint-disable class-methods-use-this */
   renderValue(option) {
     return <span>{option.value}</span>
   }
@@ -181,6 +182,7 @@ class SearchInput extends Component {
       </div>
     )
   }
+  /* eslint-enable class-methods-use-this */
 
 
   render() {

@@ -24,4 +24,10 @@ class ColorPicker extends Component {
   }
 }
 
+ColorPicker.propTypes = {
+  handleChange: PropTypes.func.isRequired,
+  handleClickOutside: PropTypes.func.isRequired,
+  color: PropTypes.string.isRequired
+}
+
 export default onClickOutside(ColorPicker)
