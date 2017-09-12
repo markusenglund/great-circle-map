@@ -3,6 +3,9 @@
     "test": {
       "plugins": ["transform-es2015-modules-commonjs"],
       "presets": ["env", "stage-3", "react"]
+    },
+    "production": {
+      "plugins": ["transform-react-remove-prop-types"]
     }
   }
 }
