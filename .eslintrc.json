@@ -16,7 +16,8 @@
     "react"
   ],
   "globals": {
-    "google": true
+    "google": true,
+    "ga": true
   },
   "rules": {
     "quotes": ["error", "double"],

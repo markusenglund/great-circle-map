@@ -25,6 +25,7 @@
     "express": "^4.15.2",
     "express-session": "^1.15.2",
     "geodesy": "^1.1.1",
+    "history": "^4.7.2",
     "lodash.uniqueid": "^4.0.1",
     "papaparse": "^4.3.2",
     "prop-types": "^15.5.8",
