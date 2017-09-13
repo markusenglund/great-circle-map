@@ -35,7 +35,6 @@ const initializeAnalytics = () => {
   /* eslint-enable */
 
   history.listen((location) => {
-    console.log(`tracking page view: ${location.pathname}`)
     ga("send", "pageview", location.pathname)
   })
 }
