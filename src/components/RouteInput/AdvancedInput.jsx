@@ -1,7 +1,6 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 import PropTypes from "prop-types"
-import ErrorMessage from "./ErrorMessage"
 
 class AdvancedInput extends Component {
   constructor(props) {
@@ -64,7 +63,6 @@ class AdvancedInput extends Component {
               ref={this.handleTextareaMounted}
             />
           </div>
-          <ErrorMessage />
           <div className="submit-button-wrapper">
             <button className="btn" type="submit">Go</button>
           </div>

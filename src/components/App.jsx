@@ -8,6 +8,7 @@ import Sidebar from "./Sidebar"
 import GoogleMapWrapper from "./GoogleMapWrapper"
 import ButtonGroup from "./ButtonGroup"
 import SvgMap from "./SvgMap"
+import MobileInput from "./MobileInput"
 
 class App extends Component {
   constructor(props) {
@@ -75,6 +76,7 @@ class App extends Component {
         }}
       >
         <div id="main">
+          {isMobile ? <MobileInput /> : null}
           <div id="map-wrapper">
             <ButtonGroup
               isSidebarDocked={this.state.isSidebarDocked}

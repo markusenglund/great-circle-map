@@ -4,6 +4,7 @@ import PropTypes from "prop-types"
 import InputModeToggle from "./InputModeToggle"
 import AdvancedInput from "./AdvancedInput"
 import SearchInput from "./SearchInput"
+import ErrorMessage from "./ErrorMessage"
 
 function RouteInput({ inputMode }) {
   return (
@@ -13,6 +14,7 @@ function RouteInput({ inputMode }) {
         <AdvancedInput />
       }
       <InputModeToggle inputMode={inputMode} />
+      <ErrorMessage />
     </div>
   )
 }

@@ -7,8 +7,8 @@ import RouteList from "./RouteList"
 function Sidebar({ isMobile }) {
   return (
     <div className="left-column">
-      {!isMobile ? <Header /> : null}
-      <RouteInput />
+      <Header />
+      {!isMobile ? <RouteInput /> : null}
       <RouteList />
     </div>
   )

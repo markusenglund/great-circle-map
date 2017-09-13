@@ -2,7 +2,6 @@ import React, { Component } from "react"
 import { connect } from "react-redux"
 import PropTypes from "prop-types"
 import Select from "react-select"
-import ErrorMessage from "./ErrorMessage"
 import "./react-select.scss"
 
 // Sort search results
@@ -187,37 +186,38 @@ class SearchInput extends Component {
 
   render() {
     const SelectAsync = Select.Async
-    const { inputValue } = this.props
+    const { inputValue, isMobile } = this.props
 
     return (
-      <form className="input-form" onSubmit={e => this.handleSubmit(e)}>
-        <div id="textarea-wrapper">
-          <p>
-            Enter two or more airports to draw a route between
-            them on the map and calculate the distance.
-          </p>
-          <SelectAsync
-            multi
-            value={inputValue}
-            onChange={input => this.handleChange(input)}
-            loadOptions={(input) => {
-              return this.getOptions(input)
-            }}
-            valueRenderer={option => this.renderValue(option)}
-            optionRenderer={option => this.renderOption(option)}
-            arrowRenderer={() => undefined}
-            ignoreCase={false}
-            filterOptions={options => options}
-            searchPromptText={null}
-            placeholder="Name of city or airport-code"
-            ref={this.handleSelectMounted}
-          />
-        </div>
-        <ErrorMessage />
-        <div className="submit-button-wrapper">
-          <button className="btn" type="submit">Go</button>
-        </div>
-      </form>
+      <div>
+        <p>
+          Enter two or more airports to draw a route between
+          them on the map and calculate the distance.
+        </p>
+        <form className={isMobile ? "input-form-mobile" : "input-form"} onSubmit={e => this.handleSubmit(e)}>
+          <div id="textarea-wrapper">
+            <SelectAsync
+              multi
+              value={inputValue}
+              onChange={input => this.handleChange(input)}
+              loadOptions={(input) => {
+                return this.getOptions(input)
+              }}
+              valueRenderer={option => this.renderValue(option)}
+              optionRenderer={option => this.renderOption(option)}
+              arrowRenderer={() => undefined}
+              ignoreCase={false}
+              filterOptions={options => options}
+              searchPromptText={null}
+              placeholder="Name of city or airport-code"
+              ref={this.handleSelectMounted}
+            />
+          </div>
+          <div className={isMobile ? "submit-button-wrapper" : "submit-button-wrapper"}>
+            <button className="btn" type="submit">Go</button>
+          </div>
+        </form>
+      </div>
     )
   }
 }
