@@ -1,3 +1,5 @@
+@import "./variables.scss";
+
 html, body {
   height: 100%;
   margin: 0;
@@ -17,6 +19,8 @@ ul {
 
 #main {
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .left-column {
@@ -24,7 +28,6 @@ ul {
   width: 300px;
   display: flex;
   flex-direction: column;
-  background: rgb(44, 44, 44);
 }
 
 #header {
@@ -32,6 +35,8 @@ ul {
   padding: 7px;
   background-color: rgb(22, 22, 22);
   height: 63px;
+  border-bottom: 1px $grey solid;
+
 }
 
 #header h1 {
@@ -45,11 +50,15 @@ ul {
   font-weight:normal;
 }
 
-#header img {
+.route-input {
+  background-color: $grey;
 }
-/*#header div {
-  height: 60px;
-}*/
+
+.search-input {
+  background-color: $grey;
+  width: 100%;
+}
+
 .input-form {
   flex: 0 0 auto;
   margin-right: 10px;
@@ -63,19 +72,26 @@ ul {
   // margin-left: 10px;
 }
 
-#textarea-wrapper {
-  // margin-top: 10px;
-  // margin-bottom: 10px;
+#select-wrapper {
   width: 100%;
 }
 
-#textarea-wrapper p {
-  margin: 8px 0;
+#textarea-wrapper {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+}
+
+.description {
+  display: inline-block;
+  margin: 5px 10px 0 10px;
   color: #ddd;
   font-size: 14px;
 }
 
 #textarea {
+  margin-left: 10px;
+  margin-right: 10px;
   padding: 4px;
   width: 100%;
   -webkit-box-sizing: border-box;
@@ -91,13 +107,9 @@ ul {
 }
 
 .submit-button-wrapper {
-  margin-top: 10px;
   margin-bottom: 10px;
   margin-left: 10px;
-  // margin-bottom: 10px;
-  // display: flex;
-  // align-items: top;
-  // justify-content: space-between;
+  margin-top: 10px;
 }
 
 .btn {
@@ -108,9 +120,9 @@ ul {
   font-size: 15px;
   background: #05153a;
   padding: 6px 20px 6px 20px;
-  border: solid #1f628d 0px;
+  border: solid #05102a 0px;
   text-decoration: none;
-  height: 36px;
+  height: 37px;
 }
 
 .btn:hover {
@@ -126,45 +138,6 @@ ul {
   color: red;
   font-weight: bold;
 }
-
-// .toggle-btn-group {
-//   margin: 10px;
-//   margin-bottom: 40px;
-// }
-//
-// .toggle-btn-group label {
-//   display: inline-block;
-//   float: left;
-//   text-align: center;
-//   cursor: pointer;
-//   padding: 5px;
-//   background-color: #aaa;
-//   color: #fff;
-// }
-//
-// .toggle-btn-group label:first-of-type {
-//   border-top-left-radius: 5px;
-//   border-bottom-left-radius: 5px;
-// }
-// .toggle-btn-group label:last-of-type {
-//   border-top-right-radius: 5px;
-//   border-bottom-right-radius: 5px;
-// }
-//
-// .toggle-btn-group input[type="radio"]:checked+label {
-//   background: #102296;
-//   cursor: default;
-// }
-//
-// .toggle-btn-group label:hover,
-// .toggle-btn-group label:focus {
-//   background-color: #999;
-// }
-//
-// .toggle-btn-group input {
-//   position: absolute;
-//   clip: rect(0px 0px 0px 0px);
-// }
 
 .bold {
   font-weight: bold;

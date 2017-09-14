@@ -8,7 +8,7 @@ import ErrorMessage from "./ErrorMessage"
 
 function RouteInput({ inputMode }) {
   return (
-    <div>
+    <div className="route-input">
       { inputMode === "search" ?
         <SearchInput /> :
         <AdvancedInput />

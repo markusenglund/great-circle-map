@@ -8,12 +8,12 @@ import Sidebar from "./Sidebar"
 import GoogleMapWrapper from "./GoogleMapWrapper"
 import ButtonGroup from "./ButtonGroup"
 import SvgMap from "./SvgMap"
-import MobileInput from "./MobileInput"
+import SearchInput from "./RouteInput/SearchInput"
 
 class App extends Component {
   constructor(props) {
     super(props)
-    this.state = { isSidebarDocked: true, isSidebarOpen: true, transitionsActive: false }
+    this.state = { isSidebarDocked: true, isSidebarOpen: false, transitionsActive: false }
 
     const { dispatch, match, history } = props
     if (navigator.userAgent.match(/Android/i)
@@ -76,7 +76,7 @@ class App extends Component {
         }}
       >
         <div id="main">
-          {isMobile ? <MobileInput /> : null}
+          {isMobile ? <SearchInput /> : null}
           <div id="map-wrapper">
             <ButtonGroup
               isSidebarDocked={this.state.isSidebarDocked}

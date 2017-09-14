@@ -1,8 +1,14 @@
 /* navy: #05102a;; dark grey: rgb(22, 22, 22),
 grey: rgb(44, 44, 44) , grey-text: #bbd;*/
 
-#map-wrapper, #map-container, #map {
-  height: 100%;
+#map-wrapper, #map-container {
+  display: flex;
+  flex-grow: 1;
+  width: 100%
+}
+
+#map {
+  flex-grow: 1;
   width: 100%;
 }
 

@@ -189,13 +189,13 @@ class SearchInput extends Component {
     const { inputValue, isMobile } = this.props
 
     return (
-      <div>
-        <p>
+      <div className="search-input">
+        <p className="description">
           Enter two or more airports to draw a route between
           them on the map and calculate the distance.
         </p>
         <form className={isMobile ? "input-form-mobile" : "input-form"} onSubmit={e => this.handleSubmit(e)}>
-          <div id="textarea-wrapper">
+          <div id="select-wrapper">
             <SelectAsync
               multi
               value={inputValue}
