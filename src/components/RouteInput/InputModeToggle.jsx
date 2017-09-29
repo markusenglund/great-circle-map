@@ -2,21 +2,20 @@ import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
 import Toggle from "react-toggle"
-// import { changeInputMode } from "../actionCreators"
+import Switch from "react-switch"
 
 class InputModeToggle extends Component {
-  handleModeChange() {
-    const { inputMode, dispatch } = this.props
-    if (inputMode === "search") {
-      dispatch({ type: "CHANGE_INPUT_MODE", mode: "advanced" })
-    } else if (inputMode === "advanced") {
-      dispatch({ type: "CHANGE_INPUT_MODE", mode: "search" })
-    }
+  constructor() {
+    super()
+    this.handleModeChange = this.handleModeChange.bind(this)
   }
 
-  handleKeyDown(event) {
-    if (event.keyCode === 13) {
-      this.handleModeChange()
+  handleModeChange(checked) {
+    const { dispatch } = this.props
+    if (checked) {
+      dispatch({ type: "CHANGE_INPUT_MODE", mode: "advanced" })
+    } else {
+      dispatch({ type: "CHANGE_INPUT_MODE", mode: "search" })
     }
   }
 
@@ -25,15 +24,11 @@ class InputModeToggle extends Component {
 
     return (
       <div className="toggle-group">
-        <div className="toggle-group-label">Raw input</div>
-        <Toggle
+        <label className="toggle-group-label" htmlFor="input-mode">Raw input</label>
+        <Switch
           checked={inputMode === "advanced"}
-          icons={{
-            unchecked: null
-          }}
-          onChange={() => this.handleModeChange()}
+          onChange={this.handleModeChange}
           id="input-mode"
-          onKeyDown={e => this.handleKeyDown(e)}
         />
       </div>
     )
