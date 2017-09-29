@@ -1,7 +1,6 @@
 import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
-import Toggle from "react-toggle"
 import Switch from "react-switch"
 
 class InputModeToggle extends Component {
@@ -29,6 +28,10 @@ class InputModeToggle extends Component {
           checked={inputMode === "advanced"}
           onChange={this.handleModeChange}
           id="input-mode"
+          offColor="#161616"
+          onColor="#21658a"
+          height="22"
+          width="48"
         />
       </div>
     )

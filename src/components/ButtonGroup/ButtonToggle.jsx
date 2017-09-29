@@ -1,18 +1,17 @@
 import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
-import Toggle from "react-toggle"
+import Switch from "react-switch"
 
 class ButtonToggle extends Component {
+  constructor() {
+    super()
+    this.handleModeChange = this.handleModeChange.bind(this)
+  }
+
   handleModeChange(checked) {
     const { dispatch } = this.props
     dispatch({ type: "TOGGLE_BUTTON_VISIBILITY", visible: checked })
-  }
-
-  handleKeyDown(event) {
-    if (event.keyCode === 13) {
-      this.handleModeChange(!event.target.checked)
-    }
   }
 
   render() {
@@ -20,12 +19,15 @@ class ButtonToggle extends Component {
 
     return (
       <div className="toggle">
-        <div>Show buttons</div>
-        <Toggle
+        <label htmlFor="button-toggle">Show buttons</label>
+        <Switch
           checked={buttonsVisible}
-          onChange={e => this.handleModeChange(e.target.checked)}
+          onChange={this.handleModeChange}
           id="button-toggle"
-          onKeyDown={e => this.handleKeyDown(e)}
+          offColor="#161616"
+          onColor="#21658a"
+          height="22"
+          width="48"
         />
       </div>
     )
