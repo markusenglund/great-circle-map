@@ -43,7 +43,7 @@
     "react-router-dom": "^4.1.1",
     "react-select": "github:yogaboll/react-select",
     "react-sidebar": "^2.3.2",
-    "react-switch": "^1.2.0",
+    "react-switch": "^2.0.0-rc.1",
     "react-tooltip": "^3.3.0",
     "redux": "^3.6.0",
     "redux-logger": "^3.0.1",

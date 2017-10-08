@@ -29,7 +29,8 @@ class InputModeToggle extends Component {
           onChange={this.handleModeChange}
           id="input-mode"
           offColor="#161616"
-          onColor="#21658a"
+          onColor="#054080"
+          uncheckedIcon={false}
           height="22"
           width="48"
         />

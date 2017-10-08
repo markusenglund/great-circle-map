@@ -25,7 +25,7 @@ class ButtonToggle extends Component {
           onChange={this.handleModeChange}
           id="button-toggle"
           offColor="#161616"
-          onColor="#21658a"
+          onColor="#054080"
           height="22"
           width="48"
         />
