@@ -24,10 +24,14 @@ class ButtonToggle extends Component {
           checked={buttonsVisible}
           onChange={this.handleModeChange}
           id="button-toggle"
-          offColor="#161616"
-          onColor="#054080"
-          height="22"
-          width="48"
+          offColor="#424242"
+          onColor="#08205a"
+          onHandleColor="#2693e6"
+          handleDiameter={28}
+          boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+          activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+          height={20}
+          width={48}
         />
       </div>
     )
