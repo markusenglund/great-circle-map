@@ -1,4 +1,4 @@
-  /*  HELPER FUNCTIONS  */
+/*  HELPER FUNCTIONS  */
 
 function hasForbiddenCharacter(inputString) {
   const invalidSymbolsRegex = /[^A-Za-z,;/-\s\d]/
@@ -48,7 +48,7 @@ function codes2DetailedRoutes(routeArr, airportData) {
   }
 }
 
-  /* MAIN FUNCTION */
+/* MAIN FUNCTION */
 
 // This is the action creator that gets called when new url is passed
 // Dispatches either an error (if url is invalid input) or the paths of the routes

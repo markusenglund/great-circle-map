@@ -10,7 +10,7 @@ it("renders correctly with missing icao", () => {
     label: "icao"
   }
   const tree = renderer
-  .create(<SectorElement {...props} />)
-  .toJSON()
+    .create(<SectorElement {...props} />)
+    .toJSON()
   expect(tree).toMatchSnapshot()
 })

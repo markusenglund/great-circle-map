@@ -29,7 +29,8 @@ function CollapsibleElement({
                 {airport.city} ({label === "icao" ?
                   airport.icao || airport.iata :
                   airport.iata || airport.icao
-                })</div>
+                })
+              </div>
               <div className="collapsible-name">{airport.name}</div>
             </div>
             {readableSectorDistances[i] !== undefined ? (

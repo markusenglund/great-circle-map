@@ -49,8 +49,8 @@ class App extends Component {
 
     // Resize map to workaround the empty map bug, 300 is animation delay
     const { map } = this.props
-    setTimeout(() =>
-      google.maps.event.trigger(map.context.__SECRET_MAP_DO_NOT_USE_OR_YOU_WILL_BE_FIRED, "resize"),
+    setTimeout(
+      () => google.maps.event.trigger(map.context.__SECRET_MAP_DO_NOT_USE_OR_YOU_WILL_BE_FIRED, "resize"),
       300
     )
   }
@@ -104,9 +104,7 @@ App.propTypes = {
   isMobile: PropTypes.bool.isRequired,
   googleOrSvg: PropTypes.string.isRequired
 }
-App.defaultProps = {
-  map: null
-}
+App.defaultProps = { map: null }
 
 function mapStateToProps(state) {
   return {

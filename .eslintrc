@@ -25,6 +25,13 @@
     "linebreak-style": "off",
     "comma-dangle": ["warn", "never"],
     "arrow-body-style": "off",
-    "no-underscore-dangle": "off"
+    "no-underscore-dangle": "off",
+    "jsx-a11y/label-has-for":[ "error", {
+      "required": {
+        "every": [ "id" ]
+      }
+    }],
+    "object-curly-newline": "off",
+    "function-paren-newline": "off"
   }
 }

@@ -5,11 +5,11 @@ import Header from "./"
 
 it("renders correctly", () => {
   const tree = renderer
-  .create(
-    <MemoryRouter>
-      <Header />
-    </MemoryRouter>
-  )
-  .toJSON()
+    .create(
+      <MemoryRouter>
+        <Header />
+      </MemoryRouter>
+    )
+    .toJSON()
   expect(tree).toMatchSnapshot()
 })

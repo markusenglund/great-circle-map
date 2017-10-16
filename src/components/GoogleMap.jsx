@@ -8,9 +8,7 @@ function getPixelPositionOffset(curAirport, airports, sectors) {
     .filter(sector => sector.find(airport => airport.id === curAirport.id))
     .map(sector => (sector[0].id === curAirport.id ? sector[1] : sector[0]))
 
-  const curLocation = new LatLonSpherical(
-    curAirport.lat, curAirport.lng
-  )
+  const curLocation = new LatLonSpherical(curAirport.lat, curAirport.lng)
 
   const bearings = linkedAirports.map((airport) => {
     const badBearing = curLocation.bearingTo(new LatLonSpherical(airport.lat, airport.lng))
@@ -38,28 +36,31 @@ function getPixelPositionOffset(curAirport, airports, sectors) {
       return { northEastProj, northWestProj }
     })
 
-  const directionalForces = vectorProjections.reduce((acc, val) => {
-    let northEast
-    let southWest
-    let northWest
-    let southEast
-    if (val.northEastProj > 0) {
-      northEast = acc.northEast + val.northEastProj
-      southWest = acc.southWest - (6 * val.northEastProj)
-    } else {
-      northEast = acc.northEast + (6 * val.northEastProj)
-      southWest = acc.southWest - val.northEastProj
-    }
+  const directionalForces = vectorProjections.reduce(
+    (acc, val) => {
+      let northEast
+      let southWest
+      let northWest
+      let southEast
+      if (val.northEastProj > 0) {
+        northEast = acc.northEast + val.northEastProj
+        southWest = acc.southWest - (6 * val.northEastProj)
+      } else {
+        northEast = acc.northEast + (6 * val.northEastProj)
+        southWest = acc.southWest - val.northEastProj
+      }
 
-    if (val.northWestProj > 0) {
-      northWest = acc.northWest + val.northWestProj
-      southEast = acc.southEast - (6 * val.northWestProj)
-    } else {
-      northWest = acc.northWest + (6 * val.northWestProj)
-      southEast = acc.southEast - val.northWestProj
-    }
-    return { northEast, southWest, northWest, southEast }
-  }, { northEast: 0, southWest: 0, northWest: 0, southEast: 0 })
+      if (val.northWestProj > 0) {
+        northWest = acc.northWest + val.northWestProj
+        southEast = acc.southEast - (6 * val.northWestProj)
+      } else {
+        northWest = acc.northWest + (6 * val.northWestProj)
+        southEast = acc.southEast - val.northWestProj
+      }
+      return { northEast, southWest, northWest, southEast }
+    },
+    { northEast: 0, southWest: 0, northWest: 0, southEast: 0 }
+  )
 
   // Avoid directions where there is a line in the way
   if (bearings.includes("ne")) {
@@ -97,20 +98,18 @@ function getPixelPositionOffset(curAirport, airports, sectors) {
   }
 }
 
-const AsyncGoogleMap = withScriptjs(withGoogleMap((
-  {
-    routes,
-    airports,
-    sectors,
-    onMapMounted,
-    mapType,
-    label,
-    zoom,
-    isMapLoaded,
-    routeColor,
-    pointColor
-  }
-) => {
+const AsyncGoogleMap = withScriptjs(withGoogleMap(({
+  routes,
+  airports,
+  sectors,
+  onMapMounted,
+  mapType,
+  label,
+  zoom,
+  isMapLoaded,
+  routeColor,
+  pointColor
+}) => {
   const airportsWithPixelOffset = airports.map((airport) => {
     return {
       ...airport,
