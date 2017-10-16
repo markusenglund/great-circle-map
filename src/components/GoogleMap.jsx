@@ -1,6 +1,5 @@
 import React from "react"
-import withScriptjs from "react-google-maps/lib/async/withScriptjs"
-import { withGoogleMap, GoogleMap, Polyline, OverlayView } from "react-google-maps"
+import { withGoogleMap, withScriptjs, GoogleMap, Polyline, OverlayView } from "react-google-maps"
 import { LatLonSpherical } from "geodesy"
 
 function getPixelPositionOffset(curAirport, airports, sectors) {
