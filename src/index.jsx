@@ -7,9 +7,6 @@ import { Provider } from "react-redux"
 import ReduxThunk from "redux-thunk"
 import createBrowserHistory from "history/createBrowserHistory"
 // import logger from "redux-logger"
-/* eslint-disable */
-// import Perf from "react-addons-perf"
-/* eslint-enable */
 
 import "./stylesheets/styles.scss"
 import "./stylesheets/map.scss"
@@ -17,9 +14,6 @@ import "./stylesheets/react-toggle.scss"
 
 import reducer from "./reducers"
 import App from "./components/App"
-
-// Remove in production
-// window.Perf = Perf
 
 const history = createBrowserHistory()
 
