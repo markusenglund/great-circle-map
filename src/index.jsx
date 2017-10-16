@@ -1,18 +1,19 @@
 import "babel-polyfill"
 import React from "react"
 import ReactDOM from "react-dom"
-import { Router, Route } from "react-router-dom"
-import { createStore, applyMiddleware } from "redux"
+import { createStore, applyMiddleware, combineReducers } from "redux"
 import { Provider } from "react-redux"
-import ReduxThunk from "redux-thunk"
+import { Route } from "react-router-dom"
+import { ConnectedRouter, routerReducer, routerMiddleware } from "react-router-redux"
 import createBrowserHistory from "history/createBrowserHistory"
-// import logger from "redux-logger"
+import ReduxThunk from "redux-thunk"
+import logger from "redux-logger"
 
 import "./stylesheets/styles.scss"
 import "./stylesheets/map.scss"
 import "./stylesheets/react-toggle.scss"
 
-import reducer from "./reducers"
+import reducers from "./reducers"
 import App from "./components/App"
 
 const history = createBrowserHistory()
@@ -35,13 +36,18 @@ const initializeAnalytics = () => {
 
 initializeAnalytics()
 
-const store = createStore(reducer, applyMiddleware(ReduxThunk))
+const middleware = routerMiddleware(history)
+
+const store = createStore(
+  combineReducers({ ...reducers, router: routerReducer }), // Shouldn't work
+  applyMiddleware(ReduxThunk, middleware, logger)
+)
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router history={history}>
+    <ConnectedRouter history={history}>
       <Route exact path="/:string?" component={App} />
-    </Router>
+    </ConnectedRouter>
   </Provider>,
   document.getElementById("app")
 )

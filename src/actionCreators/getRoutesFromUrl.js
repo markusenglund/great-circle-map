@@ -54,8 +54,8 @@ function codes2DetailedRoutes(routeArr, airportData) {
 // Dispatches either an error (if url is invalid input) or the paths of the routes
 export default function getRoutesFromUrl() {
   return (dispatch, getState) => {
-    const { url } = getState()
-    const routeString = url.param
+    const { router } = getState()
+    const routeString = decodeURIComponent(router.location.pathname.slice(1))
     if (routeString === "") {
       return dispatch({ type: "SUBMIT_ROUTES", routes: [] })
     }

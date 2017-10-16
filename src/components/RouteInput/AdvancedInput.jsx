@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
+import { push } from "react-router-redux"
 import PropTypes from "prop-types"
 
 class AdvancedInput extends Component {
@@ -26,15 +27,15 @@ class AdvancedInput extends Component {
 
   handleSubmit(event) {
     event.preventDefault()
-    const { history, dispatch, isMobile } = this.props
+    const { dispatch, isMobile } = this.props
 
     if (isMobile) {
       this.textarea.blur()
     }
-
+    // TODO: Fix encodeURIComponent kerfuffle
     const newUrlParam = encodeURIComponent(this.state.value)
     dispatch({ type: "ENABLE_MAP_REBOUND" })
-    history.push(`/${newUrlParam}`)
+    dispatch(push(newUrlParam))
   }
 
   handleKeyPress(event) {
@@ -73,15 +74,16 @@ class AdvancedInput extends Component {
 }
 
 AdvancedInput.propTypes = {
-  urlParam: PropTypes.string,
-  history: PropTypes.shape({ push: PropTypes.function }).isRequired,
+  urlParam: PropTypes.string.isRequired,
   dispatch: PropTypes.func.isRequired,
   isMobile: PropTypes.bool.isRequired
 }
-AdvancedInput.defaultProps = { urlParam: "" }
 
 function mapStateToProps(state) {
-  return { isMobile: state.mobile, urlParam: state.url.param, history: state.url.history }
+  return {
+    isMobile: state.mobile,
+    urlParam: decodeURIComponent(state.router.location.pathname.slice(1))
+  }
 }
 
 export default connect(mapStateToProps)(AdvancedInput)

@@ -15,7 +15,7 @@ class App extends Component {
     super(props)
     this.state = { isSidebarDocked: true, isSidebarOpen: false, transitionsActive: false }
 
-    const { dispatch, match, history } = props
+    const { dispatch } = props
     if (navigator.userAgent.match(/Android/i)
       || navigator.userAgent.match(/webOS/i)
       || navigator.userAgent.match(/iPhone/i)
@@ -26,7 +26,6 @@ class App extends Component {
       dispatch({ type: "IS_MOBILE" })
     }
 
-    dispatch({ type: "DECODE_URL", param: match.params.string, history })
     dispatch(getAirportData())
     dispatch(getSvgMap())
 
@@ -38,7 +37,6 @@ class App extends Component {
     // When we receive new props (meaning route parameters) we dispatch getRoutesFromUrl action
     const { match, dispatch } = this.props
     if (nextProps.match.params.string !== match.params.string) {
-      dispatch({ type: "DECODE_URL", param: nextProps.match.params.string, history: nextProps.history })
       dispatch(getRoutesFromUrl())
     }
   }
@@ -61,7 +59,7 @@ class App extends Component {
   }
 
   render() {
-    const { history, isMobile, googleOrSvg } = this.props
+    const { isMobile, googleOrSvg } = this.props
 
     return (
       <ReactSidebar
@@ -82,8 +80,6 @@ class App extends Component {
               isSidebarDocked={this.state.isSidebarDocked}
               toggleSidebarDock={this.toggleSidebarDock}
               handleSetSidebarOpen={this.handleSetSidebarOpen}
-              isMobile={isMobile}
-              history={history}
             />
             {googleOrSvg === "google" ?
               <GoogleMapWrapper /> :
@@ -99,7 +95,6 @@ class App extends Component {
 App.propTypes = {
   dispatch: PropTypes.func.isRequired,
   match: PropTypes.shape({ params: PropTypes.object }).isRequired,
-  history: PropTypes.shape({ push: PropTypes.function }).isRequired,
   map: PropTypes.shape({ fitBounds: PropTypes.func }),
   isMobile: PropTypes.bool.isRequired,
   googleOrSvg: PropTypes.string.isRequired

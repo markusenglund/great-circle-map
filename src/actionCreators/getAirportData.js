@@ -6,7 +6,7 @@ import getRoutesFromUrl from "./getRoutesFromUrl"
 // Then, dispatch action to get the routes from the url-string (requires the airport-data)
 export default function getAirportData() {
   return (dispatch, getState) => {
-    const { airportData, url } = getState()
+    const { airportData } = getState()
 
     if (airportData.length === 0) {
       Papa.parse("/airports.csv", {
@@ -18,9 +18,7 @@ export default function getAirportData() {
             type: "RECEIVE_AIRPORT_DATA",
             data: results.data
           })
-          if (url.param) {
-            dispatch(getRoutesFromUrl(url.param))
-          }
+          dispatch(getRoutesFromUrl())
         }
       })
     }

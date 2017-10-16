@@ -1,5 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
+import { connect } from "react-redux"
+import { push } from "react-router-redux"
 import FaBars from "react-icons/fa/bars"
 import FaArrowsAlt from "react-icons/fa/arrows-alt"
 import FaTrashO from "react-icons/fa/trash-o"
@@ -10,9 +12,9 @@ import MapButtonWithTooltip from "./MapButtonWithTooltip"
 function ButtonGroup({
   isSidebarDocked,
   toggleSidebarDock,
-  history,
   handleSetSidebarOpen,
-  isMobile
+  isMobile,
+  dispatch
 }) {
   return (
     <div id="button-group">
@@ -30,7 +32,7 @@ function ButtonGroup({
           }
         />
         <MapButtonWithTooltip
-          handleClick={() => history.push("/")}
+          handleClick={() => dispatch(push("/"))}
           tooltipId="delete"
           buttonContent={<FaTrashO />}
           tooltipContent={<span>Clear routes</span>}
@@ -45,9 +47,15 @@ function ButtonGroup({
 ButtonGroup.propTypes = {
   isSidebarDocked: PropTypes.bool.isRequired,
   toggleSidebarDock: PropTypes.func.isRequired,
-  history: PropTypes.shape({ push: PropTypes.function }).isRequired,
   handleSetSidebarOpen: PropTypes.func.isRequired,
-  isMobile: PropTypes.bool.isRequired
+  isMobile: PropTypes.bool.isRequired,
+  dispatch: PropTypes.func.isRequired
 }
 
-export default ButtonGroup
+const mapStateToProps = (state) => {
+  return {
+    isMobile: state.mobile
+  }
+}
+
+export default connect(mapStateToProps)(ButtonGroup)

@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
+import { push } from "react-router-redux"
 import PropTypes from "prop-types"
 import Select from "react-select"
 import "./react-select.scss"
@@ -142,13 +143,11 @@ class SearchInput extends Component {
 
   handleSubmit(event) {
     event.preventDefault()
-    const { history, urlParam, dispatch, isMobile } = this.props
+    const { urlParam, dispatch, isMobile, inputValue } = this.props
 
     if (isMobile) {
       this.select.blurInput()
     }
-
-    const { inputValue } = this.props
 
     if (!inputValue) return
     // Transform inputValue to inputstring-format. Use urlParam to combine with old routes
@@ -157,14 +156,14 @@ class SearchInput extends Component {
     }, "")
 
     // Remove trailing commas, semicolons, slashes or new line
-    const urlParamNoDangle = urlParam ? urlParam.replace(/[,;/\n]$/, "") : ""
+    const urlParamNoDangle = urlParam.replace(/[,;/\n]$/, "")
 
     const newUrlParam = urlParamNoDangle ?
       encodeURIComponent(`${urlParamNoDangle}, ${valueString}`) :
       encodeURIComponent(valueString)
 
     dispatch({ type: "ENABLE_MAP_REBOUND" })
-    history.push(newUrlParam)
+    dispatch(push(newUrlParam))
     dispatch({ type: "CHANGE_SEARCH_INPUT", input: null })
   }
 
@@ -223,21 +222,19 @@ class SearchInput extends Component {
 }
 
 SearchInput.propTypes = {
-  urlParam: PropTypes.string,
-  history: PropTypes.shape({ push: PropTypes.function }).isRequired,
+  urlParam: PropTypes.string.isRequired,
   airportData: PropTypes.arrayOf(PropTypes.object).isRequired,
   dispatch: PropTypes.func.isRequired,
   isMobile: PropTypes.bool.isRequired,
   inputValue: PropTypes.arrayOf(PropTypes.object)
 }
-SearchInput.defaultProps = { urlParam: "", inputValue: null }
+SearchInput.defaultProps = { inputValue: null }
 
 function mapStateToProps(state) {
   return {
     airportData: state.airportData,
     isMobile: state.mobile,
-    urlParam: state.url.param,
-    history: state.url.history,
+    urlParam: decodeURIComponent(state.router.location.pathname.slice(1)),
     inputValue: state.searchInput
   }
 }
