@@ -1,13 +1,13 @@
 const airportData = (state = [], action) => {
   switch (action.type) {
-    case "RECEIVE_AIRPORT_DATA":
+    case 'RECEIVE_AIRPORT_DATA':
       if (state.length > 0) {
-        throw new Error("AIRPORT DATA LOADED TWICE")
+        throw new Error('AIRPORT DATA LOADED TWICE');
       }
-      return action.data
+      return action.data;
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default airportData
+export default airportData;

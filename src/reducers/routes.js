@@ -1,11 +1,11 @@
 const routes = (state = [], action) => {
   switch (action.type) {
-    case "SUBMIT_ROUTES": {
-      return action.routes
+    case 'SUBMIT_ROUTES': {
+      return action.routes;
     }
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default routes
+export default routes;

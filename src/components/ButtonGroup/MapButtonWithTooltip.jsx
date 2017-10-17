@@ -1,7 +1,7 @@
-import React from "react"
-import PropTypes from "prop-types"
-import ReactTooltip from "react-tooltip"
-import { connect } from "react-redux"
+import React from 'react';
+import PropTypes from 'prop-types';
+import ReactTooltip from 'react-tooltip';
+import { connect } from 'react-redux';
 
 function MapButtonWithTooltip({
   buttonClass,
@@ -22,16 +22,11 @@ function MapButtonWithTooltip({
       >
         {buttonContent}
       </button>
-      <ReactTooltip
-        className="tooltip"
-        id={tooltipId}
-        place="right"
-        effect="solid"
-      >
+      <ReactTooltip className="tooltip" id={tooltipId} place="right" effect="solid">
         {tooltipContent}
       </ReactTooltip>
     </div>
-  )
+  );
 }
 
 MapButtonWithTooltip.propTypes = {
@@ -40,12 +35,12 @@ MapButtonWithTooltip.propTypes = {
   buttonContent: PropTypes.element.isRequired,
   tooltipContent: PropTypes.element.isRequired,
   buttonClass: PropTypes.string.isRequired
-}
+};
 
 function mapStateToProps(state) {
   return {
-    buttonClass: state.settings.buttonsVisible ? "map-button" : "map-button invisible"
-  }
+    buttonClass: state.settings.buttonsVisible ? 'map-button' : 'map-button invisible'
+  };
 }
 
-export default connect(mapStateToProps)(MapButtonWithTooltip)
+export default connect(mapStateToProps)(MapButtonWithTooltip);

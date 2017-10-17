@@ -1,13 +1,13 @@
-import React from "react"
-import PropTypes from "prop-types"
-import uniqueId from "lodash.uniqueid"
-import FaArrowDown from "react-icons/fa/arrow-down"
+import React from 'react';
+import PropTypes from 'prop-types';
+import uniqueId from 'lodash.uniqueid';
+import FaArrowDown from 'react-icons/fa/arrow-down';
 
 function distanceToTimeString(distance) {
-  const seconds = (distance / 257.25) + (15 * 60) // 257.25 = Mach 0.75 expressed in meters / second
-  const hours = Math.floor(seconds / 3600)
-  const minutes = Math.floor((seconds % 3600) / 60)
-  return `${hours}h ${minutes}m`
+  const seconds = distance / 257.25 + 15 * 60; // 257.25 = Mach 0.75 expressed in meters / second
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  return `${hours}h ${minutes}m`;
 }
 
 function CollapsibleElement({
@@ -26,30 +26,28 @@ function CollapsibleElement({
           <div key={uniqueId()}>
             <div className="collapsible-airport">
               <div>
-                {airport.city} ({label === "icao" ?
-                  airport.icao || airport.iata :
-                  airport.iata || airport.icao
-                })
+                {airport.city} ({label === 'icao'
+                  ? airport.icao || airport.iata
+                  : airport.iata || airport.icao})
               </div>
               <div className="collapsible-name">{airport.name}</div>
             </div>
             {readableSectorDistances[i] !== undefined ? (
               <div className="collapsible-distance">
-                <FaArrowDown />{/* <i className="fa fa-arrow-down" aria-hidden="true" /> */}
+                <FaArrowDown />
+                {/* <i className="fa fa-arrow-down" aria-hidden="true" /> */}
                 {readableSectorDistances[i] ? (
                   <div>
                     <div className="distance-label">Distance</div>
                     <div className="bold">{readableSectorDistances[i]}</div>
                   </div>
-                  ) : null
-                }
+                ) : null}
                 {readableSectorDistances[i] ? (
                   <div className="duration">
                     <div className="distance-label">Time (est.)</div>
                     <div className="bold">{distanceToTimeString(distances[i])}</div>
                   </div>
-                  ) : null
-                }
+                ) : null}
               </div>
             ) : null}
           </div>
@@ -60,10 +58,11 @@ function CollapsibleElement({
           <div className="padding-4px">
             <div className="distance-label">
               Non-stop distance
-              {label === "icao" ?
-                ` (${route[0].icao || route[0].iata} - ${route[route.length - 1].icao || route[route.length - 1].iata})` :
-                ` (${route[0].iata || route[0].icao} - ${route[route.length - 1].iata || route[route.length - 1].icao})`
-              }
+              {label === 'icao'
+                ? ` (${route[0].icao || route[0].iata} - ${route[route.length - 1].icao ||
+                    route[route.length - 1].iata})`
+                : ` (${route[0].iata || route[0].icao} - ${route[route.length - 1].iata ||
+                    route[route.length - 1].icao})`}
             </div>
             <div className="bold">{readableNonStopDistance}</div>
           </div>
@@ -78,7 +77,7 @@ function CollapsibleElement({
         </div>
       ) : null}
     </div>
-  )
+  );
 }
 
 CollapsibleElement.propTypes = {
@@ -89,6 +88,6 @@ CollapsibleElement.propTypes = {
   readableDistanceDifference: PropTypes.string.isRequired,
   readableDifferencePercentage: PropTypes.string.isRequired,
   readableNonStopDistance: PropTypes.string.isRequired
-}
+};
 
-export default CollapsibleElement
+export default CollapsibleElement;

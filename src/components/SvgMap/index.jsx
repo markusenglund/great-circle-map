@@ -1,15 +1,15 @@
-import React, { Component } from "react"
-import { connect } from "react-redux"
-import PropTypes from "prop-types"
-import { geoOrthographic, geoPath, geoDistance, geoGraticule } from "d3-geo"
-import { DraggableCore } from "react-draggable"
-import { getAirports, getSectors, getGlobePosition, getBrighterColor } from "../../selectors"
-import getPixelPositions from "./getPixelPositions"
-import "./svg-map.scss"
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { geoOrthographic, geoPath, geoDistance, geoGraticule } from 'd3-geo';
+import { DraggableCore } from 'react-draggable';
+import { getAirports, getSectors, getGlobePosition, getBrighterColor } from '../../selectors';
+import getPixelPositions from './getPixelPositions';
+import './svg-map.scss';
 
 class SvgMap extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       startX: null,
       startY: null,
@@ -17,65 +17,65 @@ class SvgMap extends Component {
       startLng: null,
       centerLng: props.initialGlobePosition.centerLng,
       centerLat: props.initialGlobePosition.centerLat
-    }
+    };
 
-    this.diameter = 600
+    this.diameter = 600;
     this.projection = geoOrthographic()
       .scale(this.diameter / 2)
       .translate([this.diameter / 2, this.diameter / 2])
-      .clipAngle(90)
+      .clipAngle(90);
 
-    this.handleDragStart = this.handleDragStart.bind(this)
-    this.handleDrag = this.handleDrag.bind(this)
+    this.handleDragStart = this.handleDragStart.bind(this);
+    this.handleDrag = this.handleDrag.bind(this);
   }
 
   componentWillReceiveProps({ sectors, initialGlobePosition, routeColor }) {
     if (sectors.length && routeColor === this.props.routeColor) {
-      const { centerLng, centerLat } = initialGlobePosition
-      this.setState({ centerLng, centerLat })
+      const { centerLng, centerLat } = initialGlobePosition;
+      this.setState({ centerLng, centerLat });
     }
   }
 
   handleDragStart(event) {
-    const startX = event.clientX ? event.clientX : event.touches[0].clientX
-    const startY = event.clientY ? event.clientY : event.touches[0].clientY
-    const startLat = this.state.centerLat
-    const startLng = this.state.centerLng
-    this.setState({ startX, startY, startLat, startLng })
+    const startX = event.clientX ? event.clientX : event.touches[0].clientX;
+    const startY = event.clientY ? event.clientY : event.touches[0].clientY;
+    const startLat = this.state.centerLat;
+    const startLng = this.state.centerLng;
+    this.setState({ startX, startY, startLat, startLng });
   }
 
   handleDrag(event) {
-    const { startX, startY, startLat, startLng } = this.state
+    const { startX, startY, startLat, startLng } = this.state;
     if (startX) {
-      const x = event.clientX ? event.clientX : event.touches[0].clientX
-      const y = event.clientY ? event.clientY : event.touches[0].clientY
+      const x = event.clientX ? event.clientX : event.touches[0].clientX;
+      const y = event.clientY ? event.clientY : event.touches[0].clientY;
 
       // Values are scaled
-      const dx = (x - startX) / 3
-      const dy = (y - startY) / 3
+      const dx = (x - startX) / 3;
+      const dy = (y - startY) / 3;
 
-      const centerLng = startLng - dx
-      let centerLat = startLat + dy
+      const centerLng = startLng - dx;
+      let centerLat = startLat + dy;
       if (centerLat < -65) {
-        this.setState({ startLat: -dy - 65 })
-        centerLat = -65
+        this.setState({ startLat: -dy - 65 });
+        centerLat = -65;
       } else if (centerLat > 65) {
-        this.setState({ startLat: -dy + 65 })
-        centerLat = 65
+        this.setState({ startLat: -dy + 65 });
+        centerLat = 65;
       }
-      this.setState({ centerLng, centerLat })
+      this.setState({ centerLng, centerLat });
     }
   }
 
   render() {
-    const { centerLng, centerLat } = this.state
-    this.projection.rotate([-centerLng, -centerLat])
+    const { centerLng, centerLat } = this.state;
+    this.projection.rotate([-centerLng, -centerLat]);
     const path = geoPath()
       .projection(this.projection)
-      .pointRadius(3)
+      .pointRadius(3);
 
-    const { mapData, label, airports, sectors, routeColor, pointColor } = this.props
-    const pixelPositions = getPixelPositions(airports, this.projection, centerLng, centerLat)
+    const { mapData, label, airports, sectors, routeColor, pointColor } = this.props;
+    const pixelPositions = getPixelPositions(airports, this.projection, centerLng, centerLat);
 
     return (
       <div id="svg-wrapper">
@@ -107,7 +107,7 @@ class SvgMap extends Component {
                   stroke={routeColor}
                   fill="none"
                   d={path({
-                    type: "LineString",
+                    type: 'LineString',
                     coordinates: [[sector[0].lng, sector[0].lat], [sector[1].lng, sector[1].lat]]
                   })}
                   key={`${sector[0].id}-${sector[1].id}`}
@@ -119,12 +119,17 @@ class SvgMap extends Component {
                 <g key={airport.id}>
                   <path
                     fill={pointColor}
-                    d={path({ type: "Point", coordinates: [airport.lng, airport.lat] })}
+                    d={path({
+                      type: 'Point',
+                      coordinates: [airport.lng, airport.lat]
+                    })}
                   />
-                  {label !== "none" && geoDistance(
+                  {label !== 'none' &&
+                  geoDistance(
                     [airport.lng, airport.lat],
                     [this.state.centerLng, this.state.centerLat]
-                  ) < (Math.PI / 2) ?
+                  ) <
+                    Math.PI / 2 ? (
                     <text
                       x={pixelPositions[i].x}
                       y={pixelPositions[i].y}
@@ -133,15 +138,14 @@ class SvgMap extends Component {
                     >
                       {airport[label] || airport.iata || airport.icao}
                     </text>
-                    : null
-                  }
+                  ) : null}
                 </g>
               ))}
             </g>
           </svg>
         </DraggableCore>
       </div>
-    )
+    );
   }
 }
 function mapStateToProps(state) {
@@ -154,7 +158,7 @@ function mapStateToProps(state) {
     label: state.settings.label.value,
     routeColor: state.settings.routeColor,
     pointColor: getBrighterColor(state)
-  }
+  };
 }
 
 SvgMap.propTypes = {
@@ -168,6 +172,6 @@ SvgMap.propTypes = {
     centerLng: PropTypes.number,
     centerLat: PropTypes.number
   }).isRequired
-}
+};
 
-export default connect(mapStateToProps)(SvgMap)
+export default connect(mapStateToProps)(SvgMap);

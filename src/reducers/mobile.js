@@ -1,11 +1,11 @@
 const mobile = (state = false, action) => {
   switch (action.type) {
-    case "IS_MOBILE": {
-      return true
+    case 'IS_MOBILE': {
+      return true;
     }
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default mobile
+export default mobile;

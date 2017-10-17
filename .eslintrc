@@ -5,33 +5,30 @@
     "node": true,
     "jest": true
   },
-  "extends": "airbnb",
+  "extends": ["airbnb", "prettier", "prettier/react"],
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
     },
     "sourceType": "module"
   },
-  "plugins": [
-    "react"
-  ],
+  "plugins": ["react"],
   "globals": {
     "google": true,
     "ga": true
   },
   "rules": {
-    "quotes": ["error", "double"],
-    "semi": ["error", "never"],
     "linebreak-style": "off",
     "comma-dangle": ["warn", "never"],
     "arrow-body-style": "off",
     "no-underscore-dangle": "off",
-    "jsx-a11y/label-has-for":[ "error", {
-      "required": {
-        "every": [ "id" ]
+    "jsx-a11y/label-has-for": [
+      "error",
+      {
+        "required": {
+          "every": ["id"]
+        }
       }
-    }],
-    "object-curly-newline": "off",
-    "function-paren-newline": "off"
+    ]
   }
 }

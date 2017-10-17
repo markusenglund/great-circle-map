@@ -1,11 +1,11 @@
-const location = (state = "", action) => {
+const location = (state = '', action) => {
   switch (action.type) {
-    case "GET_LOCATION": {
-      return action.location
+    case 'GET_LOCATION': {
+      return action.location;
     }
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default location
+export default location;

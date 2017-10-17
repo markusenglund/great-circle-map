@@ -1,21 +1,21 @@
-import React, { Component } from "react"
-import PropTypes from "prop-types"
-import { connect } from "react-redux"
-import Switch from "react-switch"
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import Switch from 'react-switch';
 
 class ButtonToggle extends Component {
   constructor() {
-    super()
-    this.handleModeChange = this.handleModeChange.bind(this)
+    super();
+    this.handleModeChange = this.handleModeChange.bind(this);
   }
 
   handleModeChange(checked) {
-    const { dispatch } = this.props
-    dispatch({ type: "TOGGLE_BUTTON_VISIBILITY", visible: checked })
+    const { dispatch } = this.props;
+    dispatch({ type: 'TOGGLE_BUTTON_VISIBILITY', visible: checked });
   }
 
   render() {
-    const { buttonsVisible } = this.props
+    const { buttonsVisible } = this.props;
 
     return (
       <div className="toggle">
@@ -34,17 +34,17 @@ class ButtonToggle extends Component {
           width={48}
         />
       </div>
-    )
+    );
   }
 }
 
 ButtonToggle.propTypes = {
   buttonsVisible: PropTypes.bool.isRequired,
   dispatch: PropTypes.func.isRequired
-}
+};
 
 function mapStateToProps(state) {
-  return { buttonsVisible: state.settings.buttonsVisible }
+  return { buttonsVisible: state.settings.buttonsVisible };
 }
 
-export default connect(mapStateToProps)(ButtonToggle)
+export default connect(mapStateToProps)(ButtonToggle);

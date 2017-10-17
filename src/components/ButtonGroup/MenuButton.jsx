@@ -1,6 +1,6 @@
-import React from "react"
-import PropTypes from "prop-types"
-import { Wrapper, Button, Menu, MenuItem } from "react-aria-menubutton"
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Wrapper, Button, Menu, MenuItem } from 'react-aria-menubutton';
 
 function MenuButton({
   selectedOption,
@@ -15,7 +15,9 @@ function MenuButton({
       <label htmlFor={cssId}>{readable}</label>
       <Wrapper
         onSelection={val => handleSelection(val)}
-        onMenuToggle={(state) => { handleMenuToggle(state.isOpen) }}
+        onMenuToggle={state => {
+          handleMenuToggle(state.isOpen);
+        }}
         className="menu-button"
         id={cssId}
       >
@@ -35,7 +37,7 @@ function MenuButton({
         </Menu>
       </Wrapper>
     </div>
-  )
+  );
 }
 
 MenuButton.propTypes = {
@@ -47,6 +49,6 @@ MenuButton.propTypes = {
   handleMenuToggle: PropTypes.func.isRequired,
   readable: PropTypes.string.isRequired,
   cssId: PropTypes.string.isRequired
-}
+};
 
-export default MenuButton
+export default MenuButton;
