@@ -3,7 +3,13 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { geoOrthographic, geoPath, geoDistance, geoGraticule } from 'd3-geo';
 import { DraggableCore } from 'react-draggable';
-import { getAirports, getSectors, getGlobePosition, getBrighterColor } from '../../selectors';
+import {
+  getRoutes,
+  getAirports,
+  getSectors,
+  getGlobePosition,
+  getBrighterColor
+} from '../../selectors';
 import getPixelPositions from './getPixelPositions';
 import './svg-map.scss';
 
@@ -150,7 +156,7 @@ class SvgMap extends Component {
 }
 function mapStateToProps(state) {
   return {
-    routes: state.routes,
+    routes: getRoutes(state).routes,
     sectors: getSectors(state),
     airports: getAirports(state),
     initialGlobePosition: getGlobePosition(state),

@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
+import { push } from 'redux-little-router';
 import { LatLonEllipsoidal } from 'geodesy';
 import { Collapse } from 'react-collapse';
 import uniqueId from 'lodash.uniqueid';
 import MdClose from 'react-icons/lib/md/close';
 
-import { parseStringWithSlashes } from '../../actionCreators/getRoutesFromUrl';
+import { getRoutes } from '../../selectors';
+import parseStringWithSlashes from '../../utils/parseStringWithSlashes';
 import SectorElement from './SectorElement';
 import CollapsibleElement from './CollapsibleElement';
 
@@ -41,10 +42,10 @@ class RouteElement extends Component {
   // take the urlparam, take away the route that was deleted and
   // push new urlparam to url
   handleDeleteRoute() {
-    const { error, index, urlParam, dispatch } = this.props;
+    const { error, index, routeString, dispatch } = this.props;
     if (!error) {
       // Remove dangling comma, semi-colon or slash
-      const routeArrWithParsedSlashes = urlParam
+      const routeArrWithParsedSlashes = routeString
         .replace(/[,;/\n]$/, '')
         .split(/[,;\n]+/g)
         .reduce((acc, val) => {
@@ -55,11 +56,14 @@ class RouteElement extends Component {
         }, []);
 
       routeArrWithParsedSlashes.splice(index, 1);
-      const newRouteString = routeArrWithParsedSlashes.join();
-      const newUrlParam = encodeURIComponent(newRouteString);
+      const newRouteString = encodeURIComponent(routeArrWithParsedSlashes.join());
 
       dispatch({ type: 'DISABLE_MAP_REBOUND' });
-      dispatch(push(newUrlParam));
+      dispatch(
+        push({
+          query: { routes: newRouteString }
+        })
+      );
     }
   }
 
@@ -151,17 +155,24 @@ RouteElement.propTypes = {
   index: PropTypes.number.isRequired,
   distanceUnit: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  urlParam: PropTypes.string.isRequired,
+  routeString: PropTypes.string,
   error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
   dispatch: PropTypes.func.isRequired
 };
+RouteElement.defaultProps = {
+  routeString: ''
+};
 
 function mapStateToProps(state) {
+  let routeString = '';
+  if (state.router.query.routes) {
+    routeString = decodeURIComponent(state.router.query.routes);
+  }
   return {
     distanceUnit: state.settings.distanceUnit.abbr,
     label: state.settings.label.value,
-    error: state.error,
-    urlParam: decodeURIComponent(state.router.location.pathname.slice(1))
+    error: getRoutes(state).error,
+    routeString
   };
 }
 

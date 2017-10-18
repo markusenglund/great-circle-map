@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
+import { push } from 'redux-little-router';
 import FaBars from 'react-icons/fa/bars';
 import FaArrowsAlt from 'react-icons/fa/arrows-alt';
 import FaTrashO from 'react-icons/fa/trash-o';

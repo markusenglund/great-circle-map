@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
+import { push } from 'redux-little-router';
 import PropTypes from 'prop-types';
 
 class AdvancedInput extends Component {
   constructor(props) {
     super(props);
-    this.state = { value: props.urlParam };
+    this.state = { value: props.routeString };
 
     this.handleTextareaMounted = this.handleTextareaMounted.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ value: nextProps.urlParam });
+    this.setState({ value: nextProps.routeString });
   }
 
   handleTextareaMounted(textarea) {
@@ -33,9 +33,13 @@ class AdvancedInput extends Component {
       this.textarea.blur();
     }
     // TODO: Fix encodeURIComponent kerfuffle
-    const newUrlParam = encodeURIComponent(this.state.value);
+    const newRouteString = encodeURIComponent(this.state.value);
     dispatch({ type: 'ENABLE_MAP_REBOUND' });
-    dispatch(push(newUrlParam));
+    dispatch(
+      push({
+        query: { routes: newRouteString }
+      })
+    );
   }
 
   handleKeyPress(event) {
@@ -76,15 +80,22 @@ class AdvancedInput extends Component {
 }
 
 AdvancedInput.propTypes = {
-  urlParam: PropTypes.string.isRequired,
+  routeString: PropTypes.string,
   dispatch: PropTypes.func.isRequired,
   isMobile: PropTypes.bool.isRequired
 };
+AdvancedInput.defaultProps = {
+  routeString: ''
+};
 
 function mapStateToProps(state) {
+  let routeString = '';
+  if (state.router.query.routes) {
+    routeString = decodeURIComponent(state.router.query.routes);
+  }
   return {
     isMobile: state.mobile,
-    urlParam: decodeURIComponent(state.router.location.pathname.slice(1))
+    routeString
   };
 }
 

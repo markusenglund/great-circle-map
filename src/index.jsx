@@ -1,10 +1,9 @@
 import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore, applyMiddleware, combineReducers } from 'redux';
+import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
 import { Provider } from 'react-redux';
-import { Route } from 'react-router-dom';
-import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux';
+import { routerForBrowser } from 'redux-little-router';
 import createBrowserHistory from 'history/createBrowserHistory';
 import ReduxThunk from 'redux-thunk';
 import logger from 'redux-logger';
@@ -45,18 +44,30 @@ const initializeAnalytics = () => {
 
 initializeAnalytics();
 
-const middleware = routerMiddleware(history);
+const routes = {
+  '/': {
+    title: 'Home'
+  },
+  '/globe': {
+    title: '3D Globe'
+  },
+  '/about': {
+    title: 'About'
+  }
+};
+
+const { reducer, middleware, enhancer } = routerForBrowser({
+  routes
+});
 
 const store = createStore(
-  combineReducers({ ...reducers, router: routerReducer }), // Shouldn't work
-  applyMiddleware(ReduxThunk, middleware, logger)
+  combineReducers({ ...reducers, router: reducer }),
+  compose(enhancer, applyMiddleware(ReduxThunk, middleware, logger))
 );
 
 ReactDOM.render(
   <Provider store={store}>
-    <ConnectedRouter history={history}>
-      <Route exact path="/:string?" component={App} />
-    </ConnectedRouter>
+    <App />
   </Provider>,
   document.getElementById('app')
 );

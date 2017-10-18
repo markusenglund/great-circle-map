@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ReactSidebar from 'react-sidebar';
 
-import { getRoutesFromUrl, getAirportData, getSvgMap } from '../actionCreators';
+import { getAirportData, getSvgMap } from '../actionCreators';
 import Sidebar from './Sidebar';
 import GoogleMapWrapper from './GoogleMapWrapper';
 import ButtonGroup from './ButtonGroup';
@@ -36,14 +36,6 @@ class App extends Component {
 
     this.toggleSidebarDock = this.toggleSidebarDock.bind(this);
     this.handleSetSidebarOpen = this.handleSetSidebarOpen.bind(this);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    // When we receive new props (meaning route parameters) we dispatch getRoutesFromUrl action
-    const { match, dispatch } = this.props;
-    if (nextProps.match.params.string !== match.params.string) {
-      dispatch(getRoutesFromUrl());
-    }
   }
 
   toggleSidebarDock() {
@@ -100,7 +92,6 @@ class App extends Component {
 
 App.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  match: PropTypes.shape({ params: PropTypes.object }).isRequired,
   map: PropTypes.shape({ fitBounds: PropTypes.func }),
   isMobile: PropTypes.bool.isRequired,
   googleOrSvg: PropTypes.string.isRequired

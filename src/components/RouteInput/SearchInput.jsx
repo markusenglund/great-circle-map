@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
+import { push } from 'redux-little-router';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
 import './react-select.scss';
@@ -163,7 +163,7 @@ class SearchInput extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const { urlParam, dispatch, isMobile, inputValue } = this.props;
+    const { routeString, dispatch, isMobile, inputValue } = this.props;
 
     if (isMobile) {
       this.select.blurInput();
@@ -171,19 +171,19 @@ class SearchInput extends Component {
 
     if (!inputValue) return;
     // Transform inputValue to inputstring-format. Use urlParam to combine with old routes
-    const valueString = inputValue.reduce((acc, val, i) => {
+    const addedRoute = inputValue.reduce((acc, val, i) => {
       return i ? `${acc}-${val.value}` : val.value;
     }, '');
 
     // Remove trailing commas, semicolons, slashes or new line
-    const urlParamNoDangle = urlParam.replace(/[,;/\n]$/, '');
+    // const urlParamNoDangle = urlParam.replace(/[,;/\n]$/, '');
 
-    const newUrlParam = urlParamNoDangle
-      ? encodeURIComponent(`${urlParamNoDangle}, ${valueString}`)
-      : encodeURIComponent(valueString);
+    const newRouteString = routeString
+      ? encodeURIComponent(`${routeString}, ${addedRoute}`)
+      : encodeURIComponent(addedRoute);
 
     dispatch({ type: 'ENABLE_MAP_REBOUND' });
-    dispatch(push(newUrlParam));
+    dispatch(push({ query: { routes: newRouteString } }));
     dispatch({ type: 'CHANGE_SEARCH_INPUT', input: null });
   }
 
@@ -248,19 +248,23 @@ class SearchInput extends Component {
 }
 
 SearchInput.propTypes = {
-  urlParam: PropTypes.string.isRequired,
+  routeString: PropTypes.string,
   airportData: PropTypes.arrayOf(PropTypes.object).isRequired,
   dispatch: PropTypes.func.isRequired,
   isMobile: PropTypes.bool.isRequired,
   inputValue: PropTypes.arrayOf(PropTypes.object)
 };
-SearchInput.defaultProps = { inputValue: null };
+SearchInput.defaultProps = { inputValue: null, routeString: null };
 
 function mapStateToProps(state) {
+  let routeString = '';
+  if (state.router.query.routes) {
+    routeString = decodeURIComponent(state.router.query.routes);
+  }
   return {
     airportData: state.airportData,
     isMobile: state.mobile,
-    urlParam: decodeURIComponent(state.router.location.pathname.slice(1)),
+    routeString,
     inputValue: state.searchInput
   };
 }

@@ -1,4 +1,5 @@
+import getRoutes from './getRoutes';
 import { getAirports, getSectors, getGlobePosition } from './routeSelectors';
 import { getBrighterColor } from './colorSelector';
 
-export { getAirports, getSectors, getGlobePosition, getBrighterColor };
+export { getRoutes, getAirports, getSectors, getGlobePosition, getBrighterColor };

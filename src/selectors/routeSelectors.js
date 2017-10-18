@@ -1,11 +1,8 @@
 import { createSelector } from 'reselect';
 import { geoBounds } from 'd3-geo';
+import getRoutes from './getRoutes';
 
-function getRoutes(state) {
-  return state.routes;
-}
-
-export const getAirports = createSelector([getRoutes], routes => {
+export const getAirports = createSelector([getRoutes], ({ routes }) => {
   const airports = [];
   routes.forEach(route => {
     route.forEach(airport => {
@@ -17,7 +14,7 @@ export const getAirports = createSelector([getRoutes], routes => {
   return airports;
 });
 
-export const getSectors = createSelector([getRoutes], routes => {
+export const getSectors = createSelector([getRoutes], ({ routes }) => {
   const sectors = [];
   routes.forEach(route => {
     for (let i = 1; i < route.length; i += 1) {

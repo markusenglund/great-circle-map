@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import RouteElement from './RouteElement';
 import './route-list.scss';
+import RouteElement from './RouteElement';
+import { getRoutes } from '../../selectors';
 
 function RouteList({ routes }) {
   return (
@@ -31,7 +32,7 @@ RouteList.propTypes = { routes: PropTypes.arrayOf(PropTypes.array).isRequired };
 
 function mapStateToProps(state) {
   return {
-    routes: state.routes
+    routes: getRoutes(state).routes
   };
 }
 
