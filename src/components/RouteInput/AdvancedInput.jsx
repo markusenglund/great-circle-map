@@ -32,8 +32,7 @@ class AdvancedInput extends Component {
     if (isMobile) {
       this.textarea.blur();
     }
-    // TODO: Fix encodeURIComponent kerfuffle
-    const newRouteString = encodeURIComponent(this.state.value);
+    const newRouteString = this.state.value;
     dispatch({ type: 'ENABLE_MAP_REBOUND' });
     dispatch(
       push({
@@ -91,7 +90,7 @@ AdvancedInput.defaultProps = {
 function mapStateToProps(state) {
   let routeString = '';
   if (state.router.query.routes) {
-    routeString = decodeURIComponent(state.router.query.routes);
+    routeString = state.router.query.routes;
   }
   return {
     isMobile: state.mobile,

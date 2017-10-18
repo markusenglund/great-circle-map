@@ -178,9 +178,7 @@ class SearchInput extends Component {
     // Remove trailing commas, semicolons, slashes or new line
     // const urlParamNoDangle = urlParam.replace(/[,;/\n]$/, '');
 
-    const newRouteString = routeString
-      ? encodeURIComponent(`${routeString}, ${addedRoute}`)
-      : encodeURIComponent(addedRoute);
+    const newRouteString = routeString ? `${routeString}, ${addedRoute}` : addedRoute;
 
     dispatch({ type: 'ENABLE_MAP_REBOUND' });
     dispatch(push({ query: { routes: newRouteString } }));
@@ -259,7 +257,7 @@ SearchInput.defaultProps = { inputValue: null, routeString: null };
 function mapStateToProps(state) {
   let routeString = '';
   if (state.router.query.routes) {
-    routeString = decodeURIComponent(state.router.query.routes);
+    routeString = state.router.query.routes;
   }
   return {
     airportData: state.airportData,

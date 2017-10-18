@@ -56,7 +56,7 @@ class RouteElement extends Component {
         }, []);
 
       routeArrWithParsedSlashes.splice(index, 1);
-      const newRouteString = encodeURIComponent(routeArrWithParsedSlashes.join());
+      const newRouteString = routeArrWithParsedSlashes.join();
 
       dispatch({ type: 'DISABLE_MAP_REBOUND' });
       dispatch(
@@ -156,17 +156,18 @@ RouteElement.propTypes = {
   distanceUnit: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   routeString: PropTypes.string,
-  error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
+  error: PropTypes.string,
   dispatch: PropTypes.func.isRequired
 };
 RouteElement.defaultProps = {
-  routeString: ''
+  routeString: '',
+  error: ''
 };
 
 function mapStateToProps(state) {
   let routeString = '';
   if (state.router.query.routes) {
-    routeString = decodeURIComponent(state.router.query.routes);
+    routeString = state.router.query.routes;
   }
   return {
     distanceUnit: state.settings.distanceUnit.abbr,

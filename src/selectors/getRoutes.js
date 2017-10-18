@@ -51,7 +51,8 @@ function getRouteString(state) {
 /* MAIN FUNCTION */
 
 const getRoutes = createSelector([getAirportData, getRouteString], (airportData, routeString) => {
-  if (routeString === '' || airportData.length === 0) {
+  console.log('getRoutes selector, ', routeString);
+  if (!routeString || airportData.length === 0) {
     return { routes: [], error: null };
   }
 

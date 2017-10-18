@@ -8,8 +8,9 @@ function ErrorMessage({ error }) {
 }
 
 ErrorMessage.propTypes = {
-  error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired
+  error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
 };
+ErrorMessage.defaultProps = { error: '' };
 
 function mapStateToProps(state) {
   return { error: getRoutes(state).error };
