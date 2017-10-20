@@ -79,22 +79,15 @@ class AdvancedInput extends Component {
 }
 
 AdvancedInput.propTypes = {
-  routeString: PropTypes.string,
+  routeString: PropTypes.string.isRequired,
   dispatch: PropTypes.func.isRequired,
   isMobile: PropTypes.bool.isRequired
 };
-AdvancedInput.defaultProps = {
-  routeString: ''
-};
 
 function mapStateToProps(state) {
-  let routeString = '';
-  if (state.router.query.routes) {
-    routeString = state.router.query.routes;
-  }
   return {
     isMobile: state.mobile,
-    routeString
+    routeString: state.router.query.routes || ''
   };
 }
 

@@ -246,23 +246,19 @@ class SearchInput extends Component {
 }
 
 SearchInput.propTypes = {
-  routeString: PropTypes.string,
+  routeString: PropTypes.string.isRequired,
   airportData: PropTypes.arrayOf(PropTypes.object).isRequired,
   dispatch: PropTypes.func.isRequired,
   isMobile: PropTypes.bool.isRequired,
   inputValue: PropTypes.arrayOf(PropTypes.object)
 };
-SearchInput.defaultProps = { inputValue: null, routeString: null };
+SearchInput.defaultProps = { inputValue: null };
 
 function mapStateToProps(state) {
-  let routeString = '';
-  if (state.router.query.routes) {
-    routeString = state.router.query.routes;
-  }
   return {
     airportData: state.airportData,
     isMobile: state.mobile,
-    routeString,
+    routeString: state.router.query.routes || '',
     inputValue: state.searchInput
   };
 }

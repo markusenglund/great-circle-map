@@ -155,25 +155,20 @@ RouteElement.propTypes = {
   index: PropTypes.number.isRequired,
   distanceUnit: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  routeString: PropTypes.string,
+  routeString: PropTypes.string.isRequired,
   error: PropTypes.string,
   dispatch: PropTypes.func.isRequired
 };
 RouteElement.defaultProps = {
-  routeString: '',
   error: ''
 };
 
 function mapStateToProps(state) {
-  let routeString = '';
-  if (state.router.query.routes) {
-    routeString = state.router.query.routes;
-  }
   return {
     distanceUnit: state.settings.distanceUnit.abbr,
     label: state.settings.label.value,
     error: getRoutes(state).error,
-    routeString
+    routeString: state.router.query.routes || ''
   };
 }
 
