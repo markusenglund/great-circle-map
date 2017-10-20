@@ -162,7 +162,7 @@ function mapStateToProps(state) {
     initialGlobePosition: getGlobePosition(state),
     mapData: state.svgMap,
     label: state.router.query.label || 'city',
-    routeColor: state.settings.routeColor,
+    routeColor: state.router.query.color || '#d03030',
     pointColor: getBrighterColor(state)
   };
 }

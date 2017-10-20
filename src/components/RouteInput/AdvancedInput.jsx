@@ -35,9 +35,12 @@ class AdvancedInput extends Component {
     const newRouteString = this.state.value;
     dispatch({ type: 'ENABLE_MAP_REBOUND' });
     dispatch(
-      push({
-        query: { routes: newRouteString }
-      })
+      push(
+        {
+          query: { routes: newRouteString }
+        },
+        { persistQuery: true }
+      )
     );
   }
 

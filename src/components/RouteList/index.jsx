@@ -32,7 +32,6 @@ RouteList.propTypes = { routes: PropTypes.arrayOf(PropTypes.array).isRequired };
 
 function mapStateToProps(state) {
   const obj = getRoutes(state);
-  console.log('getRoutes return: ', obj);
   return {
     routes: obj.routes
   };

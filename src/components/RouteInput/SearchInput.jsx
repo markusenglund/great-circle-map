@@ -181,7 +181,7 @@ class SearchInput extends Component {
     const newRouteString = routeString ? `${routeString}, ${addedRoute}` : addedRoute;
 
     dispatch({ type: 'ENABLE_MAP_REBOUND' });
-    dispatch(push({ query: { routes: newRouteString } }));
+    dispatch(push({ query: { routes: newRouteString } }, { persistQuery: true }));
     dispatch({ type: 'CHANGE_SEARCH_INPUT', input: null });
   }
 

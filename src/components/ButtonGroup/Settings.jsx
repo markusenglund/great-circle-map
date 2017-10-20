@@ -67,7 +67,6 @@ class Settings extends Component {
       { abbr: 'none', readable: 'None' }
     ];
     const selectedLabel = labels.find(label => label.abbr === labelAbbr);
-    console.log('selected label', selectedLabel, 'label, vale', labelAbbr);
     return (
       <div id="settings">
         <MapButtonWithTooltip

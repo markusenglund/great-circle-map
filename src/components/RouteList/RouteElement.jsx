@@ -60,9 +60,12 @@ class RouteElement extends Component {
 
       dispatch({ type: 'DISABLE_MAP_REBOUND' });
       dispatch(
-        push({
-          query: { routes: newRouteString }
-        })
+        push(
+          {
+            query: { routes: newRouteString }
+          },
+          { persistQuery: true }
+        )
       );
     }
   }
