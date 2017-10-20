@@ -87,7 +87,7 @@ function mapStateToProps(state) {
     airports: getAirports(state),
     isMapLoaded: state.map.isLoaded,
     mapType: state.router.result.mapType,
-    label: state.settings.label.value,
+    label: state.router.query.label || 'city',
     shouldMapRebound: state.map.shouldMapRebound,
     map: state.map.map,
     zoom: state.map.zoom,

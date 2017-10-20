@@ -26,10 +26,10 @@ function MenuButton({
         </Button>
         <Menu>
           <ul className="menu-button-menu">
-            {options.map(obj => (
-              <li className="menu-item-wrapper" key={obj.readable}>
-                <MenuItem className="menu-item" text={obj.readable} value={obj}>
-                  {obj.readable}
+            {options.map(option => (
+              <li className="menu-item-wrapper" key={option.readable}>
+                <MenuItem className="menu-item" text={option.readable} value={option.abbr}>
+                  {option.readable}
                 </MenuItem>
               </li>
             ))}

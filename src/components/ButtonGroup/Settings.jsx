@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { push } from 'redux-little-router';
 import PropTypes from 'prop-types';
 import CloseOnEscape from 'react-close-on-escape';
 import onClickOutside from 'react-onclickoutside';
@@ -17,7 +18,6 @@ class Settings extends Component {
     this.handleMenuToggle = this.handleMenuToggle.bind(this);
     this.handleEscape = this.handleEscape.bind(this);
     this.handleClickOutside = this.handleClickOutside.bind(this);
-    this.handleMapTypeSelection = this.handleMapTypeSelection.bind(this);
     this.handleDistanceSelection = this.handleDistanceSelection.bind(this);
     this.handleLabelSelection = this.handleLabelSelection.bind(this);
   }
@@ -39,39 +39,35 @@ class Settings extends Component {
     this.setState({ isVisible: false });
   }
 
-  handleMapTypeSelection(value) {
+  handleDistanceSelection(unit) {
     const { dispatch } = this.props;
-    dispatch({ type: 'DISABLE_MAP_REBOUND' });
-    dispatch({ type: 'CHANGE_MAP_TYPE', mapType: value });
+    dispatch(push({ query: { unit } }, { persistQuery: true }));
   }
 
-  handleDistanceSelection(value) {
-    const { dispatch } = this.props;
-    dispatch({ type: 'CHANGE_DISTANCE_UNIT', distanceUnit: value });
-  }
-
-  handleLabelSelection(value) {
+  handleLabelSelection(label) {
     const { dispatch } = this.props;
     dispatch({ type: 'DISABLE_MAP_REBOUND' });
-    dispatch({ type: 'CHANGE_LABEL', label: value });
+    dispatch(push({ query: { label } }, { persistQuery: true }));
   }
 
   render() {
-    const { distanceUnit, label } = this.props;
+    const { distanceUnitAbbr, labelAbbr } = this.props;
 
     const distanceUnits = [
       { abbr: 'km', readable: 'Kilometers' },
       { abbr: 'mi', readable: 'Statute miles' },
       { abbr: 'nm', readable: 'Nautical miles' }
     ];
+    const selectedUnit = distanceUnits.find(unit => unit.abbr === distanceUnitAbbr);
 
     const labels = [
-      { value: 'iata', readable: 'IATA code' },
-      { value: 'icao', readable: 'ICAO code' },
-      { value: 'city', readable: 'City name' },
-      { value: 'none', readable: 'None' }
+      { abbr: 'city', readable: 'City name' },
+      { abbr: 'iata', readable: 'IATA code' },
+      { abbr: 'icao', readable: 'ICAO code' },
+      { abbr: 'none', readable: 'None' }
     ];
-
+    const selectedLabel = labels.find(label => label.abbr === labelAbbr);
+    console.log('selected label', selectedLabel, 'label, vale', labelAbbr);
     return (
       <div id="settings">
         <MapButtonWithTooltip
@@ -84,7 +80,7 @@ class Settings extends Component {
           <CloseOnEscape onEscape={this.handleEscape}>
             <div id="dropdown">
               <MenuButton
-                selectedOption={distanceUnit}
+                selectedOption={selectedUnit}
                 options={distanceUnits}
                 handleSelection={this.handleDistanceSelection}
                 handleMenuToggle={this.handleMenuToggle}
@@ -92,7 +88,7 @@ class Settings extends Component {
                 cssId="distance-unit"
               />
               <MenuButton
-                selectedOption={label}
+                selectedOption={selectedLabel}
                 options={labels}
                 handleSelection={this.handleLabelSelection}
                 handleMenuToggle={this.handleMenuToggle}
@@ -110,20 +106,16 @@ class Settings extends Component {
 }
 
 Settings.propTypes = {
-  distanceUnit: PropTypes.shape({
-    abbr: PropTypes.string.isRequired,
-    readable: PropTypes.string.isRequired
-  }).isRequired,
-  label: PropTypes.shape({
-    value: PropTypes.string.isRequired,
-    readable: PropTypes.string.isRequired
-  }).isRequired,
+  distanceUnitAbbr: PropTypes.string.isRequired,
+  labelAbbr: PropTypes.string.isRequired,
   dispatch: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
-  const { distanceUnit, label } = state.settings;
-  return { distanceUnit, label }; // Lol this can be shortened
+  return {
+    distanceUnitAbbr: state.router.query.unit || 'km',
+    labelAbbr: state.router.query.label || 'city'
+  };
 }
 
 export default connect(mapStateToProps)(onClickOutside(Settings));

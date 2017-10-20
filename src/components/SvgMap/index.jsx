@@ -161,7 +161,7 @@ function mapStateToProps(state) {
     airports: getAirports(state),
     initialGlobePosition: getGlobePosition(state),
     mapData: state.svgMap,
-    label: state.settings.label.value,
+    label: state.router.query.label || 'city',
     routeColor: state.settings.routeColor,
     pointColor: getBrighterColor(state)
   };

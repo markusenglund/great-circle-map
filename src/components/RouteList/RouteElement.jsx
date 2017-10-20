@@ -165,8 +165,8 @@ RouteElement.defaultProps = {
 
 function mapStateToProps(state) {
   return {
-    distanceUnit: state.settings.distanceUnit.abbr,
-    label: state.settings.label.value,
+    distanceUnit: state.router.query.unit || 'km',
+    label: state.router.query.label || 'city',
     error: getRoutes(state).error,
     routeString: state.router.query.routes || ''
   };
