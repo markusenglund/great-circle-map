@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { push } from 'redux-little-router';
 import ColorPicker from './ColorPicker';
 
 class RouteColorPicker extends Component {
@@ -24,7 +25,7 @@ class RouteColorPicker extends Component {
   handleChange({ hex }) {
     const { dispatch } = this.props;
     dispatch({ type: 'DISABLE_MAP_REBOUND' });
-    dispatch({ type: 'CHANGE_ROUTE_COLOR', color: hex });
+    dispatch(push({ query: { color: hex } }, { persistQuery: true }));
   }
 
   render() {
@@ -55,7 +56,7 @@ RouteColorPicker.propTypes = {
 };
 
 function mapStateToProps(state) {
-  return { routeColor: state.settings.routeColor };
+  return { routeColor: state.router.query.color || '#d03030' };
 }
 
 export default connect(mapStateToProps)(RouteColorPicker);

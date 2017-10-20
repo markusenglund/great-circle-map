@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 
 function getRouteColor(state) {
-  return state.settings.routeColor;
+  return state.router.query.color || '#d03030';
 }
 
 /* eslint-disable import/prefer-default-export */

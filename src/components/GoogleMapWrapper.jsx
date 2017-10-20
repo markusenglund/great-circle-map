@@ -91,7 +91,7 @@ function mapStateToProps(state) {
     shouldMapRebound: state.map.shouldMapRebound,
     map: state.map.map,
     zoom: state.map.zoom,
-    routeColor: state.settings.routeColor,
+    routeColor: state.router.query.color || '#d03030',
     pointColor: getBrighterColor(state)
   };
 }
