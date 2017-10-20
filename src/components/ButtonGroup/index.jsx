@@ -9,6 +9,7 @@ import Settings from './Settings';
 import MapSelection from './MapSelection';
 import MapButtonWithTooltip from './MapButtonWithTooltip';
 
+// FIXME: ButtonGroup and MapButton are horrible variable names
 function ButtonGroup({
   isSidebarDocked,
   toggleSidebarDock,

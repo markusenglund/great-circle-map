@@ -46,13 +46,10 @@ initializeAnalytics();
 
 const routes = {
   '/': {
-    title: 'Home'
+    mapType: 'satellite'
   },
-  '/globe': {
-    title: '3D Globe'
-  },
-  '/about': {
-    title: 'About'
+  '/roadmap': {
+    mapType: 'roadmap'
   }
 };
 

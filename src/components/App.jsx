@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Fragment } from 'redux-little-router';
 import ReactSidebar from 'react-sidebar';
 
 import { getAirportData, getSvgMap } from '../actionCreators';
@@ -20,6 +21,7 @@ class App extends Component {
     };
 
     const { dispatch } = props;
+    // FIXME: isMobile should be handled in url, and presumably not here.
     if (
       navigator.userAgent.match(/Android/i) ||
       navigator.userAgent.match(/webOS/i) ||
@@ -37,7 +39,7 @@ class App extends Component {
     this.toggleSidebarDock = this.toggleSidebarDock.bind(this);
     this.handleSetSidebarOpen = this.handleSetSidebarOpen.bind(this);
   }
-
+  // FIXME: Give this to redux instead. This is awkward structure.
   toggleSidebarDock() {
     this.setState({ transitionsActive: true });
     this.setState({ isSidebarDocked: !this.state.isSidebarDocked });
@@ -60,7 +62,7 @@ class App extends Component {
   }
 
   render() {
-    const { isMobile, googleOrSvg } = this.props;
+    const { isMobile } = this.props;
 
     return (
       <ReactSidebar
@@ -82,7 +84,19 @@ class App extends Component {
               toggleSidebarDock={this.toggleSidebarDock}
               handleSetSidebarOpen={this.handleSetSidebarOpen}
             />
-            {googleOrSvg === 'google' ? <GoogleMapWrapper /> : <SvgMap />}
+            <Fragment
+              withConditions={({ pathname }) => {
+                return pathname === '/' || pathname === '/roadmap';
+              }}
+            >
+              <GoogleMapWrapper />
+            </Fragment>
+            <Fragment forRoute="/globe">
+              <SvgMap />
+            </Fragment>
+            <Fragment forRoute="/about">
+              <div>ABOUT PLACEHOLDER</div>
+            </Fragment>
           </div>
         </div>
       </ReactSidebar>
@@ -93,16 +107,14 @@ class App extends Component {
 App.propTypes = {
   dispatch: PropTypes.func.isRequired,
   map: PropTypes.shape({ fitBounds: PropTypes.func }),
-  isMobile: PropTypes.bool.isRequired,
-  googleOrSvg: PropTypes.string.isRequired
+  isMobile: PropTypes.bool.isRequired
 };
 App.defaultProps = { map: null };
 
 function mapStateToProps(state) {
   return {
     map: state.map.map,
-    isMobile: state.mobile,
-    googleOrSvg: state.settings.map
+    isMobile: state.mobile
   };
 }
 

@@ -1,22 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { push, Fragment } from 'redux-little-router';
 import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
 
-function MapSelection({ dispatch, mapState, buttonClass }) {
+function MapSelection({ dispatch, buttonClass }) {
   function handleChangeToGoogleMap(mapType) {
-    if (mapState === 'svg') {
-      dispatch({ type: 'ENABLE_MAP_REBOUND' });
-      dispatch({ type: 'CHANGE_MAP', map: 'google' });
-    } else {
-      dispatch({ type: 'DISABLE_MAP_REBOUND' });
-    }
-    dispatch({ type: 'CHANGE_MAP_TYPE', mapType });
+    dispatch(push({ pathname: mapType }, { persistQuery: true }));
   }
 
   return (
     <div id="map-selection">
-      {mapState !== 'svg' ? (
+      <Fragment withConditions={({ pathname }) => pathname !== '/globe'}>
         <div>
           <button
             data-tip
@@ -26,7 +21,7 @@ function MapSelection({ dispatch, mapState, buttonClass }) {
             className={buttonClass}
             id="svg-map-button"
             onClick={() => {
-              dispatch({ type: 'CHANGE_MAP', map: 'svg' });
+              dispatch(push({ pathname: '/globe' }, { persistQuery: true }));
             }}
           >
             <img src="/earth.png" alt="3d-globe" />
@@ -35,8 +30,8 @@ function MapSelection({ dispatch, mapState, buttonClass }) {
             <span>3D globe</span>
           </ReactTooltip>
         </div>
-      ) : null}
-      {mapState !== 'satellite' ? (
+      </Fragment>
+      <Fragment withConditions={({ pathname }) => pathname !== '/'}>
         <div>
           <button
             data-tip
@@ -45,7 +40,7 @@ function MapSelection({ dispatch, mapState, buttonClass }) {
             data-event-off="mouseleave focusout click"
             className={buttonClass}
             id="satellite-button"
-            onClick={() => handleChangeToGoogleMap('satellite')}
+            onClick={() => handleChangeToGoogleMap('/')}
           >
             <img src="/satellite.png" alt="satellite" />
           </button>
@@ -53,8 +48,8 @@ function MapSelection({ dispatch, mapState, buttonClass }) {
             <span>Satellite</span>
           </ReactTooltip>
         </div>
-      ) : null}
-      {mapState !== 'roadmap' ? (
+      </Fragment>
+      <Fragment withConditions={({ pathname }) => pathname !== '/roadmap'}>
         <div>
           <button
             data-tip
@@ -71,29 +66,18 @@ function MapSelection({ dispatch, mapState, buttonClass }) {
             <span>Roadmap</span>
           </ReactTooltip>
         </div>
-      ) : null}
+      </Fragment>
     </div>
   );
 }
 
 MapSelection.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  mapState: PropTypes.string.isRequired,
   buttonClass: PropTypes.string.isRequired
 };
 
 function mapStateToProps(state) {
-  // mapState is the state that describes which map is shown, has nothing to do with mapStatoToProps
-  let mapState;
-  if (state.settings.map === 'svg') {
-    mapState = 'svg';
-  } else if (state.settings.mapType === 'satellite') {
-    mapState = 'satellite';
-  } else if (state.settings.mapType === 'roadmap') {
-    mapState = 'roadmap';
-  }
   return {
-    mapState,
     buttonClass: state.settings.buttonsVisible
       ? 'map-selection-button'
       : 'map-selection-button invisible'
