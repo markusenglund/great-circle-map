@@ -10,6 +10,7 @@ import GoogleMapWrapper from './GoogleMapWrapper';
 import ButtonGroup from './ButtonGroup';
 import SvgMap from './SvgMap';
 import SearchInput from './RouteInput/SearchInput';
+import Error404 from './Error404';
 
 class App extends Component {
   constructor(props) {
@@ -20,18 +21,8 @@ class App extends Component {
       transitionsActive: false
     };
 
+    // FIXME: I think these should go into componentDidMount
     const { dispatch } = props;
-    // FIXME: isMobile should be handled in url, and presumably not here.
-    if (
-      navigator.userAgent.match(/Android/i) ||
-      navigator.userAgent.match(/webOS/i) ||
-      navigator.userAgent.match(/iPhone/i) ||
-      navigator.userAgent.match(/iPod/i) ||
-      navigator.userAgent.match(/BlackBerry/i) ||
-      navigator.userAgent.match(/Windows Phone/i)
-    ) {
-      dispatch({ type: 'IS_MOBILE' });
-    }
 
     dispatch(getAirportData());
     dispatch(getSvgMap());
@@ -97,6 +88,18 @@ class App extends Component {
             <Fragment forRoute="/about">
               <div>ABOUT PLACEHOLDER</div>
             </Fragment>
+            <Fragment
+              withConditions={({ pathname }) => {
+                return (
+                  pathname !== '/' &&
+                  pathname !== '/roadmap' &&
+                  pathname !== '/globe' &&
+                  pathname !== '/about'
+                );
+              }}
+            >
+              <Error404 />
+            </Fragment>
           </div>
         </div>
       </ReactSidebar>
@@ -114,7 +117,7 @@ App.defaultProps = { map: null };
 function mapStateToProps(state) {
   return {
     map: state.map.map,
-    isMobile: state.mobile
+    isMobile: state.isMobile
   };
 }
 

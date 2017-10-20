@@ -14,6 +14,7 @@ import './stylesheets/react-toggle.scss';
 
 import reducers from './reducers';
 import App from './components/App';
+import checkIfMobile from './utils/checkIfMobile';
 
 const history = createBrowserHistory();
 
@@ -59,6 +60,7 @@ const { reducer, middleware, enhancer } = routerForBrowser({
 
 const store = createStore(
   combineReducers({ ...reducers, router: reducer }),
+  { isMobile: checkIfMobile() },
   compose(enhancer, applyMiddleware(ReduxThunk, middleware, logger))
 );
 

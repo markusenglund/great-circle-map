@@ -257,7 +257,7 @@ SearchInput.defaultProps = { inputValue: null };
 function mapStateToProps(state) {
   return {
     airportData: state.airportData,
-    isMobile: state.mobile,
+    isMobile: state.isMobile,
     routeString: state.router.query.routes || '',
     inputValue: state.searchInput
   };

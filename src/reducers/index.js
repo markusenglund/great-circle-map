@@ -2,7 +2,7 @@ import airportData from './airportData';
 import map from './map';
 import inputMode from './inputMode';
 import settings from './settings';
-import mobile from './mobile';
+import isMobile from './isMobile';
 import searchInput from './searchInput';
 import svgMap from './svgMap';
 
@@ -11,7 +11,7 @@ export default {
   map,
   inputMode,
   settings,
-  mobile,
+  isMobile,
   searchInput,
   svgMap
 };

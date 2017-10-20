@@ -51,7 +51,7 @@ ButtonGroup.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    isMobile: state.mobile
+    isMobile: state.isMobile
   };
 };
 

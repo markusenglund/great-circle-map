@@ -86,7 +86,7 @@ AdvancedInput.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    isMobile: state.mobile,
+    isMobile: state.isMobile,
     routeString: state.router.query.routes || ''
   };
 }
