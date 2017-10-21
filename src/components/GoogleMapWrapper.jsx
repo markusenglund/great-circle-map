@@ -10,7 +10,6 @@ class GoogleMapWrapper extends Component {
     this.handleMapMounted = this.handleMapMounted.bind(this);
   }
   componentDidUpdate(prevProps) {
-    // FIXME: Try to put this in an earlier lifecycle method
     const { routeString, prevPathname, map } = this.props;
     if (map && routeString.length !== 0) {
       if (
@@ -24,7 +23,6 @@ class GoogleMapWrapper extends Component {
 
   fitBounds() {
     // Change the viewport to fit the airports that have been rendered to the map.
-    console.log('fit bounds');
     const { routes, map } = this.props;
     const { LatLngBounds, LatLng } = google.maps;
     const newBounds = new LatLngBounds();
@@ -39,7 +37,7 @@ class GoogleMapWrapper extends Component {
   handleMapMounted(map) {
     const { dispatch } = this.props;
     if (map) {
-      dispatch({ type: 'COMPLETE_MAP_LOAD', map });
+      dispatch({ type: 'MOUNT_MAP', map });
     }
   }
 
@@ -88,7 +86,7 @@ function mapStateToProps(state) {
     prevPathname: state.router.previous ? state.router.previous.pathname : '',
     mapType: state.router.result.mapType,
     label: state.router.query.label || 'city',
-    map: state.map.map,
+    map: state.map,
     routeColor: state.router.query.color || '#d03030',
     pointColor: getBrighterColor(state)
   };

@@ -116,7 +116,7 @@ App.defaultProps = { map: null };
 
 function mapStateToProps(state) {
   return {
-    map: state.map.map,
+    map: state.map,
     isMobile: state.isMobile
   };
 }
