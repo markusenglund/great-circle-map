@@ -33,7 +33,6 @@ class AdvancedInput extends Component {
       this.textarea.blur();
     }
     const newRouteString = this.state.value;
-    dispatch({ type: 'ENABLE_MAP_REBOUND' });
     dispatch(
       push(
         {

@@ -1,12 +1,8 @@
-const map = (state = { map: null, isLoaded: false, shouldMapRebound: true, zoom: 2 }, action) => {
+const map = (state = { map: null, isLoaded: false }, action) => {
   switch (action.type) {
     case 'COMPLETE_MAP_LOAD': {
       return { ...state, isLoaded: true, map: action.map };
     }
-    case 'DISABLE_MAP_REBOUND':
-      return { ...state, shouldMapRebound: false };
-    case 'ENABLE_MAP_REBOUND':
-      return { ...state, shouldMapRebound: true };
     default:
       return state;
   }

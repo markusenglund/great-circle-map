@@ -24,7 +24,6 @@ class RouteColorPicker extends Component {
 
   handleChange({ hex }) {
     const { dispatch } = this.props;
-    dispatch({ type: 'DISABLE_MAP_REBOUND' });
     dispatch(push({ query: { color: hex } }, { persistQuery: true }));
   }
 

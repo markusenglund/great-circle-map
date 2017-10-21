@@ -58,7 +58,6 @@ class RouteElement extends Component {
       routeArrWithParsedSlashes.splice(index, 1);
       const newRouteString = routeArrWithParsedSlashes.join();
 
-      dispatch({ type: 'DISABLE_MAP_REBOUND' });
       dispatch(
         push(
           {

@@ -46,7 +46,6 @@ class Settings extends Component {
 
   handleLabelSelection(label) {
     const { dispatch } = this.props;
-    dispatch({ type: 'DISABLE_MAP_REBOUND' });
     dispatch(push({ query: { label } }, { persistQuery: true }));
   }
 
