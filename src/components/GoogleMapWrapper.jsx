@@ -11,7 +11,6 @@ class GoogleMapWrapper extends Component {
   }
 
   shouldComponentUpdate({ routes }) {
-    console.log('routes:::', routes);
     return routes !== null;
   }
   componentDidUpdate(prevProps) {
