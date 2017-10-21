@@ -11,6 +11,7 @@ import ButtonGroup from './ButtonGroup';
 import SvgMap from './SvgMap';
 import SearchInput from './RouteInput/SearchInput';
 import Error404 from './Error404';
+import Navbar from './Navbar';
 
 class App extends Component {
   constructor(props) {
@@ -68,7 +69,7 @@ class App extends Component {
         }}
       >
         <div id="main">
-          {isMobile ? <SearchInput /> : null}
+          {isMobile ? <SearchInput /> : <Navbar />}
           <div id="map-wrapper">
             <ButtonGroup
               isSidebarDocked={this.state.isSidebarDocked}

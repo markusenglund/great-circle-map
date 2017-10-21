@@ -155,6 +155,11 @@ ul {
   font-weight: bold;
 }
 
+.navbar {
+  background: $dark-grey;
+  color: $text-color;
+}
+
 .bold {
   font-weight: bold;
 }
@@ -167,23 +172,6 @@ ul {
   float: right;
 }
 
-.side-padding {
-  padding-left: 4px;
-  padding-right: 4px;
-}
-
 .padding-4px {
   padding: 4px;
-}
-
-.padding-top-4px {
-  padding-top: 4px;
-}
-
-.horizontal-center {
-  text-align: center;
-}
-
-.grey {
-  color: #667;
 }
