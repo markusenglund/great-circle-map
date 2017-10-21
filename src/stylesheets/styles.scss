@@ -1,6 +1,7 @@
-@import "./variables.scss";
+@import './variables.scss';
 
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
   padding: 0;
@@ -8,9 +9,9 @@ html, body {
 }
 
 ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
 }
 
 #app {
@@ -36,7 +37,6 @@ ul {
   background-color: rgb(22, 22, 22);
   height: 63px;
   border-bottom: 1px $grey solid;
-
 }
 
 #header h1 {
@@ -47,7 +47,7 @@ ul {
   bottom: 7px;
   right: 10px;
   color: white;
-  font-weight:normal;
+  font-weight: normal;
 }
 
 .route-input {
@@ -95,8 +95,8 @@ ul {
   padding: 4px;
   width: 100%;
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
   max-width: 100%;
   max-height: 200px;
   height: 60px;
@@ -130,6 +130,22 @@ ul {
   background: #05102a;
   cursor: pointer;
   text-decoration: none;
+}
+
+.toggle-group {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 150px;
+  float: right;
+  margin-top: -45px;
+  margin-right: 10px;
+}
+
+.toggle-group-label {
+  color: #ddd;
+  margin-right: 5px;
+  font-size: 14px;
 }
 
 .error-message {

@@ -10,7 +10,6 @@ import logger from 'redux-logger';
 
 import './stylesheets/styles.scss';
 import './stylesheets/map.scss';
-import './stylesheets/react-toggle.scss';
 
 import reducers from './reducers';
 import App from './components/App';
