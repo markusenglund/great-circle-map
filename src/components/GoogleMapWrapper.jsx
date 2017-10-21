@@ -9,6 +9,11 @@ class GoogleMapWrapper extends Component {
     super();
     this.handleMapMounted = this.handleMapMounted.bind(this);
   }
+
+  shouldComponentUpdate({ routes }) {
+    console.log('routes:::', routes);
+    return routes !== null;
+  }
   componentDidUpdate(prevProps) {
     const { routeString, prevPathname, map } = this.props;
     if (map && routeString.length !== 0) {
@@ -64,7 +69,7 @@ class GoogleMapWrapper extends Component {
 }
 GoogleMapWrapper.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  routes: PropTypes.arrayOf(PropTypes.array).isRequired,
+  routes: PropTypes.arrayOf(PropTypes.array),
   sectors: PropTypes.arrayOf(PropTypes.array).isRequired,
   airports: PropTypes.arrayOf(PropTypes.object).isRequired,
   routeString: PropTypes.string.isRequired,
@@ -75,7 +80,7 @@ GoogleMapWrapper.propTypes = {
   routeColor: PropTypes.string.isRequired,
   pointColor: PropTypes.string.isRequired
 };
-GoogleMapWrapper.defaultProps = { map: null };
+GoogleMapWrapper.defaultProps = { map: null, routes: null };
 
 function mapStateToProps(state) {
   return {
