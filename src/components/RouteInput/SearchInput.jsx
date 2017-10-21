@@ -170,15 +170,15 @@ class SearchInput extends Component {
     }
 
     if (!inputValue) return;
-    // Transform inputValue to inputstring-format. Use urlParam to combine with old routes
+
     const addedRoute = inputValue.reduce((acc, val, i) => {
       return i ? `${acc}-${val.value}` : val.value;
     }, '');
 
     // Remove trailing commas, semicolons, slashes or new line
-    // const urlParamNoDangle = urlParam.replace(/[,;/\n]$/, '');
+    const routeStringParsed = routeString.replace(/[,;/\n]$/, '');
 
-    const newRouteString = routeString ? `${routeString}, ${addedRoute}` : addedRoute;
+    const newRouteString = routeStringParsed ? `${routeStringParsed}, ${addedRoute}` : addedRoute;
 
     dispatch(push({ query: { routes: newRouteString } }, { persistQuery: true }));
     dispatch({ type: 'CHANGE_SEARCH_INPUT', input: null });
