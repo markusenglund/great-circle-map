@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Modal from 'react-modal';
+import MdClose from 'react-icons/lib/md/close';
 
 Modal.setAppElement('#app');
 
@@ -29,12 +30,29 @@ class AboutModal extends Component {
           About
         </button>
         <Modal
+          style={{
+            content: {
+              backgroundColor: '#222',
+              color: '#eee',
+              left: 350,
+              right: 80,
+              border: '1px solid #444',
+              paddingTop: 0
+            },
+            overlay: { zIndex: 99, backgroundColor: 'rgba(0, 0, 0, 0.75)' }
+          }}
           isOpen={this.state.showModal}
           contentLabel="onRequestClose Example"
           onRequestClose={this.handleCloseModal}
         >
-          <p>Modal text!</p>
-          <button onClick={this.handleCloseModal}>Close Modal</button>
+          <h2>About</h2>
+          <button
+            onClick={this.handleCloseModal}
+            style={{ marginTop: 0, top: 0 }}
+            className="delete-button"
+          >
+            <MdClose />
+          </button>
         </Modal>
       </div>
     );

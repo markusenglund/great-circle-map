@@ -1,4 +1,4 @@
-@import "../../stylesheets/variables.scss";
+@import '../../stylesheets/variables.scss';
 
 #route-list-wrapper {
   height: 100%;
@@ -18,7 +18,6 @@
 .delete-button {
   position: absolute;
   right: 0;
-  top: 0;
   top: 50%;
   width: 32px;
   height: 32px;
@@ -35,7 +34,11 @@
   color: $text-color;
 }
 
-.collapsible-distance, .collapsible-airport, .sector-element, .total-distance, .non-stop-distance {
+.collapsible-distance,
+.collapsible-airport,
+.sector-element,
+.total-distance,
+.non-stop-distance {
   padding-left: 4px;
   padding-right: 4px;
   padding-top: 2px;
