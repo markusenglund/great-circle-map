@@ -117,8 +117,8 @@ ul {
   -webkit-border-radius: 3;
   -moz-border-radius: 3;
   border-radius: 3px;
-  color: #ffffff;
-  font-size: 15px;
+  color: $text-color;
+  font-size: 16px;
   background: #05153a;
   padding: 6px 20px 6px 20px;
   border: solid #05102a 0px;
@@ -129,6 +129,26 @@ ul {
 .btn:hover {
   /*background: #000c7a;*/
   background: #05102a;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.about-btn {
+  -webkit-border-radius: 3;
+  -moz-border-radius: 3;
+  border-radius: 3px;
+  color: $text-color;
+  font-size: 16px;
+  background: $dark-grey;
+  padding: 6px 7px 6px 7px;
+  border: solid #05102a 0px;
+  text-decoration: none;
+  height: 37px;
+  margin-left: 8px;
+}
+
+.about-btn:hover {
+  background: #111;
   cursor: pointer;
   text-decoration: none;
 }

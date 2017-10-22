@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { push } from 'redux-little-router';
 import PropTypes from 'prop-types';
+import AboutModal from './AboutModal';
 
 class AdvancedInput extends Component {
   constructor(props) {
@@ -72,6 +73,7 @@ class AdvancedInput extends Component {
             <button className="btn" type="submit">
               Go
             </button>
+            <AboutModal />
           </div>
         </form>
       </div>
