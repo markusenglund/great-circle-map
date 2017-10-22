@@ -53,8 +53,7 @@ class AdvancedInput extends Component {
     return (
       <div className="advanced-input">
         <p className="description">
-          Manually type in IATA or ICAO airport codes separated by dashes and commas to display
-          routes.
+          Type in IATA or ICAO airport codes separated by dashes to display routes.
         </p>
         <form className="input-form" onSubmit={e => this.handleSubmit(e)}>
           <div id="textarea-wrapper">

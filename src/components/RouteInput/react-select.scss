@@ -7,9 +7,9 @@
 */
 .Select {
   position: relative;
-  margin-bottom: 10px;
+  margin-bottom: 7px;
   margin-left: 10px;
-  margin-top: 10px;
+  margin-top: 7px;
 }
 .Select,
 .Select div,
@@ -100,9 +100,15 @@
   text-decoration: none;
 }
 .has-value.Select--single > .Select-control .Select-value a.Select-value-label:hover,
-.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value a.Select-value-label:hover,
+.has-value.is-pseudo-focused.Select--single
+  > .Select-control
+  .Select-value
+  a.Select-value-label:hover,
 .has-value.Select--single > .Select-control .Select-value a.Select-value-label:focus,
-.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value a.Select-value-label:focus {
+.has-value.is-pseudo-focused.Select--single
+  > .Select-control
+  .Select-value
+  a.Select-value-label:focus {
   color: #007eff;
   outline: none;
   text-decoration: underline;
@@ -174,7 +180,7 @@
   width: 17px;
 }
 .Select-clear-zone:hover {
-  color: #D0021B;
+  color: #d0021b;
 }
 .Select-clear {
   display: inline-block;
