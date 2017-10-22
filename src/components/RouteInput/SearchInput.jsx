@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { push } from 'redux-little-router';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
+import AboutModal from './AboutModal';
 import './react-select.scss';
 
 // Sort search results
@@ -233,10 +234,11 @@ class SearchInput extends Component {
               ref={this.handleSelectMounted}
             />
           </div>
-          <div className={isMobile ? 'submit-button-wrapper' : 'submit-button-wrapper'}>
+          <div className="submit-button-wrapper">
             <button className="btn" type="submit">
               Go
             </button>
+            {!isMobile && <AboutModal />}
           </div>
         </form>
       </div>
