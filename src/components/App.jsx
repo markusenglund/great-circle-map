@@ -85,17 +85,9 @@ class App extends Component {
             <Fragment forRoute="/globe">
               <SvgMap />
             </Fragment>
-            <Fragment forRoute="/about">
-              <div>ABOUT PLACEHOLDER</div>
-            </Fragment>
             <Fragment
               withConditions={({ pathname }) => {
-                return (
-                  pathname !== '/' &&
-                  pathname !== '/roadmap' &&
-                  pathname !== '/globe' &&
-                  pathname !== '/about'
-                );
+                return pathname !== '/' && pathname !== '/roadmap' && pathname !== '/globe';
               }}
             >
               <Error404 />
