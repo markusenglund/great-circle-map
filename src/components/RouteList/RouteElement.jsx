@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { push } from 'redux-little-router';
 import { LatLonEllipsoidal } from 'geodesy';
-import { Collapse } from 'react-collapse';
+import { UnmountClosed } from 'react-collapse';
 import uniqueId from 'lodash.uniqueid';
 import MdClose from 'react-icons/lib/md/close';
 
@@ -135,7 +135,7 @@ class RouteElement extends Component {
             <MdClose />
           </button>
         </div>
-        <Collapse isOpened={this.state.isOpened}>
+        <UnmountClosed isOpened={this.state.isOpened}>
           <CollapsibleElement
             route={route}
             label={label}
@@ -146,7 +146,7 @@ class RouteElement extends Component {
             readableDifferencePercentage={readableDifferencePercentage}
             readableNonStopDistance={readableNonStopDistance}
           />
-        </Collapse>
+        </UnmountClosed>
       </li>
     );
   }
