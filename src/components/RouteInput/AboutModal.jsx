@@ -73,6 +73,10 @@ class AboutModal extends Component {
             <br />
             <br />
             <img
+              src="/lax-to-dxb-gm.png"
+              alt="Google maps projection of route from Los Angeles to Dubai"
+            />
+            <img
               src="/lax-to-dxb-globe.png"
               alt="Globe view of the route from Los Angeles to Dubai"
             />
