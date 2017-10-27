@@ -72,7 +72,10 @@ class AboutModal extends Component {
             more sense when you look at an orthographic projection.
             <br />
             <br />
-            IMAGE OF LA TO DUBAI
+            <img
+              src="/lax-to-dxb-globe.png"
+              alt="Globe view of the route from Los Angeles to Dubai"
+            />
             <br />
             The distances calculated are the shortest possible distances (while not going through
             the earth itself). However, airlines often don’t follow the shortest route exactly
