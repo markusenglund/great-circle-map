@@ -72,13 +72,19 @@ class AboutModal extends Component {
             more sense when you look at an orthographic projection.
             <br />
             <br />
+            {/* height = 320 width = 440 / height = 640, width = 880 */}
             <img
-              src="/lax-to-dxb-gm.png"
+              src="/gm-lax-dxb-440w.png"
+              srcSet="/gm-lax-dxb-880w 2x"
               alt="Google maps projection of route from Los Angeles to Dubai"
+              width={440}
+              height={320}
             />
             <img
               src="/lax-to-dxb-globe.png"
               alt="Globe view of the route from Los Angeles to Dubai"
+              width={316}
+              height={322}
             />
             <br />
             The distances calculated are the shortest possible distances (while not going through
