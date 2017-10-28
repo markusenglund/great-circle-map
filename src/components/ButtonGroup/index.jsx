@@ -29,7 +29,15 @@ function ButtonGroup({
           }
         />
         <MapButtonWithTooltip
-          handleClick={() => dispatch(push('/'))}
+          handleClick={() =>
+            dispatch(
+              push(
+                {
+                  query: { routes: '' }
+                },
+                { persistQuery: true }
+              )
+            )}
           tooltipId="delete"
           buttonContent={<FaTrashO />}
           tooltipContent={<span>Clear routes</span>}
