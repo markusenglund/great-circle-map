@@ -34,7 +34,7 @@ class AboutModal extends Component {
             content: {
               backgroundColor: '#222',
               color: '#eee',
-              left: 350,
+              left: 80,
               right: 80,
               border: '1px solid #444',
               paddingTop: 0
@@ -54,25 +54,24 @@ class AboutModal extends Component {
             <MdClose />
           </button>
           <p>
-            Great Circle Map is a tool that provides a visualization of routes between airports and
-            calculates the distance. A great circle path (also known as a geodesic path) is the
-            shortest possible route between two points on the surface of earth or any other sphere.
-            The map uses the Mercator projection by default. On this type of map, great circle paths
-            tend to look curved even though they are in fact straight. As an alternative, there is
-            also a 3D globe visualization which doesn’t have that problem.
+            Great Circle Map is a tool for visualizing flight paths between airports and calculates
+            the distance. A great circle path (also known as a geodesic path) is the shortest
+            possible route between two points on the surface of earth or any other sphere. The map
+            uses the Mercator projection by default. On this type of map, great circle paths tend to
+            look curved even though they are in fact straight. As an alternative, there is also a 3D
+            globe visualization which doesn’t have that problem.
             <br />
             <br />
             Projecting a 3-dimensional sphere onto a 2-dimensional screen always creates
             distortions. Most world maps use the Mercator projection or something similar. These
-            projections tend to have large distortions around the polar regions. For example,
-            distances look much bigger than they actually are near the poles, while they look
-            relatively small around the equator. People tend to be particularly confused by how the
-            shortest route between two cities like Dubai and Los Angeles goes via the north pole,
-            despite the fact that both of these cities are situated pretty far south. It makes a lot
-            more sense when you look at an orthographic projection.
+            projections tend to have large distortions around the polar regions. Distances look much
+            bigger than they actually are near the poles, while they look relatively small around
+            the equator. People tend to be particularly confused by how the shortest route between
+            two cities like Dubai and Los Angeles goes via the north pole, despite the fact that
+            both of these cities are situated pretty far south. It makes a lot more sense when you
+            look at an orthographic projection.
             <br />
             <br />
-            {/* height = 320 width = 440 / height = 640, width = 880 */}
             <img
               src="/gm-lax-dxb-440w.png"
               srcSet="/gm-lax-dxb-880w 2x"
@@ -81,11 +80,13 @@ class AboutModal extends Component {
               height={320}
             />
             <img
-              src="/lax-to-dxb-globe.png"
+              src="/svg-lax-dxb-320w.png"
+              srcSet="/svg-lax-dxb-640w.png 2x"
               alt="Globe view of the route from Los Angeles to Dubai"
-              width={316}
-              height={322}
+              width={320}
+              height={320}
             />
+            <br />
             <br />
             The distances calculated are the shortest possible distances (while not going through
             the earth itself). However, airlines often don’t follow the shortest route exactly
@@ -95,9 +96,10 @@ class AboutModal extends Component {
             around the equator.
             <br />
             <br />
-            If you found a bug or issue, please contact me at markus.s.englund@gmail.com or file an
-            issue on <a href="https://github.com/yogaboll/great-circle-map">github</a>. The Github
-            repository also contains the complete source code for this website.
+            If you found a bug or have a suggestion, please contact me at markus.s.englund@gmail.com
+            or file an issue on <a href="https://github.com/yogaboll/great-circle-map">Github</a>.
+            The Github repository also contains the complete source code for this website.
+            <br />
             <br />
             This app was made by me, Markus Englund. I’m a Swedish web developer and aviation
             enthusiast.
