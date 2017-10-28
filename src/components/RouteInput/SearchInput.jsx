@@ -170,7 +170,7 @@ class SearchInput extends Component {
       this.select.blurInput();
     }
 
-    if (!inputValue) return;
+    if (inputValue === null || inputValue.length < 2) return;
 
     const addedRoute = inputValue.reduce((acc, val, i) => {
       return i ? `${acc}-${val.value}` : val.value;
