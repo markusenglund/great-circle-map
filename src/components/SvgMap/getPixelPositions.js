@@ -27,7 +27,7 @@ export default function getPixelPositions(airports, projection, centerLng, cente
       });
 
     if (vectorProjections.length === 0) {
-      return { x: curPosition[0], y: curPosition[1] + 14, textAnchor: 'start' };
+      return { x: curPosition[0], y: curPosition[1] + 17, textAnchor: 'start' };
     }
 
     const directionalForces = vectorProjections.reduce(
