@@ -66,22 +66,22 @@ export default function getPixelPositions(airports, projection, centerLng, cente
 
     switch (direction) {
       case 'northEast': {
-        y -= 5;
+        y -= 8;
         textAnchor = 'start';
         break;
       }
       case 'northWest': {
-        y -= 5;
+        y -= 8;
         textAnchor = 'end';
         break;
       }
       case 'southWest': {
-        y += 14;
+        y += 17;
         textAnchor = 'end';
         break;
       }
       default: {
-        y += 14;
+        y += 17;
         textAnchor = 'start';
         break;
       }

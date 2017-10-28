@@ -78,7 +78,7 @@ class SvgMap extends Component {
     this.projection.rotate([-centerLng, -centerLat]);
     const path = geoPath()
       .projection(this.projection)
-      .pointRadius(3);
+      .pointRadius(4);
 
     const { mapData, label, airports, sectors, routeColor, pointColor } = this.props;
     const pixelPositions = getPixelPositions(airports, this.projection, centerLng, centerLat);
@@ -111,6 +111,7 @@ class SvgMap extends Component {
               {sectors.map(sector => (
                 <path
                   stroke={routeColor}
+                  strokeWidth={2}
                   fill="none"
                   d={path({
                     type: 'LineString',
