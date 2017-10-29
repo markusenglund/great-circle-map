@@ -65,7 +65,8 @@ class App extends Component {
         transitions={this.state.transitionsActive}
         styles={{
           content: { overflowY: 'auto' },
-          sidebar: { zIndex: 99 }
+          sidebar: { zIndex: 99 },
+          overlay: { zIndex: 3 }
         }}
       >
         <div id="main">
