@@ -16,7 +16,7 @@ two cities like Dubai and Los Angeles goes via the north pole, despite the fact 
 both of these cities are situated pretty far south. It makes a lot more sense when you
 look at an orthographic projection.
 
-<img src="/lax-dxb.jpg" />
+<img src="http://i67.tinypic.com/104gehu.jpg" />
 
 The distances calculated are the shortest possible distances (while not going through
 the earth itself). However, airlines often don’t follow the shortest route exactly
