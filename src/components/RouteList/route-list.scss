@@ -103,12 +103,7 @@
 
 #footer {
   color: $text-color;
+  text-align: center;
   margin: 2px;
   font-size: 12px;
-  display: flex;
-  justify-content: space-around;
-}
-
-#footer a {
-  color: #ddd;
 }

@@ -22,14 +22,6 @@ class RouteList extends Component {
           })}
         </ul>
         <footer id="footer">
-          <a href="mailto:markus.s.englund@gmail.com">Contact</a>
-          <a
-            href="https://github.com/yogaboll/great-circle-map"
-            target="_blank"
-            rel="noreferrer noopener"
-          >
-            Code
-          </a>
           <span>© 2017 Markus Englund</span>
         </footer>
       </div>
