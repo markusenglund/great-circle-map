@@ -101,6 +101,13 @@
   color: $dark-text-color;
 }
 
+.empty-message {
+  color: $text-color;
+  margin: 5px;
+  text-align: center;
+  margin-top: 40px;
+}
+
 #footer {
   color: $text-color;
   text-align: center;

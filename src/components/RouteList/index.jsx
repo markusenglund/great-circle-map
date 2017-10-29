@@ -11,27 +11,35 @@ class RouteList extends Component {
   }
 
   render() {
-    const { routes } = this.props;
+    const { routes, isMobile } = this.props;
     return (
       <div id="route-list-wrapper">
-        <ul id="route-list">
-          {routes.map((route, i) => {
-            return route.length > 1 ? (
-              <RouteElement key={route.id} route={route} index={i} />
-            ) : null;
-          })}
-        </ul>
+        {isMobile && routes.length === 0 ? (
+          <div className="empty-message">Enter at least one route to see more information.</div>
+        ) : (
+          <ul id="route-list">
+            {routes.map((route, i) => {
+              return route.length > 1 ? (
+                <RouteElement key={route.id} route={route} index={i} />
+              ) : null;
+            })}
+          </ul>
+        )}
       </div>
     );
   }
 }
 
-RouteList.propTypes = { routes: PropTypes.arrayOf(PropTypes.array) };
+RouteList.propTypes = {
+  routes: PropTypes.arrayOf(PropTypes.array),
+  isMobile: PropTypes.bool.isRequired
+};
 RouteList.defaultProps = { routes: null };
 function mapStateToProps(state) {
   const { routes } = getRoutes(state);
   return {
-    routes
+    routes,
+    isMobile: state.isMobile
   };
 }
 
