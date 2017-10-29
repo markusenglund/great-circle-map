@@ -21,9 +21,6 @@ class RouteList extends Component {
             ) : null;
           })}
         </ul>
-        <footer id="footer">
-          <span>© 2017 Markus Englund</span>
-        </footer>
       </div>
     );
   }
