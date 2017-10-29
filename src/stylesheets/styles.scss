@@ -181,6 +181,16 @@ ul {
   color: $text-color;
 }
 
+.error-page {
+  width: 100%;
+  background: $grey;
+  color: $text-color;
+  padding: 50px;
+}
+
+.error-link {
+  color: white;
+}
 .bold {
   font-weight: bold;
 }
