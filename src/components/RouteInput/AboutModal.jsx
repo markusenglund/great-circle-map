@@ -74,7 +74,7 @@ class AboutModal extends Component {
             <br />
             <img
               src="/gm-lax-dxb-440w.png"
-              srcSet="/gm-lax-dxb-880w 2x"
+              srcSet="/gm-lax-dxb-880w.png 2x"
               alt="Google maps projection of route from Los Angeles to Dubai"
               width={440}
               height={320}

@@ -24,7 +24,7 @@ function MapSelection({ dispatch, buttonClass }) {
               dispatch(push({ pathname: '/globe' }, { persistQuery: true }));
             }}
           >
-            <img src="/earth.png" alt="3d-globe" />
+            <img src="/earth.png" srcSet="/earth-2x.png 2x" alt="3d-globe" width={60} height={60} />
           </button>
           <ReactTooltip className="tooltip" id="svg-map-button" place="left" effect="solid">
             <span>3D globe</span>
