@@ -21,15 +21,16 @@ class App extends Component {
       transitionsActive: false
     };
 
-    // FIXME: I think these should go into componentDidMount
-    const { dispatch } = props;
-
-    dispatch(getAirportData());
-    dispatch(getSvgMap());
-
     this.toggleSidebarDock = this.toggleSidebarDock.bind(this);
     this.handleSetSidebarOpen = this.handleSetSidebarOpen.bind(this);
   }
+
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch(getAirportData());
+    dispatch(getSvgMap());
+  }
+
   // FIXME: Give this to redux instead. This is awkward structure.
   toggleSidebarDock() {
     this.setState({ transitionsActive: true });
