@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import { routerForBrowser } from 'redux-little-router';
 import createBrowserHistory from 'history/createBrowserHistory';
 import ReduxThunk from 'redux-thunk';
-import logger from 'redux-logger';
+// import logger from 'redux-logger';
 
 import './stylesheets/styles.scss';
 import './stylesheets/map.scss';
@@ -60,7 +60,7 @@ const { reducer, middleware, enhancer } = routerForBrowser({
 const store = createStore(
   combineReducers({ ...reducers, router: reducer }),
   { isMobile: checkIfMobile() },
-  compose(enhancer, applyMiddleware(ReduxThunk, middleware, logger))
+  compose(enhancer, applyMiddleware(ReduxThunk, middleware))
 );
 
 ReactDOM.render(
