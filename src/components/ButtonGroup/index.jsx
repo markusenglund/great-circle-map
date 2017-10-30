@@ -44,7 +44,7 @@ function ButtonGroup({
         />
         <Settings />
       </div>
-      <MapSelection />
+      {isMobile || <MapSelection />}
     </div>
   );
 }

@@ -6,7 +6,7 @@ const Header = () => {
     <Link className="header-link" href="/">
       <div id="header">
         <img src="/logo.svg" alt="logo" width={60} />
-        <h1>Great Circle Map</h1>
+        <span>Great Circle Map</span>
       </div>
     </Link>
   );

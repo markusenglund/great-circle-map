@@ -36,15 +36,17 @@ ul {
 }
 
 #header {
-  padding: 2px;
+  padding-top: 3px;
+  padding-bottom: 3px;
   background-color: $dark-grey;
   height: 60px;
   border-bottom: 1px $grey solid;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
+  align-items: center;
 }
 
-#header h1 {
+#header span {
   font-size: 26px;
   color: white;
   font-weight: normal;
