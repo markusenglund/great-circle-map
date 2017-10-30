@@ -9,12 +9,12 @@ globe view which doesn’t have that problem.
 
 Projecting a 3-dimensional sphere onto a 2-dimensional screen always creates
 distortions. Most world maps use the Mercator projection or something similar. These
-projections tend to have large distortions around the polar regions. Distances look much
-bigger than they actually are near the poles, while they look relatively small around
-the equator. People tend to be particularly confused by how the shortest route between
-two cities like Dubai and Los Angeles goes via the north pole, despite the fact that
-both of these cities are situated pretty far south. It makes a lot more sense when you
-look at an orthographic projection.
+projections tend to have large distortions around the polar regions. Distances look
+bigger than they really are near the poles, and relatively smaller around the equator.
+People tend to be particularly confused by how the shortest route between two cities
+like Dubai and Los Angeles goes via the north pole, despite the fact that both of these
+cities are situated pretty far south. It makes a lot more sense when you look at an
+orthographic projection.
 
 <img src="http://i67.tinypic.com/104gehu.jpg" />
 
