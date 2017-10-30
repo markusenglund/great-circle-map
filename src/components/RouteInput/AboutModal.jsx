@@ -58,8 +58,8 @@ class AboutModal extends Component {
             between airports. A great circle path (also known as a geodesic path) is the shortest
             possible route between two points on the surface of earth or any other sphere. The map
             uses the Mercator projection by default. On this type of map, great circle paths tend to
-            look curved even though they are in fact straight. As an alternative, there is also a 3D
-            globe view which doesn’t have that problem.
+            look curved even though they are in fact straight. As an alternative, the website also
+            features a 3D globe view which doesn’t have that problem.
             <br />
             <br />
             Projecting a 3-dimensional sphere onto a 2-dimensional screen always creates
