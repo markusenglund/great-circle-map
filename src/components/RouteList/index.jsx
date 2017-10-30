@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import './route-list.scss';
 import RouteElement from './RouteElement';
+import Footer from '../Footer';
 import { getRoutes } from '../../selectors';
 
 class RouteList extends Component {
@@ -25,6 +26,7 @@ class RouteList extends Component {
             })}
           </ul>
         )}
+        <Footer />
       </div>
     );
   }

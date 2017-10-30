@@ -35,17 +35,16 @@ ul {
   position: relative;
   padding: 6px;
   padding-bottom: 2px;
-  background-color: rgb(22, 22, 22);
+  background-color: $dark-grey;
   height: 63px;
   border-bottom: 1px $grey solid;
 }
 
 #header h1 {
   font-size: 26px;
-  /*display: inline-block;*/
   margin-left: 7px;
   position: absolute;
-  bottom: 7px;
+  bottom: 5px;
   right: 10px;
   color: white;
   font-weight: normal;

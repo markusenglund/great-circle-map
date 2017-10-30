@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import Header from './Header';
 import RouteInput from './RouteInput';
 import RouteList from './RouteList';
-import Footer from './Footer';
 
 function Sidebar({ isMobile }) {
   return (
@@ -11,7 +10,6 @@ function Sidebar({ isMobile }) {
       <Header />
       {!isMobile ? <RouteInput /> : null}
       <RouteList />
-      <Footer />
     </div>
   );
 }
