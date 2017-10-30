@@ -31,21 +31,21 @@ ul {
   flex-direction: column;
 }
 
+.header-link {
+  text-decoration: none;
+}
+
 #header {
-  position: relative;
-  padding: 6px;
-  padding-bottom: 2px;
+  padding: 2px;
   background-color: $dark-grey;
-  height: 63px;
+  height: 60px;
   border-bottom: 1px $grey solid;
+  display: flex;
+  justify-content: space-around;
 }
 
 #header h1 {
   font-size: 26px;
-  margin-left: 7px;
-  position: absolute;
-  bottom: 5px;
-  right: 10px;
   color: white;
   font-weight: normal;
 }
