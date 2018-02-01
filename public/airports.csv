@@ -946,7 +946,7 @@ id,name,city,iata,icao,lat,lng
 945,Yacuiba Airport,Yacuiba,BYC,SLYA,-21.961,-63.652
 946,Banja Luka International Airport,Banja Luka,BNX,LQBK,44.941,17.298
 947,Mostar International Airport,Mostar,OMO,LQMO,43.283,17.846
-948,Tuzla International Airport,Null,,LQTZ,44.459,18.725
+948,Tuzla International Airport,Tuzla,TZL,LQTZ,44.459,18.725
 949,Sarajevo International Airport,Sarajevo,SJJ,LQSA,43.825,18.331
 950,Francistown Airport,Francistown,FRW,FBFT,-21.16,27.475
 951,Sir Seretse Khama International Airport,Gaberone,GBE,FBSK,-24.555,25.918
@@ -1476,7 +1476,7 @@ id,name,city,iata,icao,lat,lng
 1475,London Airport,London,YXU,CYXU,43.036,-81.154
 1476,Lourdes de Blanc Sablon Airport,Lourdes-De-Blanc-Sablon,YBX,CYBX,51.444,-57.185
 1477,Lupin Mine Airport,Lupin Mine,YWO,CYWO,65.759,-111.25
-1478,St Georges Airport,Lutselk'e,YSG,CYSG,46.096,-70.715
+1478,St Georges Aerodrome,Saint-Georges,,CYSG,46.096,-70.715
 1479,Lynn Lake Airport,Lynn Lake,YYL,CYYL,56.864,-101.076
 1480,Mackenzie Airport,Mackenzie British Columbia,YZY,CYZY,55.304,-123.132
 1481,Makkovik Airport,Makkovik,YMN,CYFT,55.077,-59.186
@@ -8285,3 +8285,5 @@ id,name,city,iata,icao,lat,lng
 8284,Dong Hoi,Dong Hoi,VDH,,17.515,106.591
 8285,Crown Bay,Charlotte Amalie,,STCB,18.335,-64.952
 8286,Saint Helena Airport,St. Helena,HLE,FHSH,-15.959,-5.646
+8287,Palenque International Airport,Palenque,PQM,MMPQ,17.535,-92.015
+8288,Lutselk'e Airport,Lutselk'e,YSG,CYLK,62.418,-110.682
