@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { push } from 'redux-little-router';
-import FaBars from 'react-icons/fa/bars';
-import FaArrowsAlt from 'react-icons/fa/arrows-alt';
-import FaTrashO from 'react-icons/fa/trash-o';
+import FaBars from 'react-icons/lib/fa/bars';
+import FaArrowsAlt from 'react-icons/lib/fa/arrows-alt';
+import FaTrashO from 'react-icons/lib/fa/trash-o';
 import Settings from './Settings';
 import MapSelection from './MapSelection';
 import MapButtonWithTooltip from './MapButtonWithTooltip';
@@ -37,7 +37,8 @@ function ButtonGroup({
                 },
                 { persistQuery: true }
               )
-            )}
+            )
+          }
           tooltipId="delete"
           buttonContent={<FaTrashO />}
           tooltipContent={<span>Clear routes</span>}

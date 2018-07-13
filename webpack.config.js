@@ -15,12 +15,9 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['react', 'env', 'stage-3']
-          }
+          loader: 'babel-loader'
         },
-        exclude: /node_modules\/react-modal/
+        exclude: /node_modules/
       }
     ]
   },
