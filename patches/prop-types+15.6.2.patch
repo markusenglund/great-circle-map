@@ -1,0 +1,43 @@
+patch-package
+--- a/node_modules/prop-types/factoryWithThrowingShims.js
++++ b/node_modules/prop-types/factoryWithThrowingShims.js
+@@ -7,28 +7,12 @@
+ 
+ 'use strict';
+ 
+-var ReactPropTypesSecret = require('./lib/ReactPropTypesSecret');
+-
+-function emptyFunction() {}
+-
+ module.exports = function() {
+-  function shim(props, propName, componentName, location, propFullName, secret) {
+-    if (secret === ReactPropTypesSecret) {
+-      // It is still safe when called from React.
+-      return;
+-    }
+-    var err = new Error(
+-      'Calling PropTypes validators directly is not supported by the `prop-types` package. ' +
+-      'Use PropTypes.checkPropTypes() to call them. ' +
+-      'Read more at http://fb.me/use-check-prop-types'
+-    );
+-    err.name = 'Invariant Violation';
+-    throw err;
+-  };
++  function shim() {}
+   shim.isRequired = shim;
+   function getShim() {
+     return shim;
+-  };
++  }
+   // Important!
+   // Keep this list in sync with production version in `./factoryWithTypeCheckers.js`.
+   var ReactPropTypes = {
+@@ -52,7 +36,7 @@ module.exports = function() {
+     exact: getShim
+   };
+ 
+-  ReactPropTypes.checkPropTypes = emptyFunction;
++  ReactPropTypes.checkPropTypes = shim;
+   ReactPropTypes.PropTypes = ReactPropTypes;
+ 
+   return ReactPropTypes;
