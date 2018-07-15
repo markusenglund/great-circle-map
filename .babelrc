@@ -4,6 +4,7 @@
     "@babel/stage-3",
     "@babel/react"
   ],
+  "plugins": [["@babel/plugin-transform-runtime", { "useBuiltIns": true, "useESModules": true }]],
   "env": {
     "production": {
       "plugins": [

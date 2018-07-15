@@ -60,7 +60,10 @@ const { reducer, middleware, enhancer } = routerForBrowser({
 const store = createStore(
   combineReducers({ ...reducers, router: reducer }),
   { isMobile: checkIfMobile() },
-  compose(enhancer, applyMiddleware(ReduxThunk, middleware))
+  compose(
+    enhancer,
+    applyMiddleware(ReduxThunk, middleware)
+  )
 );
 
 ReactDOM.render(
