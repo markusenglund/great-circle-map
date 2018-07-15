@@ -14,7 +14,6 @@
   "author": "Markus Englund",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.18.0",
     "babel-polyfill": "^6.26.0",
     "body-parser": "^1.18.3",
     "compression": "^1.7.2",
@@ -51,7 +50,8 @@
     "redux-thunk": "^2.3.0",
     "reselect": "^3.0.1",
     "serve-favicon": "^2.5.0",
-    "topojson-client": "^3.0.0"
+    "topojson-client": "^3.0.0",
+    "unfetch": "^3.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.53",
