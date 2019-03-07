@@ -1,16 +1,15 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Fragment } from 'redux-little-router';
 import ReactSidebar from 'react-sidebar';
-
+import { Fragment } from 'redux-little-router';
 import { getAirportData, getSvgMap } from '../actionCreators';
-import Sidebar from './Sidebar';
-import GoogleMapWrapper from './GoogleMapWrapper';
 import ButtonGroup from './ButtonGroup';
-import SvgMap from './SvgMap';
-import SearchInput from './RouteInput/SearchInput';
 import Error404 from './Error404';
+import GoogleMapWrapper from './GoogleMapWrapper';
+import SearchInput from './RouteInput/SearchInput';
+import Sidebar from './Sidebar';
+import SvgMap from './SvgMap';
 
 class App extends Component {
   constructor(props) {
@@ -81,14 +80,29 @@ class App extends Component {
                 return pathname === '/' || pathname === '/roadmap';
               }}
             >
+              {/* TODO: Make a route for China */}
               <GoogleMapWrapper />
+            </Fragment>
+            <Fragment
+              withConditions={({ pathname }) => {
+                return pathname === '/cn' || pathname === '/cn/roadmap';
+              }}
+            >
+              <GoogleMapWrapper country="cn" />
             </Fragment>
             <Fragment forRoute="/globe">
               <SvgMap />
             </Fragment>
             <Fragment
               withConditions={({ pathname }) => {
-                return pathname !== '/' && pathname !== '/roadmap' && pathname !== '/globe';
+                return (
+                  pathname !== '/' &&
+                  pathname !== '/roadmap' &&
+                  pathname !== '/globe' &&
+                  pathname !== '/cn' &&
+                  pathname !== '/cn/roadmap' &&
+                  pathname !== '/cn/globe'
+                );
               }}
             >
               <Error404 />

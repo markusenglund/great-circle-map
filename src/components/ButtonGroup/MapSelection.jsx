@@ -1,14 +1,15 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import { push, Fragment } from 'redux-little-router';
-import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
+import { Fragment, push } from 'redux-little-router';
 
 function MapSelection({ dispatch, buttonClass }) {
   function handleChangeToGoogleMap(mapType) {
     dispatch(push({ pathname: mapType }, { persistQuery: true }));
   }
 
+  // TODO: Add logic for china here
   return (
     <div id="map-selection">
       <Fragment withConditions={({ pathname }) => pathname !== '/globe'}>
