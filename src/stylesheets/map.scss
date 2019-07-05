@@ -1,7 +1,12 @@
 /* navy: #05102a;; dark grey: rgb(22, 22, 22),
 grey: rgb(44, 44, 44) , grey-text: #bbd;*/
+#map-wrapper {
+  display: flex;
+  flex-grow: 1;
+  width: 100%;
+  height: 100%;
+}
 
-#map-wrapper,
 #map-container {
   display: flex;
   flex-grow: 1;
