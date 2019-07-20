@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { push } from 'redux-little-router';
-import { LatLonEllipsoidal } from 'geodesy';
+import { Geodesic } from 'geographiclib';
 import { UnmountClosed } from 'react-collapse';
 import uniqueId from 'lodash.uniqueid';
 import MdClose from 'react-icons/lib/md/close';
@@ -11,6 +11,8 @@ import { getRoutes } from '../../selectors';
 import parseStringWithSlashes from '../../utils/parseStringWithSlashes';
 import SectorElement from './SectorElement';
 import CollapsibleElement from './CollapsibleElement';
+
+const geodesic = Geodesic.WGS84;
 
 class RouteElement extends Component {
   constructor() {
@@ -84,24 +86,27 @@ class RouteElement extends Component {
       sectors.push([route[i - 1], route[i]]);
     }
     const distances = sectors.map(sector => {
-      const p1 = new LatLonEllipsoidal(sector[0].lat, sector[0].lng);
-      const p2 = new LatLonEllipsoidal(sector[1].lat, sector[1].lng);
-      return p1.distanceTo(p2) || 0;
+      const { s12 } = geodesic.Inverse(sector[0].lat, sector[0].lng, sector[1].lat, sector[1].lng);
+      return s12;
     });
+
     const readableSectorDistances = distances.map(distance => this.makeDistanceReadable(distance));
 
     const totalDistance = distances.reduce((acc, val) => acc + val);
     const readableTotalDistance = this.makeDistanceReadable(totalDistance);
 
-    const p1 = new LatLonEllipsoidal(route[0].lat, route[0].lng);
-    const p2 = new LatLonEllipsoidal(route[route.length - 1].lat, route[route.length - 1].lng);
-    const nonStopDistance = p1.distanceTo(p2);
+    const { s12: nonStopDistance } = geodesic.Inverse(
+      route[0].lat,
+      route[0].lng,
+      route[route.length - 1].lat,
+      route[route.length - 1].lng
+    );
     const readableNonStopDistance = this.makeDistanceReadable(nonStopDistance);
 
     const distanceDifference = totalDistance - nonStopDistance;
     const readableDistanceDifference = this.makeDistanceReadable(distanceDifference);
 
-    const distanceDifferencePercentage = distanceDifference * 100 / nonStopDistance;
+    const distanceDifferencePercentage = (distanceDifference * 100) / nonStopDistance;
     const readableDifferencePercentage = `${distanceDifferencePercentage.toFixed(1)}%`;
 
     const { label } = this.props;
