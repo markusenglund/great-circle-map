@@ -39,7 +39,6 @@ class RouteColorPicker extends Component {
         />
         {this.state.pickerOpen ? (
           <ColorPicker
-            color={routeColor}
             handleChange={this.handleChange}
             handleClickOutside={this.handleClickOutside}
           />

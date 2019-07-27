@@ -1,7 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import SectorElement from './';
+import SectorElement from '.';
 
 it('renders correctly with missing icao', () => {
   const props = {

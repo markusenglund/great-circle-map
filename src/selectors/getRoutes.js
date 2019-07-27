@@ -92,7 +92,8 @@ const getRoutes = createSelector(
       });
       if (codeWithWrongLength === '') {
         return { routes: null, error: 'Unable to parse input' };
-      } else if (codeWithWrongLength) {
+      }
+      if (codeWithWrongLength) {
         return {
           routes: null,
           error: `'${codeWithWrongLength}' is not a valid airport code`

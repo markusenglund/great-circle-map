@@ -28,7 +28,7 @@ class ColorPicker extends Component {
   }
 
   render() {
-    const { color, handleChange } = this.props;
+    const { handleChange } = this.props;
     return (
       <div className="color-picker">
         {colors.map(color => (
@@ -46,8 +46,7 @@ class ColorPicker extends Component {
 
 ColorPicker.propTypes = {
   handleChange: PropTypes.func.isRequired,
-  handleClickOutside: PropTypes.func.isRequired,
-  color: PropTypes.string.isRequired
+  handleClickOutside: PropTypes.func.isRequired
 };
 
 export default onClickOutside(ColorPicker);

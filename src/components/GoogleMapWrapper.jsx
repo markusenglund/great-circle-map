@@ -13,6 +13,7 @@ class GoogleMapWrapper extends Component {
   shouldComponentUpdate({ routes }) {
     return routes !== null;
   }
+
   componentDidUpdate(prevProps) {
     const { routeString, prevPathname, map } = this.props;
     if (map && routeString.length !== 0) {

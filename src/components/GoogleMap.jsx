@@ -14,9 +14,11 @@ function getPixelPositionOffset(curAirport, airports, sectors) {
     const badBearing = curLocation.bearingTo(new LatLonSpherical(airport.lat, airport.lng));
     if (badBearing < 90) {
       return 'ne';
-    } else if (badBearing < 180) {
+    }
+    if (badBearing < 180) {
       return 'se';
-    } else if (badBearing < 270) {
+    }
+    if (badBearing < 270) {
       return 'sw';
     }
     return 'nw';
@@ -84,11 +86,13 @@ function getPixelPositionOffset(curAirport, airports, sectors) {
     return (width, height) => {
       return { x: 3, y: (-3 * height) / 4 };
     };
-  } else if (direction === 'northWest') {
+  }
+  if (direction === 'northWest') {
     return (width, height) => {
       return { x: -width - 3, y: (-3 * height) / 4 };
     };
-  } else if (direction === 'southWest') {
+  }
+  if (direction === 'southWest') {
     return (width, height) => {
       return { x: -width - 3, y: -(height / 5) };
     };
