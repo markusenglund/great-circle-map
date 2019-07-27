@@ -26,9 +26,8 @@ function CollapsibleElement({
           <div key={uniqueId()}>
             <div className="collapsible-airport">
               <div>
-                {airport.city} ({label === 'icao'
-                  ? airport.icao || airport.iata
-                  : airport.iata || airport.icao})
+                {airport.city} (
+                {label === 'icao' ? airport.icao || airport.iata : airport.iata || airport.icao})
               </div>
               <div className="collapsible-name">{airport.name}</div>
             </div>

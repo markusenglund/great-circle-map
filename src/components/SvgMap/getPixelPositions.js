@@ -21,7 +21,7 @@ export default function getPixelPositions(airports, projection, centerLng, cente
         const vectorDirection = Math.atan2(dy, dx);
 
         const northEastProj = vectorLength * Math.cos(vectorDirection - Math.PI / 4) ** 3;
-        const northWestProj = vectorLength * Math.cos(vectorDirection - 3 * Math.PI / 4) ** 3;
+        const northWestProj = vectorLength * Math.cos(vectorDirection - (3 * Math.PI) / 4) ** 3;
 
         return { northEastProj, northWestProj };
       });
