@@ -26,3 +26,12 @@ around the equator.
 
 If you found a bug or have a suggestion, please contact me at markus.s.englund@gmail.com
 or file an issue on Github.
+
+## Setup instructions
+
+- Install Node.js 8 (newer versions will not work)
+- Run `npm run build` in the project directory
+- Run `node server`
+- Open the browser at 127.0.0.1:3000
+
+If you plan to host this on your own domain you have to set up your own Google Maps API key (read more [here](https://developers.google.com/maps/documentation/javascript/overview))
