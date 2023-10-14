@@ -78,17 +78,27 @@ class App extends Component {
             />
             <Fragment
               withConditions={({ pathname }) => {
-                return pathname === '/' || pathname === '/roadmap';
+                return pathname === '/satellite' || pathname === '/roadmap';
               }}
             >
               <GoogleMapWrapper />
             </Fragment>
-            <Fragment forRoute="/globe">
+            {/* <Fragment forRoute="/globe"> */}
+            <Fragment
+              withConditions={({ pathname }) => {
+                return pathname === '/' || pathname === '/globe';
+              }}
+            >
               <SvgMap />
             </Fragment>
             <Fragment
               withConditions={({ pathname }) => {
-                return pathname !== '/' && pathname !== '/roadmap' && pathname !== '/globe';
+                return (
+                  pathname !== '/' &&
+                  pathname !== '/roadmap' &&
+                  pathname !== '/globe' &&
+                  pathname !== '/satellite'
+                );
               }}
             >
               <Error404 />

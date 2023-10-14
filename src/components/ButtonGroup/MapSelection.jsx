@@ -11,7 +11,7 @@ function MapSelection({ dispatch, buttonClass }) {
 
   return (
     <div id="map-selection">
-      <Fragment withConditions={({ pathname }) => pathname !== '/globe'}>
+      <Fragment withConditions={({ pathname }) => pathname !== '/globe' && pathname !== '/'}>
         <div>
           <button
             data-tip
@@ -21,7 +21,7 @@ function MapSelection({ dispatch, buttonClass }) {
             className={buttonClass}
             id="svg-map-button"
             onClick={() => {
-              dispatch(push({ pathname: '/globe' }, { persistQuery: true }));
+              dispatch(push({ pathname: '/' }, { persistQuery: true }));
             }}
           >
             <img src="/earth.png" srcSet="/earth-2x.png 2x" alt="3d-globe" width={60} height={60} />
@@ -31,7 +31,7 @@ function MapSelection({ dispatch, buttonClass }) {
           </ReactTooltip>
         </div>
       </Fragment>
-      <Fragment withConditions={({ pathname }) => pathname !== '/'}>
+      <Fragment withConditions={({ pathname }) => pathname !== '/satellite'}>
         <div>
           <button
             data-tip
@@ -40,7 +40,7 @@ function MapSelection({ dispatch, buttonClass }) {
             data-event-off="mouseleave focusout click"
             className={buttonClass}
             id="satellite-button"
-            onClick={() => handleChangeToGoogleMap('/')}
+            onClick={() => handleChangeToGoogleMap('satellite')}
           >
             <img src="/satellite.png" alt="satellite" />
           </button>

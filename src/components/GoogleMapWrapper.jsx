@@ -19,7 +19,7 @@ class GoogleMapWrapper extends Component {
     if (map && routeString.length !== 0) {
       if (
         routeString !== prevProps.routeString ||
-        (prevPathname !== '/' && prevPathname !== '/roadmap')
+        (prevPathname !== '/satellite' && prevPathname !== '/roadmap')
       ) {
         this.fitBounds();
       }

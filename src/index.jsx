@@ -45,7 +45,7 @@ const initializeAnalytics = () => {
 initializeAnalytics();
 
 const routes = {
-  '/': {
+  '/satellite': {
     mapType: 'satellite'
   },
   '/roadmap': {
