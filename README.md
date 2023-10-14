@@ -16,7 +16,7 @@ like Dubai and Los Angeles goes via the north pole, despite the fact that both o
 cities are situated pretty far south. It makes a lot more sense when you look at an
 orthographic projection.
 
-<img src="http://i67.tinypic.com/104gehu.jpg" />
+<img src="https://www.greatcirclemap.com/lax-dxb.jpg" />
 
 The distances calculated are the shortest possible distances. However, airlines often don’t follow the shortest route exactly
 for a variety of reasons. Airspace reserved for military purposes and areas of
@@ -26,3 +26,16 @@ around the equator.
 
 If you found a bug or have a suggestion, please contact me at markus.s.englund@gmail.com
 or file an issue on Github.
+
+## Setup instructions
+
+- Install Node.js 8 (newer versions will not work)
+- Run `npm run build` in the project directory
+- Run `node server`
+- Open the browser at 127.0.0.1:3000
+
+If you plan to host this on your own domain you have to set up your own Google Maps API key (read more [here](https://developers.google.com/maps/documentation/javascript/overview))
+
+## Airport data
+
+Airport data comes from the [openflights.org](https://openflights.org/data.html#airport) airport database.
