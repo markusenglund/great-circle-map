@@ -11,6 +11,7 @@ import ButtonGroup from './ButtonGroup';
 import SvgMap from './SvgMap';
 import SearchInput from './RouteInput/SearchInput';
 import Error404 from './Error404';
+import LeafletMap from './LeafletMap/LeafletMap';
 
 class App extends Component {
   constructor(props) {
@@ -76,6 +77,9 @@ class App extends Component {
               toggleSidebarDock={this.toggleSidebarDock}
               handleSetSidebarOpen={this.handleSetSidebarOpen}
             />
+            <Fragment withConditions={({ pathname }) => pathname === '/leaflet'}>
+              <LeafletMap />
+            </Fragment>
             <Fragment
               withConditions={({ pathname }) => {
                 return pathname === '/satellite' || pathname === '/roadmap';
@@ -97,7 +101,8 @@ class App extends Component {
                   pathname !== '/' &&
                   pathname !== '/roadmap' &&
                   pathname !== '/globe' &&
-                  pathname !== '/satellite'
+                  pathname !== '/satellite' &&
+                  pathname !== '/leaflet'
                 );
               }}
             >
