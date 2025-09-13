@@ -28,7 +28,7 @@ function AutoFitBounds({ routes }) {
     });
     if (points.length < 2) return;
     const bounds = L.latLngBounds(points);
-    map.fitBounds(bounds, { padding: [30, 30], maxZoom: 7 });
+    map.fitBounds(bounds, { padding: [100, 100], maxZoom: 7 });
   }, [map, routes]);
   return null;
 }
@@ -162,8 +162,8 @@ class LeafletMap extends Component {
       <div id="map-container">
         <MapContainer
           id="map"
-          center={[20, 0]}
-          zoom={2}
+          center={[25, 0]}
+          zoom={2.5}
           scrollWheelZoom
           zoomControl={false}
           zoomDelta={0.25}
