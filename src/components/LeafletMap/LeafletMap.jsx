@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { MapContainer, TileLayer, Polyline } from 'react-leaflet';
+import { MapContainer, TileLayer, Polyline, CircleMarker } from 'react-leaflet';
 import greatCircle from '@turf/great-circle';
 import { point as turfPoint } from '@turf/helpers';
 
@@ -9,7 +9,7 @@ import { getRoutes, getAirports, getSectors, getBrighterColor } from '../../sele
 
 class LeafletMap extends Component {
   render() {
-    const { routes, routeColor } = this.props;
+    const { routes, routeColor, pointColor } = this.props;
 
     function turfGreatCirclePositions(a, b, npoints = 128) {
       if (!a || !b) return [];
@@ -28,6 +28,10 @@ class LeafletMap extends Component {
 
     function repeatAcrossDateline(positions, offsets = [-360, 0, 360]) {
       return offsets.map(offset => positions.map(([lat, lng]) => [lat, lng + offset]));
+    }
+
+    function repeatPointAcrossDateline(lat, lng, offsets = [-360, 0, 360]) {
+      return offsets.map(offset => [lat, lng + offset]);
     }
 
     // Choose base layer by mapType from router: 'satellite' -> imagery, else OSM
@@ -52,16 +56,45 @@ class LeafletMap extends Component {
         >
           <TileLayer url={tileUrl} attribution={tileAttribution} />
           {Array.isArray(routes) &&
-            routes.map(route => {
+            routes.map((route, rIdx) => {
               if (!Array.isArray(route) || route.length < 2) return null;
               return route.slice(0, -1).flatMap((airport, idx) => {
                 const nextAirport = route[idx + 1];
                 const segments = turfGreatCirclePositions(airport, nextAirport);
                 const repeated = segments.flatMap(positions => repeatAcrossDateline(positions));
-                return repeated.map(positions => (
+                return repeated.map((positions, segIdx) => (
                   <Polyline
+                    key={`seg-${rIdx}-${idx}-${segIdx}`}
                     positions={positions}
                     pathOptions={{ color: routeColor, weight: 2, noClip: true }}
+                  />
+                ));
+              });
+            })}
+          {Array.isArray(routes) &&
+            routes.map((route, rIdx) => {
+              if (!Array.isArray(route) || route.length === 0) return null;
+              // Unique airports in this route to avoid stacked markers
+              const seen = new Set();
+              const uniqueAirports = route.filter(a => {
+                if (seen.has(a.id)) return false;
+                seen.add(a.id);
+                return true;
+              });
+              return uniqueAirports.flatMap((airport, aIdx) => {
+                const pts = repeatPointAcrossDateline(airport.lat, airport.lng);
+                return pts.map((center, pIdx) => (
+                  <CircleMarker
+                    key={`ap-${rIdx}-${aIdx}-${pIdx}`}
+                    center={center}
+                    radius={3}
+                    pathOptions={{
+                      color: pointColor,
+                      fillColor: pointColor,
+                      weight: 1,
+                      fillOpacity: 1,
+                      noClip: true
+                    }}
                   />
                 ));
               });
