@@ -26,6 +26,10 @@ class LeafletMap extends Component {
       return [];
     }
 
+    function repeatAcrossDateline(positions, offsets = [-360, 0, 360]) {
+      return offsets.map(offset => positions.map(([lat, lng]) => [lat, lng + offset]));
+    }
+
     return (
       <div id="map-container">
         <MapContainer
@@ -43,11 +47,15 @@ class LeafletMap extends Component {
           {Array.isArray(routes) &&
             routes.map(route => {
               if (!Array.isArray(route) || route.length < 2) return null;
-              return route.slice(0, -1).map((airport, idx) => {
+              return route.slice(0, -1).flatMap((airport, idx) => {
                 const nextAirport = route[idx + 1];
                 const segments = turfGreatCirclePositions(airport, nextAirport);
-                return segments.map(positions => (
-                  <Polyline positions={positions} pathOptions={{ color: routeColor, weight: 2 }} />
+                const repeated = segments.flatMap(positions => repeatAcrossDateline(positions));
+                return repeated.map(positions => (
+                  <Polyline
+                    positions={positions}
+                    pathOptions={{ color: routeColor, weight: 2, noClip: true }}
+                  />
                 ));
               });
             })}

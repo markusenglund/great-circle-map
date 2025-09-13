@@ -32,9 +32,12 @@ grey: rgb(44, 44, 44) , grey-text: #bbd;*/
   }
 }
 
+#button-group {
+  z-index: 500;
+}
+
 #left-button-group {
   position: absolute;
-  z-index: 2;
   margin: 5px;
   width: 0;
 }
