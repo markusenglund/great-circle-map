@@ -1,4 +1,4 @@
-@import './variables.scss';
+@use './variables' as v;
 
 html,
 body {
@@ -38,9 +38,9 @@ ul {
 #header {
   padding-top: 3px;
   padding-bottom: 3px;
-  background-color: $dark-grey;
+  background-color: v.$dark-grey;
   height: 60px;
-  border-bottom: 1px $grey solid;
+  border-bottom: 1px v.$grey solid;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
@@ -53,11 +53,11 @@ ul {
 }
 
 .route-input {
-  background-color: $grey;
+  background-color: v.$grey;
 }
 
 .search-input {
-  background-color: $grey;
+  background-color: v.$grey;
   width: 100%;
 }
 
@@ -118,7 +118,7 @@ ul {
   -webkit-border-radius: 3;
   -moz-border-radius: 3;
   border-radius: 3px;
-  color: $text-color;
+  color: v.$text-color;
   font-size: 16px;
   background: #05153a;
   padding: 6px 20px 6px 20px;
@@ -138,9 +138,9 @@ ul {
   -webkit-border-radius: 3;
   -moz-border-radius: 3;
   border-radius: 3px;
-  color: $text-color;
+  color: v.$text-color;
   font-size: 16px;
-  background: $dark-grey;
+  background: v.$dark-grey;
   padding: 6px 7px 6px 7px;
   border: solid #05102a 0px;
   text-decoration: none;
@@ -178,14 +178,14 @@ ul {
 }
 
 .navbar {
-  background: $grey;
-  color: $text-color;
+  background: v.$grey;
+  color: v.$text-color;
 }
 
 .error-page {
   width: 100%;
-  background: $grey;
-  color: $text-color;
+  background: v.$grey;
+  color: v.$text-color;
   padding: 50px;
 }
 

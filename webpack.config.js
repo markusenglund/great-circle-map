@@ -1,4 +1,5 @@
 const path = require('path');
+const sass = require('sass-embedded');
 
 module.exports = {
   entry: path.join(__dirname, 'src', 'index.jsx'),
@@ -6,11 +7,19 @@ module.exports = {
     path: path.join(__dirname, 'public'),
     filename: 'bundle.js'
   },
+  target: 'web',
   module: {
     rules: [
       {
         test: /\.scss$/,
-        use: [{ loader: 'style-loader' }, { loader: 'css-loader' }, { loader: 'sass-loader' }]
+        use: [
+          { loader: 'style-loader' },
+          { loader: 'css-loader' },
+          {
+            loader: 'sass-loader',
+            options: { implementation: sass, sassOptions: { quietDeps: true } }
+          }
+        ]
       },
       {
         test: /\.(js|jsx)$/,

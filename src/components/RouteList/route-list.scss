@@ -1,8 +1,8 @@
-@import '../../stylesheets/variables.scss';
+@use '../../stylesheets/variables' as v;
 
 #route-list-wrapper {
   height: 100%;
-  background-color: $dark-grey;
+  background-color: v.$dark-grey;
   flex: 0 1 auto;
   overflow: auto;
   display: flex;
@@ -11,8 +11,8 @@
 }
 
 .route-element {
-  color: $text-color;
-  border-bottom: 1px $grey solid;
+  color: v.$text-color;
+  border-bottom: 1px v.$grey solid;
 }
 
 .delete-button {
@@ -25,13 +25,13 @@
   padding: 0;
   border: 0px;
   background-color: inherit;
-  color: $light-grey;
+  color: v.$light-grey;
   font-size: 24px;
   cursor: pointer;
 }
 
 .delete-button:hover {
-  color: $text-color;
+  color: v.$text-color;
 }
 
 .collapsible-distance,
@@ -68,7 +68,7 @@
 
 .total-distance {
   font-size: 13px;
-  background-color: $light-grey;
+  background-color: v.$light-grey;
 }
 
 .collapsible {
@@ -77,7 +77,7 @@
 
 .collapsible-airport {
   font-size: 14px;
-  background-color: $grey;
+  background-color: v.$grey;
   font-weight: bold;
   padding: 6px;
 }
@@ -90,7 +90,7 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-  background-color: $light-grey;
+  background-color: v.$light-grey;
 }
 
 .collapsible-distance svg {
@@ -98,20 +98,20 @@
 }
 
 .distance-label {
-  color: $dark-text-color;
+  color: v.$dark-text-color;
 }
 
 .empty-message {
-  color: $text-color;
+  color: v.$text-color;
   margin: 5px;
   text-align: center;
   margin-top: 40px;
 }
 
 #footer {
-  color: $text-color;
+  color: v.$text-color;
   text-align: center;
   padding: 2px;
   font-size: 12px;
-  background: $dark-grey;
+  background: v.$dark-grey;
 }

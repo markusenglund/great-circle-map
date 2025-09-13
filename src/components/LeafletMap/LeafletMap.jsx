@@ -1,22 +1,27 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { MapContainer, TileLayer } from 'react-leaflet';
 
 import { getRoutes, getAirports, getSectors, getBrighterColor } from '../../selectors';
 
 class LeafletMap extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      foo: 'bar'
-    };
-  }
-
   render() {
     return (
-      <div>
-        Leaflet Map Component
-        {this.state.foo}
+      <div id="map-container">
+        <MapContainer
+          id="map"
+          center={[20, 0]}
+          zoom={2}
+          scrollWheelZoom={false}
+          zoomControl={false}
+          style={{ width: '100%', height: '100%' }}
+        >
+          <TileLayer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution="&copy; OpenStreetMap contributors"
+          />
+        </MapContainer>
       </div>
     );
   }
@@ -34,16 +39,21 @@ function mapStateToProps(state) {
 }
 
 LeafletMap.propTypes = {
-  mapData: PropTypes.shape({ geometry: PropTypes.object }).isRequired,
-  label: PropTypes.string.isRequired,
-  sectors: PropTypes.arrayOf(PropTypes.array).isRequired,
-  airports: PropTypes.arrayOf(PropTypes.object).isRequired,
-  routeColor: PropTypes.string.isRequired,
-  pointColor: PropTypes.string.isRequired,
-  initialGlobePosition: PropTypes.shape({
-    centerLng: PropTypes.number,
-    centerLat: PropTypes.number
-  }).isRequired
+  routes: PropTypes.arrayOf(PropTypes.array),
+  sectors: PropTypes.arrayOf(PropTypes.array),
+  airports: PropTypes.arrayOf(PropTypes.object),
+  label: PropTypes.string,
+  routeColor: PropTypes.string,
+  pointColor: PropTypes.string
+};
+
+LeafletMap.defaultProps = {
+  routes: null,
+  sectors: null,
+  airports: null,
+  label: 'city',
+  routeColor: '#d03030',
+  pointColor: '#ffffff'
 };
 
 export default connect(mapStateToProps)(LeafletMap);
