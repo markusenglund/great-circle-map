@@ -39,14 +39,14 @@ class App extends Component {
 
     // Resize map to workaround the empty map bug, 300 is animation delay
     const { map } = this.props;
-    setTimeout(
-      () =>
-        google.maps.event.trigger(
+    setTimeout(() => {
+      if (map && typeof window !== 'undefined' && window.google && window.google.maps) {
+        window.google.maps.event.trigger(
           map.context.__SECRET_MAP_DO_NOT_USE_OR_YOU_WILL_BE_FIRED,
           'resize'
-        ),
-      300
-    );
+        );
+      }
+    }, 300);
   }
 
   handleSetSidebarOpen(open) {
@@ -77,13 +77,14 @@ class App extends Component {
               toggleSidebarDock={this.toggleSidebarDock}
               handleSetSidebarOpen={this.handleSetSidebarOpen}
             />
-            <Fragment withConditions={({ pathname }) => pathname === '/leaflet'}>
+            <Fragment
+              withConditions={({ pathname }) => pathname === '/satellite' || pathname === '/roadmap'}
+            >
               <LeafletMap />
             </Fragment>
             <Fragment
-              withConditions={({ pathname }) => {
-                return pathname === '/satellite' || pathname === '/roadmap';
-              }}
+              withConditions={({ pathname }) =>
+                pathname === '/google-satellite' || pathname === '/google-roadmap'}
             >
               <GoogleMapWrapper />
             </Fragment>
@@ -102,7 +103,9 @@ class App extends Component {
                   pathname !== '/roadmap' &&
                   pathname !== '/globe' &&
                   pathname !== '/satellite' &&
-                  pathname !== '/leaflet'
+                  pathname !== '/leaflet' &&
+                  pathname !== '/google-satellite' &&
+                  pathname !== '/google-roadmap'
                 );
               }}
             >

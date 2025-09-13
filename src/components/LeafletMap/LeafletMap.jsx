@@ -30,6 +30,16 @@ class LeafletMap extends Component {
       return offsets.map(offset => positions.map(([lat, lng]) => [lat, lng + offset]));
     }
 
+    // Choose base layer by mapType from router: 'satellite' -> imagery, else OSM
+    const { mapType } = this.props;
+    const isSatellite = mapType === 'satellite';
+    const tileUrl = isSatellite
+      ? 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
+      : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    const tileAttribution = isSatellite
+      ? 'Tiles © Esri — Source: Esri, i‑cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR‑EGP, and the GIS User Community'
+      : '&copy; OpenStreetMap contributors';
+
     return (
       <div id="map-container">
         <MapContainer
@@ -40,10 +50,7 @@ class LeafletMap extends Component {
           zoomControl={false}
           style={{ width: '100%', height: '100%' }}
         >
-          <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution="&copy; OpenStreetMap contributors"
-          />
+          <TileLayer url={tileUrl} attribution={tileAttribution} />
           {Array.isArray(routes) &&
             routes.map(route => {
               if (!Array.isArray(route) || route.length < 2) return null;
@@ -70,6 +77,7 @@ function mapStateToProps(state) {
     routes: getRoutes(state).routes,
     sectors: getSectors(state),
     airports: getAirports(state),
+    mapType: state.router.result.mapType,
     label: state.router.query.label || 'city',
     routeColor: state.router.query.color || '#d03030',
     pointColor: getBrighterColor(state)
@@ -80,6 +88,7 @@ LeafletMap.propTypes = {
   routes: PropTypes.arrayOf(PropTypes.array),
   sectors: PropTypes.arrayOf(PropTypes.array),
   airports: PropTypes.arrayOf(PropTypes.object),
+  mapType: PropTypes.string,
   label: PropTypes.string,
   routeColor: PropTypes.string,
   pointColor: PropTypes.string
@@ -89,6 +98,7 @@ LeafletMap.defaultProps = {
   routes: null,
   sectors: null,
   airports: null,
+  mapType: 'roadmap',
   label: 'city',
   routeColor: '#d03030',
   pointColor: '#ffffff'

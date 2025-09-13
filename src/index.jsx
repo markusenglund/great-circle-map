@@ -45,12 +45,10 @@ const initializeAnalytics = () => {
 initializeAnalytics();
 
 const routes = {
-  '/satellite': {
-    mapType: 'satellite'
-  },
-  '/roadmap': {
-    mapType: 'roadmap'
-  }
+  '/satellite': { mapType: 'satellite' },
+  '/roadmap': { mapType: 'roadmap' },
+  '/google-satellite': { mapType: 'satellite' },
+  '/google-roadmap': { mapType: 'roadmap' }
 };
 
 const { reducer, middleware, enhancer } = routerForBrowser({
