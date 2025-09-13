@@ -36,6 +36,19 @@ grey: rgb(44, 44, 44) , grey-text: #bbd;*/
   z-index: 500;
 }
 
+/* Leaflet label tooltips styled to match app (no bubble) */
+.leaflet-tooltip.label-tooltip {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  color: #fff;
+  pointer-events: none;
+}
+.leaflet-tooltip.label-tooltip::before {
+  display: none;
+}
+
 #left-button-group {
   position: absolute;
   margin: 5px;

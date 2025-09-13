@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { MapContainer, TileLayer, Polyline, CircleMarker } from 'react-leaflet';
+import { MapContainer, TileLayer, Polyline, CircleMarker, Tooltip } from 'react-leaflet';
 import greatCircle from '@turf/great-circle';
 import { point as turfPoint } from '@turf/helpers';
+import { LatLonSpherical } from 'geodesy';
 
 import { getRoutes, getAirports, getSectors, getBrighterColor } from '../../selectors';
 
 class LeafletMap extends Component {
   render() {
-    const { routes, routeColor, pointColor } = this.props;
+    const { routes, routeColor, pointColor, airports, sectors, label } = this.props;
 
     function turfGreatCirclePositions(a, b, npoints = 128) {
       if (!a || !b) return [];
@@ -32,6 +33,77 @@ class LeafletMap extends Component {
 
     function repeatPointAcrossDateline(lat, lng, offsets = [-360, 0, 360]) {
       return offsets.map(offset => [lat, lng + offset]);
+    }
+
+    // Compute label direction similar to Google implementation
+    const labelDirCache = new Map();
+    function getLabelDirection(curAirport) {
+      if (labelDirCache.has(curAirport.id)) return labelDirCache.get(curAirport.id);
+
+      // Identify connected airports
+      const linkedAirports = sectors
+        .filter(sector => sector.find(ap => ap.id === curAirport.id))
+        .map(sector => (sector[0].id === curAirport.id ? sector[1] : sector[0]));
+
+      const curLocation = new LatLonSpherical(curAirport.lat, curAirport.lng);
+
+      const bearings = linkedAirports.map(ap => {
+        const badBearing = curLocation.bearingTo(new LatLonSpherical(ap.lat, ap.lng));
+        if (badBearing < 90) return 'ne';
+        if (badBearing < 180) return 'se';
+        if (badBearing < 270) return 'sw';
+        return 'nw';
+      });
+
+      const vectorProjections = airports
+        .filter(ap => ap.id !== curAirport.id)
+        .map(ap => {
+          const loc = new LatLonSpherical(ap.lat, ap.lng);
+          const distance = curLocation.distanceTo(loc) / 1000; // km
+          const vectorLength = 10000 / (1000 + 4 * distance + distance ** 2.5 / 800);
+          const vectorDirection = (90 - loc.rhumbBearingTo(curLocation)) * (Math.PI / 180);
+          const northEastProj = vectorLength * Math.cos(vectorDirection - Math.PI / 4) ** 3;
+          const northWestProj = vectorLength * Math.cos(vectorDirection - (3 * Math.PI) / 4) ** 3;
+          return { northEastProj, northWestProj };
+        });
+
+      const directionalForces = vectorProjections.reduce(
+        (acc, val) => {
+          let northEast;
+          let southWest;
+          let northWest;
+          let southEast;
+          if (val.northEastProj > 0) {
+            northEast = acc.northEast + val.northEastProj;
+            southWest = acc.southWest - 6 * val.northEastProj;
+          } else {
+            northEast = acc.northEast + 6 * val.northEastProj;
+            southWest = acc.southWest - val.northEastProj;
+          }
+
+          if (val.northWestProj > 0) {
+            northWest = acc.northWest + val.northWestProj;
+            southEast = acc.southEast - 6 * val.northWestProj;
+          } else {
+            northWest = acc.northWest + 6 * val.northWestProj;
+            southEast = acc.southEast - val.northWestProj;
+          }
+          return { northEast, southWest, northWest, southEast };
+        },
+        { northEast: 0, southWest: 0, northWest: 0, southEast: 0 }
+      );
+
+      // Avoid directions where there is a line in the way
+      if (bearings.includes('ne')) directionalForces.northEast -= 0.5;
+      if (bearings.includes('se')) directionalForces.southEast -= 0.5;
+      if (bearings.includes('sw')) directionalForces.southWest -= 0.5;
+      if (bearings.includes('nw')) directionalForces.northWest -= 0.5;
+
+      const direction = Object.keys(directionalForces).reduce((a, b) =>
+        directionalForces[a] > directionalForces[b] ? a : b
+      );
+      labelDirCache.set(curAirport.id, direction);
+      return direction;
     }
 
     // Choose base layer by mapType from router: 'satellite' -> imagery, else OSM
@@ -83,6 +155,14 @@ class LeafletMap extends Component {
               });
               return uniqueAirports.flatMap((airport, aIdx) => {
                 const pts = repeatPointAcrossDateline(airport.lat, airport.lng);
+                const dir = getLabelDirection(airport);
+                // Map diagonal direction to Leaflet tooltip direction + pixel offset
+                const isEast = dir === 'northEast' || dir === 'southEast';
+                const isNorth = dir === 'northEast' || dir === 'northWest';
+                const tooltipDirection = isEast ? 'right' : 'left';
+                const offset = [0, isNorth ? -15 : 15];
+                const labelText = airport[label] || airport.iata || airport.icao;
+
                 return pts.map((center, pIdx) => (
                   <CircleMarker
                     key={`ap-${rIdx}-${aIdx}-${pIdx}`}
@@ -95,7 +175,21 @@ class LeafletMap extends Component {
                       fillOpacity: 1,
                       noClip: true
                     }}
-                  />
+                  >
+                    {label !== 'none' && labelText ? (
+                      <Tooltip
+                        permanent
+                        direction={tooltipDirection}
+                        offset={offset}
+                        opacity={1}
+                        className="label-tooltip"
+                      >
+                        <div className="map-label">
+                          <p>{labelText}</p>
+                        </div>
+                      </Tooltip>
+                    ) : null}
+                  </CircleMarker>
                 ));
               });
             })}
