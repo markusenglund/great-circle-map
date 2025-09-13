@@ -1,19 +1,38 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { MapContainer, TileLayer } from 'react-leaflet';
+import { MapContainer, TileLayer, Polyline } from 'react-leaflet';
+import greatCircle from '@turf/great-circle';
+import { point as turfPoint } from '@turf/helpers';
 
 import { getRoutes, getAirports, getSectors, getBrighterColor } from '../../selectors';
 
 class LeafletMap extends Component {
   render() {
+    const { routes, routeColor } = this.props;
+
+    function turfGreatCirclePositions(a, b, npoints = 128) {
+      if (!a || !b) return [];
+      const from = turfPoint([a.lng, a.lat]);
+      const to = turfPoint([b.lng, b.lat]);
+      const feature = greatCircle(from, to, { npoints });
+      const { type, coordinates } = feature.geometry;
+      if (type === 'LineString') {
+        return [coordinates.map(([lng, lat]) => [lat, lng])];
+      }
+      if (type === 'MultiLineString') {
+        return coordinates.map(line => line.map(([lng, lat]) => [lat, lng]));
+      }
+      return [];
+    }
+
     return (
       <div id="map-container">
         <MapContainer
           id="map"
           center={[20, 0]}
           zoom={2}
-          scrollWheelZoom={false}
+          scrollWheelZoom
           zoomControl={false}
           style={{ width: '100%', height: '100%' }}
         >
@@ -21,6 +40,17 @@ class LeafletMap extends Component {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution="&copy; OpenStreetMap contributors"
           />
+          {Array.isArray(routes) &&
+            routes.map(route => {
+              if (!Array.isArray(route) || route.length < 2) return null;
+              return route.slice(0, -1).map((airport, idx) => {
+                const nextAirport = route[idx + 1];
+                const segments = turfGreatCirclePositions(airport, nextAirport);
+                return segments.map(positions => (
+                  <Polyline positions={positions} pathOptions={{ color: routeColor, weight: 2 }} />
+                ));
+              });
+            })}
         </MapContainer>
       </div>
     );

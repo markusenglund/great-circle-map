@@ -19,6 +19,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.24.0",
+    "@turf/great-circle": "^7.2.0",
+    "@turf/helpers": "^7.2.0",
     "babel-polyfill": "^6.26.0",
     "body-parser": "^1.18.3",
     "compression": "^1.7.2",
