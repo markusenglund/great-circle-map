@@ -124,6 +124,9 @@ class LeafletMap extends Component {
           zoom={2}
           scrollWheelZoom
           zoomControl={false}
+          zoomDelta={0.25}
+          zoomSnap={0.25}
+          wheelPxPerZoomLevel={120}
           style={{ width: '100%', height: '100%' }}
         >
           <TileLayer url={tileUrl} attribution={tileAttribution} />
