@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Modal from 'react-modal';
-import MdClose from 'react-icons/lib/md/close';
+import { MdClose } from 'react-icons/md';
 
 Modal.setAppElement('#app');
 

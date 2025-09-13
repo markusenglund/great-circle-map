@@ -4,7 +4,7 @@ import { push } from 'redux-little-router';
 import PropTypes from 'prop-types';
 import CloseOnEscape from 'react-close-on-escape';
 import onClickOutside from 'react-onclickoutside';
-import FaCog from 'react-icons/lib/fa/cog';
+import { FaCog } from 'react-icons/fa';
 import MenuButton from './MenuButton';
 import ButtonToggle from './ButtonToggle';
 import RouteColorPicker from './RouteColorPicker';

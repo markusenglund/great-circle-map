@@ -1,6 +1,6 @@
 import 'babel-polyfill';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
 import { Provider } from 'react-redux';
 import { routerForBrowser } from 'redux-little-router';
@@ -66,9 +66,10 @@ const store = createStore(
   )
 );
 
-ReactDOM.render(
+const container = document.getElementById('app');
+const root = createRoot(container);
+root.render(
   <Provider store={store}>
     <App />
-  </Provider>,
-  document.getElementById('app')
+  </Provider>
 );

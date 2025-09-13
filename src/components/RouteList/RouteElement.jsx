@@ -5,7 +5,7 @@ import { push } from 'redux-little-router';
 import { Geodesic } from 'geographiclib';
 import { UnmountClosed } from 'react-collapse';
 import uniqueId from 'lodash.uniqueid';
-import MdClose from 'react-icons/lib/md/close';
+import { MdClose } from 'react-icons/md';
 
 import { getRoutes } from '../../selectors';
 import parseStringWithSlashes from '../../utils/parseStringWithSlashes';
