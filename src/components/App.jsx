@@ -46,6 +46,10 @@ class App extends Component {
           'resize'
         );
       }
+      // Trigger a window resize so Leaflet recalculates its size
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new Event('resize'));
+      }
     }, 300);
   }
 
@@ -78,13 +82,16 @@ class App extends Component {
               handleSetSidebarOpen={this.handleSetSidebarOpen}
             />
             <Fragment
-              withConditions={({ pathname }) => pathname === '/satellite' || pathname === '/roadmap'}
+              withConditions={({ pathname }) =>
+                pathname === '/satellite' || pathname === '/roadmap'
+              }
             >
               <LeafletMap />
             </Fragment>
             <Fragment
               withConditions={({ pathname }) =>
-                pathname === '/google-satellite' || pathname === '/google-roadmap'}
+                pathname === '/google-satellite' || pathname === '/google-roadmap'
+              }
             >
               <GoogleMapWrapper />
             </Fragment>

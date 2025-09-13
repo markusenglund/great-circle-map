@@ -1,14 +1,56 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { MapContainer, TileLayer, Polyline, CircleMarker, Tooltip } from 'react-leaflet';
+import { MapContainer, TileLayer, Polyline, CircleMarker, Tooltip, useMap } from 'react-leaflet';
+import L from 'leaflet';
 import greatCircle from '@turf/great-circle';
 import { point as turfPoint } from '@turf/helpers';
 import { LatLonSpherical } from 'geodesy';
 
 import { getRoutes, getAirports, getSectors, getBrighterColor } from '../../selectors';
 
+// Functional child to auto-fit bounds whenever routes change
+function AutoFitBounds({ routes }) {
+  const map = useMap();
+  useEffect(() => {
+    if (!Array.isArray(routes) || routes.length === 0) return;
+    const points = [];
+    const seen = new Set();
+    routes.forEach(route => {
+      if (!Array.isArray(route)) return;
+      route.forEach(a => {
+        if (!a || typeof a.lat !== 'number' || typeof a.lng !== 'number') return;
+        const key = a.id || `${a.lat},${a.lng}`;
+        if (seen.has(key)) return;
+        seen.add(key);
+        points.push([a.lat, a.lng]);
+      });
+    });
+    if (points.length < 2) return;
+    const bounds = L.latLngBounds(points);
+    map.fitBounds(bounds, { padding: [30, 30], maxZoom: 7 });
+  }, [map, routes]);
+  return null;
+}
+
+// Invalidate map size on initial mount to account for sidebar layout
+function AutoInvalidateSize() {
+  const map = useMap();
+  useEffect(() => {
+    map.invalidateSize();
+    const raf = requestAnimationFrame(() => map.invalidateSize());
+    const onLoad = () => map.invalidateSize();
+    window.addEventListener('load', onLoad);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener('load', onLoad);
+    };
+  }, [map]);
+  return null;
+}
+
 class LeafletMap extends Component {
+
   render() {
     const { routes, routeColor, pointColor, airports, sectors, label } = this.props;
 
@@ -129,6 +171,8 @@ class LeafletMap extends Component {
           wheelPxPerZoomLevel={120}
           style={{ width: '100%', height: '100%' }}
         >
+          <AutoInvalidateSize />
+          <AutoFitBounds routes={routes} />
           <TileLayer url={tileUrl} attribution={tileAttribution} />
           {Array.isArray(routes) &&
             routes.map((route, rIdx) => {
