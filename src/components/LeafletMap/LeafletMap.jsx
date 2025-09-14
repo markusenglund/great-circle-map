@@ -9,6 +9,9 @@ import { LatLonSpherical } from 'geodesy';
 
 import { getRoutes, getAirports, getSectors, getBrighterColor } from '../../selectors';
 
+const ARCGIS_API_KEY =
+  'AAPTxy8BH1VEsoebNVZXo8HurJqs5FkR_Ycdyt0lhg7rReDM1SLaW0GplJAQDLJnJ2gGqqzk79vyMz203dCyx05bq2klNX6DMCy7SyTNWF3G3C39avysNckqIeHdzufbP_JScvCoodB7g6_19gOhIpOuaLSlNlffB8_QJZooYhnFkM30I0sHVuSYvUiNSCFDfYRLw9j1YXP6d_XbXL_hadsLkF4EJrq_S14qq-2LuxH8isY.AT1_VslmouDt';
+
 // Functional child to auto-fit bounds whenever routes change
 function AutoFitBounds({ routes }) {
   const map = useMap();
@@ -293,8 +296,8 @@ class LeafletMap extends Component {
     const { mapType } = this.props;
     const isSatellite = mapType === 'satellite';
     const tileUrl = isSatellite
-      ? 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
-      : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+      ? `https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}?token=${ARCGIS_API_KEY}`
+      : `https://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}?token=${ARCGIS_API_KEY}`;
     const tileAttribution = isSatellite
       ? 'Tiles © Esri — Source: Esri, i‑cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR‑EGP, and the GIS User Community'
       : '&copy; OpenStreetMap contributors';
