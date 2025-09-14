@@ -108,7 +108,7 @@ function AutoFitBounds({ routes }) {
 
     const [[latMin, lonMin], [latMax, lonMax]] = computeDatelineAwareBounds(points);
     const bounds = L.latLngBounds([L.latLng(latMin, lonMin), L.latLng(latMax, lonMax)]);
-    map.fitBounds(bounds, { padding: [100, 100], maxZoom: 7 });
+    map.fitBounds(bounds, { padding: [100, 100], maxZoom: 9 });
   }, [map, routes]);
   return null;
 }
