@@ -50,7 +50,6 @@ function AutoInvalidateSize() {
 }
 
 class LeafletMap extends Component {
-
   render() {
     const { routes, routeColor, pointColor, airports, sectors, label } = this.props;
 
@@ -175,70 +174,58 @@ class LeafletMap extends Component {
           <AutoFitBounds routes={routes} />
           <TileLayer url={tileUrl} attribution={tileAttribution} />
           {Array.isArray(routes) &&
-            routes.map((route, rIdx) => {
+            routes.map(route => {
               if (!Array.isArray(route) || route.length < 2) return null;
               return route.slice(0, -1).flatMap((airport, idx) => {
                 const nextAirport = route[idx + 1];
                 const segments = turfGreatCirclePositions(airport, nextAirport);
                 const repeated = segments.flatMap(positions => repeatAcrossDateline(positions));
-                return repeated.map((positions, segIdx) => (
+                return repeated.map(positions => (
                   <Polyline
-                    key={`seg-${rIdx}-${idx}-${segIdx}`}
                     positions={positions}
                     pathOptions={{ color: routeColor, weight: 2, noClip: true }}
                   />
                 ));
               });
             })}
-          {Array.isArray(routes) &&
-            routes.map((route, rIdx) => {
-              if (!Array.isArray(route) || route.length === 0) return null;
-              // Unique airports in this route to avoid stacked markers
-              const seen = new Set();
-              const uniqueAirports = route.filter(a => {
-                if (seen.has(a.id)) return false;
-                seen.add(a.id);
-                return true;
-              });
-              return uniqueAirports.flatMap((airport, aIdx) => {
-                const pts = repeatPointAcrossDateline(airport.lat, airport.lng);
-                const dir = getLabelDirection(airport);
-                // Map diagonal direction to Leaflet tooltip direction + pixel offset
-                const isEast = dir === 'northEast' || dir === 'southEast';
-                const isNorth = dir === 'northEast' || dir === 'northWest';
-                const tooltipDirection = isEast ? 'right' : 'left';
-                const offset = [0, isNorth ? -15 : 15];
-                const labelText = airport[label] || airport.iata || airport.icao;
+          {Array.isArray(airports) &&
+            airports.map(airport => {
+              const pts = repeatPointAcrossDateline(airport.lat, airport.lng);
+              const dir = getLabelDirection(airport);
+              // Map diagonal direction to Leaflet tooltip direction + pixel offset
+              const isEast = dir === 'northEast' || dir === 'southEast';
+              const isNorth = dir === 'northEast' || dir === 'northWest';
+              const tooltipDirection = isEast ? 'right' : 'left';
+              const offset = [0, isNorth ? -15 : 15];
+              const labelText = airport[label] || airport.iata || airport.icao;
 
-                return pts.map((center, pIdx) => (
-                  <CircleMarker
-                    key={`ap-${rIdx}-${aIdx}-${pIdx}`}
-                    center={center}
-                    radius={3}
-                    pathOptions={{
-                      color: pointColor,
-                      fillColor: pointColor,
-                      weight: 1,
-                      fillOpacity: 1,
-                      noClip: true
-                    }}
-                  >
-                    {label !== 'none' && labelText ? (
-                      <Tooltip
-                        permanent
-                        direction={tooltipDirection}
-                        offset={offset}
-                        opacity={1}
-                        className="label-tooltip"
-                      >
-                        <div className="map-label">
-                          <p>{labelText}</p>
-                        </div>
-                      </Tooltip>
-                    ) : null}
-                  </CircleMarker>
-                ));
-              });
+              return pts.map(center => (
+                <CircleMarker
+                  center={center}
+                  radius={3}
+                  pathOptions={{
+                    color: pointColor,
+                    fillColor: pointColor,
+                    weight: 1,
+                    fillOpacity: 1,
+                    noClip: true
+                  }}
+                >
+                  {label !== 'none' && labelText ? (
+                    <Tooltip
+                      permanent
+                      direction={tooltipDirection}
+                      offset={offset}
+                      opacity={1}
+                      className="label-tooltip"
+                    >
+                      <div className="map-label">
+                        <p>{labelText}</p>
+                      </div>
+                    </Tooltip>
+                  ) : null}
+                </CircleMarker>
+              ));
             })}
         </MapContainer>
       </div>
