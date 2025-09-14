@@ -138,6 +138,7 @@ class LeafletMap extends Component {
 
     function turfGreatCirclePositions(a, b, npoints = 128) {
       if (!a || !b) return [];
+
       const from = turfPoint([a.lng, a.lat]);
       const to = turfPoint([b.lng, b.lat]);
       const feature = greatCircle(from, to, { npoints });
