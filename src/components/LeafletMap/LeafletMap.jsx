@@ -314,7 +314,8 @@ class LeafletMap extends Component {
         >
           <AutoInvalidateSize />
           <AutoFitBounds routes={routes} />
-          <TileLayer url={tileUrl} attribution={tileAttribution} />
+          {/* Force remount when switching providers to avoid stale tiles */}
+          <TileLayer key={tileUrl} url={tileUrl} attribution={tileAttribution} />
           {Array.isArray(routes) &&
             routes.map(route => {
               if (!Array.isArray(route) || route.length < 2) return null;
