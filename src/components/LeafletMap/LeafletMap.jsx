@@ -14,6 +14,8 @@ function AutoFitBounds({ routes }) {
   const map = useMap();
   useEffect(() => {
     if (!Array.isArray(routes) || routes.length === 0) return;
+
+    // Collect unique endpoints from all routes
     const points = [];
     const seen = new Set();
     routes.forEach(route => {
@@ -27,7 +29,90 @@ function AutoFitBounds({ routes }) {
       });
     });
     if (points.length < 2) return;
-    const bounds = L.latLngBounds(points);
+
+    // Normalize longitude into [-180, 180)
+    const normLng = lng => {
+      let x = lng;
+      // handle values that might already be outside canonical range
+      x = ((x + 180) % 360 + 360) % 360 - 180; // safe modulo
+      return x;
+    };
+
+    // Compute minimal longitudinal span on a circle that covers all points
+    function computeDatelineAwareBounds(latlngs) {
+      const n = latlngs.length;
+      if (n === 0) return null;
+      const lats = latlngs.map(p => p[0]);
+      const lngs = latlngs.map(p => normLng(p[1]));
+
+      const latMin = Math.min(...lats);
+      const latMax = Math.max(...lats);
+
+      // Edge case: if all longitudes are the same, return trivial span
+      const uniqueLngs = Array.from(new Set(lngs.map(v => v.toFixed(9))));
+      if (uniqueLngs.length === 1) {
+        const lon = parseFloat(uniqueLngs[0]);
+        return [[latMin, lon], [latMax, lon]];
+      }
+
+      // Build 3 copies of each longitude shifted by -360, 0, +360 with its index
+      const entries = [];
+      for (let i = 0; i < n; i++) {
+        const base = lngs[i];
+        entries.push({ lon: base - 360, idx: i });
+        entries.push({ lon: base, idx: i });
+        entries.push({ lon: base + 360, idx: i });
+      }
+      entries.sort((a, b) => a.lon - b.lon);
+
+      // Sliding window to cover all indices with minimal [L, R]
+      const needed = n;
+      const counts = new Map();
+      let have = 0;
+      let best = { width: Infinity, L: 0, R: 0 };
+      let l = 0;
+      for (let r = 0; r < entries.length; r++) {
+        const { idx } = entries[r];
+        const prev = counts.get(idx) || 0;
+        counts.set(idx, prev + 1);
+        if (prev === 0) have += 1;
+
+        while (have === needed && l <= r) {
+          const width = entries[r].lon - entries[l].lon;
+          if (width < best.width) best = { width, L: entries[l].lon, R: entries[r].lon };
+          // shrink from left
+          const leftIdx = entries[l].idx;
+          const c = counts.get(leftIdx);
+          if (c === 1) {
+            counts.delete(leftIdx);
+            have -= 1;
+          } else {
+            counts.set(leftIdx, c - 1);
+          }
+          l += 1;
+        }
+      }
+
+      // best now represents the smallest longitudinal span covering all points
+      // Clamp pathological case if something went wrong
+      if (!isFinite(best.width)) {
+        const lonMin = Math.min(...lngs);
+        const lonMax = Math.max(...lngs);
+        return [[latMin, lonMin], [latMax, lonMax]];
+      }
+
+      const lonMin = best.L;
+      const lonMax = best.R;
+      return [[latMin, lonMin], [latMax, lonMax]];
+    }
+
+    const [[latMin, lonMin], [latMax, lonMax]] = computeDatelineAwareBounds(points);
+    const bounds = L.latLngBounds(
+      [
+        L.latLng(latMin, lonMin),
+        L.latLng(latMax, lonMax)
+      ]
+    );
     map.fitBounds(bounds, { padding: [100, 100], maxZoom: 7 });
   }, [map, routes]);
   return null;
