@@ -34,7 +34,7 @@ function AutoFitBounds({ routes }) {
     const normLng = lng => {
       let x = lng;
       // handle values that might already be outside canonical range
-      x = ((x + 180) % 360 + 360) % 360 - 180; // safe modulo
+      x = ((((x + 180) % 360) + 360) % 360) - 180; // safe modulo
       return x;
     };
 
@@ -107,12 +107,7 @@ function AutoFitBounds({ routes }) {
     }
 
     const [[latMin, lonMin], [latMax, lonMax]] = computeDatelineAwareBounds(points);
-    const bounds = L.latLngBounds(
-      [
-        L.latLng(latMin, lonMin),
-        L.latLng(latMax, lonMax)
-      ]
-    );
+    const bounds = L.latLngBounds([L.latLng(latMin, lonMin), L.latLng(latMax, lonMax)]);
     map.fitBounds(bounds, { padding: [100, 100], maxZoom: 7 });
   }, [map, routes]);
   return null;
@@ -159,6 +154,68 @@ class LeafletMap extends Component {
 
     function repeatPointAcrossDateline(lat, lng, offsets = [-360, 0, 360]) {
       return offsets.map(offset => [lat, lng + offset]);
+    }
+
+    // Clip polyline positions to Web Mercator latitude cap to avoid "roof" artifacts
+    function clipToMercatorCap(positions) {
+      if (!Array.isArray(positions) || positions.length < 2) return [];
+      const mercatorCap = 85.05112878 - 1e-6;
+      const result = [];
+      let segment = [];
+
+      const isInside = lat => Math.abs(lat) <= mercatorCap;
+      const interp = (a, b, t) => a + (b - a) * t;
+
+      for (let i = 0; i < positions.length - 1; i++) {
+        const [lat1, lng1] = positions[i];
+        const [lat2, lng2] = positions[i + 1];
+        const in1 = isInside(lat1);
+        const in2 = isInside(lat2);
+        // in/out bookkeeping for lat cap
+
+        if (in1 && segment.length === 0) segment.push([lat1, lng1]);
+
+        if (in1 && in2) {
+          // fully inside
+          segment.push([lat2, lng2]);
+        } else if (in1 && !in2) {
+          // exiting: add intersection on mercatorCap
+          const capLat = lat2 > 0 ? mercatorCap : -mercatorCap;
+          const t = (capLat - lat1) / (lat2 - lat1);
+          const crossLng = interp(lng1, lng2, Math.max(0, Math.min(1, t)));
+          segment.push([capLat, crossLng]);
+          if (segment.length >= 2) result.push(segment);
+          segment = [];
+        } else if (!in1 && in2) {
+          // entering: start new segment at intersection then add inside point
+          const capLat = lat1 > 0 ? mercatorCap : -mercatorCap;
+          const t = (capLat - lat1) / (lat2 - lat1);
+          const crossLng = interp(lng1, lng2, Math.max(0, Math.min(1, t)));
+          segment = [[capLat, crossLng], [lat2, lng2]];
+        } else {
+          // both outside: do nothing (segment stays empty or gets closed elsewhere)
+          // no-op
+        }
+      }
+
+      if (segment.length >= 2) result.push(segment);
+      return result;
+    }
+
+    // Unwrap longitudes within a segment so consecutive points differ by < 180°
+    function unwrapLongitudes(positions) {
+      if (!Array.isArray(positions) || positions.length === 0) return positions;
+      const out = [];
+      let prevLng = positions[0][1];
+      out.push([positions[0][0], prevLng]);
+      for (let i = 1; i < positions.length; i++) {
+        let [lat, lng] = positions[i];
+        while (lng - prevLng > 180) lng -= 360;
+        while (lng - prevLng < -180) lng += 360;
+        out.push([lat, lng]);
+        prevLng = lng;
+      }
+      return out;
     }
 
     // Compute label direction similar to Google implementation
@@ -264,7 +321,10 @@ class LeafletMap extends Component {
               return route.slice(0, -1).flatMap((airport, idx) => {
                 const nextAirport = route[idx + 1];
                 const segments = turfGreatCirclePositions(airport, nextAirport);
-                const repeated = segments.flatMap(positions => repeatAcrossDateline(positions));
+                // Unwrap longitudes to avoid date-line jumps, then clip and repeat
+                const unwrapped = segments.map(unwrapLongitudes);
+                const clipped = unwrapped.flatMap(clipToMercatorCap);
+                const repeated = clipped.flatMap(positions => repeatAcrossDateline(positions));
                 return repeated.map(positions => (
                   <Polyline
                     positions={positions}
