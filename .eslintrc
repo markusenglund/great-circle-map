@@ -5,7 +5,7 @@
     "node": true,
     "jest": true
   },
-  "extends": ["airbnb", "prettier", "prettier/react"],
+  "extends": ["prettier", "prettier/react"],
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
