@@ -33,7 +33,7 @@ grey: rgb(44, 44, 44) , grey-text: #bbd;*/
 }
 
 #button-group {
-  z-index: 500;
+  z-index: 2;
 }
 
 /* Leaflet label tooltips styled to match app (no bubble) */
@@ -47,6 +47,9 @@ grey: rgb(44, 44, 44) , grey-text: #bbd;*/
 }
 .leaflet-tooltip.label-tooltip::before {
   display: none;
+}
+.leaflet-pane {
+  z-index: 1 !important;
 }
 
 #left-button-group {

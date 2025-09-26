@@ -29,7 +29,7 @@ or file an issue on Github.
 
 ## Setup instructions
 
-- Install Node.js 8 (newer versions will not work)
+- Install Node.js 20 (newer versions might not work)
 - Run `npm run build` in the project directory
 - Run `node server`
 - Open the browser at 127.0.0.1:3000
